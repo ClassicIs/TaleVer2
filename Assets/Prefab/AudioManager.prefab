@@ -1,0 +1,82 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &9176061343366418892
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9176061343366418894}
+  - component: {fileID: 9176061343366418895}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9176061343366418894
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9176061343366418892}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 469.19342, y: 283.22467, z: -3285.375}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &9176061343366418895
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9176061343366418892}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c82e74d747f0140449765f67f6824bf8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AudioClips:
+  - name: MainTheme
+    volume: 0.06
+    source: {fileID: 0}
+    theClip: {fileID: 8300000, guid: 20a883b5672d911418b60c37a3c79c0d, type: 3}
+    pitch: 1
+    loopOrNot: 1
+  - name: WalkTile 1
+    volume: 1
+    source: {fileID: 0}
+    theClip: {fileID: 8300000, guid: bdb6cc1d81962c545b13ab911b205fe1, type: 3}
+    pitch: 1
+    loopOrNot: 0
+  - name: WalkTile 2
+    volume: 1
+    source: {fileID: 0}
+    theClip: {fileID: 8300000, guid: b66ad61e0f3167e49981c4d931916e35, type: 3}
+    pitch: 1
+    loopOrNot: 0
+  - name: DodgeWoosh
+    volume: 1
+    source: {fileID: 0}
+    theClip: {fileID: 8300000, guid: aaf823d1c8e1cfd4c89df8d64e5b19af, type: 3}
+    pitch: 1
+    loopOrNot: 0
+  - name: PaperUnfold
+    volume: 1
+    source: {fileID: 0}
+    theClip: {fileID: 8300000, guid: 034a22d81c9837a42850852042d627b8, type: 3}
+    pitch: 1
+    loopOrNot: 0
+  - name: PaperFold
+    volume: 1
+    source: {fileID: 0}
+    theClip: {fileID: 8300000, guid: 2b310b7678e286747aa873e82f123755, type: 3}
+    pitch: 1
+    loopOrNot: 0
