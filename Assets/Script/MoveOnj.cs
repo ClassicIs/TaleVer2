@@ -8,25 +8,26 @@ public class MoveOnj : MonoBehaviour
     Transform[] pointsToVisit;
     [SerializeField]
     float speedToGo = 4f;
+    Transform theObj;
     int i = 0;
 
-    private void Start()
+    protected void Start()
     {
-        
+        theObj = GetComponent<Transform>();
     }
 
-    private void Update()
+    protected void Update()
     {
         ToMoveTheObj();
     }
 
-    private void ToMoveTheObj()
+    protected void ToMoveTheObj()
     {        
         while (true)
         {
-            while (Vector2.Distance(transform.position, pointsToVisit[i].position) > 0.1f)
+            while (Vector2.Distance(theObj.position, pointsToVisit[i].position) > 0.1f)
             {
-                transform.position = Vector2.MoveTowards(transform.position, pointsToVisit[i].position, speedToGo);
+                theObj.position = Vector2.MoveTowards(theObj.position, pointsToVisit[i].position, speedToGo);
             }
             Debug.Log("pointsToVisit.Length" + pointsToVisit.Length);
             if (i == (pointsToVisit.Length - 1))

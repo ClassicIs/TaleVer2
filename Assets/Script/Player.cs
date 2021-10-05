@@ -5,65 +5,43 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     private Rigidbody2D thePlayer;
-
-    public bool goingToDie;
-    
     private Animator thePlayerAnim;
     private PlayerManager thePlayerManager;
     private PlayerEffectsScript theFXScript;
 
     public bool isMoving;
-    private AudioManagerScript theAudioManager;    
+    private AudioManagerScript theAudioManager;
+    [SerializeField]
     public bool isRestarting;  
-    private Vector2 lastMovePosition;
-    private Vector2 theVect;
+    private Vector2 lastMovePosition;    
     private Vector2 lastMoveDir;
     public Vector2 theVectRaw;
+    public Vector2 lastMovePos;
 
-    public float dodge;
+    private int dodgeCount;
     [SerializeField]
     public bool isDodging;
-    private float startDodgeTime;
     private float speedDodge;   
     
-    public float speed;    
+    private float speed;    
     private float normSpeed;
+    [HideInInspector]
     public float slowModif;
+    public bool canWalk;    
+    private bool isGrounded;
 
-    public bool canWalk;
-
-    private float horMovement;
-    private float verMovement;
-    private bool isTryingToDie;
-
-    
-
-    private float currTimeToFall;
-    [SerializeField] 
-    private float strTimeToFall;
-
-    
-    public bool isGrounded;
-    public bool isSliding;
 
     // Start is called before the first frame update
     void Start()
     {
-        theVectRaw = new Vector2(0, 0);
         canWalk = true;
         theAudioManager = FindObjectOfType<AudioManagerScript>();
         thePlayerManager = GetComponent<PlayerManager>();
         theFXScript = GetComponent<PlayerEffectsScript>();
 
-        isSliding = false;
-        strTimeToFall = 3f;
-        currTimeToFall = strTimeToFall;
-        isTryingToDie = false;
         isDodging = false;
 
-        isRestarting = false;
-        
-        goingToDie = false;      
+        isRestarting = false;         
 
         //Speed variables        
         normSpeed = 1.5f;
@@ -73,13 +51,12 @@ public class Player : MonoBehaviour
 
         //For dodge
         speedDodge = 2.6f; //Speed of dodge
-        startDodgeTime = 1f;
-        dodge = 0;
+        dodgeCount = 3;
         
         lastMovePosition = new Vector2(0, 0);
         //To check for last movement vector
         lastMoveDir = new Vector2(0, 0);
-
+        StartCoroutine(checkLastPos());
            
     }
 
@@ -93,9 +70,9 @@ public class Player : MonoBehaviour
 
     public void NormalizeAll()
     {                     
-        isRestarting = true;
-        currTimeToFall = 3f;
+        isRestarting = false;        
         thePlayerManager.NormalizeAll();
+        StartCoroutine(checkLastPos());
     }
 
     // Update is called once per frame
@@ -106,127 +83,63 @@ public class Player : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (canWalk)
+        if (!isRestarting)
         {
-            forMovement();
+            if (canWalk)
+            {
+                if (isMoving)
+                {
+                    //Debug.Log("We are here!");
+                    forMovement();
+                }
+                
+            }            
+            toDodge();
         }
-        toDodge();
+        thePlayerAnim.SetBool("isMoving", isMoving);
     } 
+
+    IEnumerator checkLastPos()
+    {
+        while (!isRestarting)
+        {
+            if (canWalk)
+            {
+                lastMovePos = transform.position;
+            }
+            yield return new WaitForSeconds(1);
+        }
+    }
     
     private void CheckMovement()
     {        
-        theVectRaw = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized;
-        if(goingToDie)
+        theVectRaw = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized;        
+
+        if((Mathf.Abs(theVectRaw.x) > 0f) || (Mathf.Abs(theVectRaw.y) > 0f))
         {
-            Debug.Log("Going to die!");
-            horMovement = 0f;
-            verMovement = 0f;
-            currTimeToFall -= Time.deltaTime;
-            isTryingToDie = true;
+            lastMoveDir = theVectRaw;
+            isMoving = true;            
         }
         else
         {
-            horMovement = Input.GetAxisRaw("Horizontal");
-            verMovement = Input.GetAxisRaw("Vertical");
-            currTimeToFall = strTimeToFall;
+            thePlayer.velocity = Vector2.zero;
+            isMoving = false;                  
         }
+        
+    }    
 
-        theVect = new Vector2(horMovement, verMovement).normalized;
-        if((Mathf.Abs(theVect.x) > 0f) || (Mathf.Abs(theVect.y) > 0f))
+    private void forMovement()
+    {
+        if (theAudioManager != null)
         {
             if (!theAudioManager.isPlaying("WalkTile 1"))
             {
                 theAudioManager.Play("WalkTile 1");
             }
-            isMoving = true;
-            thePlayerAnim.SetBool("isMoving", true);
-            thePlayerAnim.SetFloat("HorizontalMovement", theVect.x);
-            thePlayerAnim.SetFloat("VerticalMovement", theVect.y);
         }
-        else
-        {
-            isMoving = false;
-            thePlayerAnim.SetBool("isMoving", false);            
-        }
-
-        if (Mathf.Abs(theVectRaw.x) > 0.1 || Mathf.Abs(theVectRaw.y) > 0.1)
-        {
-            lastMoveDir = theVectRaw;
-        }
-
-        //speed = Mathf.Lerp(speed, normSpeed * slowModif, .1f);
-
-        /*
-        if (currTimeToFall > 0f)
-        {
-            if (fallLeft)
-            {
-                if (horMovement < 0f)
-                {
-                    JustStopHor();
-                }
-                else
-                {
-                    currTimeToFall = strTimeToFall;
-                }
-            }
-            if (fallRight)
-            {
-                if (horMovement > 0f)
-                {
-                    JustStopHor();
-                }
-                else
-                {
-                    currTimeToFall = strTimeToFall;
-                }
-            }
-            if (fallBottom)
-            {
-                if (verMovement < 0f)
-                {
-                    JustStopVer();
-                }
-                else
-                {
-                    currTimeToFall = strTimeToFall;
-                }
-            }
-            if (fallTop)
-            {
-                if (verMovement > 0f)
-                {
-                    JustStopVer();
-                }
-                else
-                {
-                    currTimeToFall = strTimeToFall;
-                }
-            }
-        }
-        */
-    }    
-
-    private void JustStopHor()
-    {
-        horMovement = 0f;
-        currTimeToFall -= Time.deltaTime;
-        isTryingToDie = true;
-    }
-
-    private void JustStopVer()
-    {
-        verMovement = 0f;
-        currTimeToFall -= Time.deltaTime;
-        isTryingToDie = true;
-    }
-
-    private void forMovement()
-    {
-        if (!isDodging)
-        {
-            thePlayer.velocity = theVect * speed;
-        }
+        thePlayerAnim.SetFloat("HorizontalMovement", theVectRaw.x);
+        thePlayerAnim.SetFloat("VerticalMovement", theVectRaw.y);
+        thePlayer.velocity = theVectRaw * speed;        
     }
 
     private void toDodge()
@@ -235,6 +148,7 @@ public class Player : MonoBehaviour
         
         if (Input.GetKeyDown(KeyCode.Space) && !isDodging)
         {
+            canWalk = false;
             isDodging = true;
             //theFXScript.MakeTheGhosts(thePlayer.position, movePosition);
             theFXScript.makeTheGhost = true;
@@ -243,12 +157,12 @@ public class Player : MonoBehaviour
 
             //!TODO
             RaycastHit2D theCheckForObjs = Physics2D.Raycast(transform.position, new Vector2(transform.position.x, transform.position.y) + movePosition);
-            if(theCheckForObjs.collider.tag != "Walls")
+            if(theCheckForObjs.collider.tag == "Walls" && theCheckForObjs.collider.tag == "Enemy")
             {
                 movePosition = theCheckForObjs.collider.gameObject.transform.position;
                 Debug.Log("New Move Position is " + movePosition);
             }
-
+            
             thePlayer.MovePosition(movePosition);
             Debug.Log("Dodge has started!");
             
@@ -256,7 +170,7 @@ public class Player : MonoBehaviour
             {
                 theAudioManager.Play("DodgeWoosh");
             }
-            StartCoroutine(hasDodged(lastMovePosition));            
+            StartCoroutine(hasDodged(movePosition));            
         }
     }
 
@@ -271,6 +185,7 @@ public class Player : MonoBehaviour
             yield return null;
         }
         isDodging = false;
+        canWalk = true;
         //theFXScript.makeTheGhost = false;
         Debug.Log("Dodge is made!");
     }

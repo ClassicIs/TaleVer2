@@ -88,7 +88,7 @@ public class PlayerManager : MonoBehaviour
     public void ToChangeCoins(int newCoin, GameObject collision)
     {
         coinCount += newCoin;
-        GMScript.ChangeMoney(coinCount, collision.gameObject.transform.position);        
+        //GMScript.ChangeMoney(coinCount, collision.gameObject.transform.position);        
         Destroy(collision.gameObject);
     }
 
@@ -109,8 +109,7 @@ public class PlayerManager : MonoBehaviour
         theCircleTriggerCol.enabled = false;
         thePlayerScript.enabled = false;
         charCollisionScript.enabled = false;
-        restartMenu.SetActive(true);
-        
+        restartMenu.SetActive(true);        
     }
 
 

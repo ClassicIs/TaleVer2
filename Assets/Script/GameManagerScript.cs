@@ -16,25 +16,70 @@ public class GameManagerScript : MonoBehaviour
     [SerializeField] 
     private GameObject[] allGameObj;
     [SerializeField]
-    private Slider healthSlider;
+    private Slider inkLevelSlider;
     [SerializeField]
     private Text moneyCount;
 
-    [SerializeField]
-    private GameObject thePlayerObj;
+    
     private Player thePlayerScr;
     [SerializeField]
     private GameObject theMenu;
+    [SerializeField]
+    private GameObject restartMenu;
 
+    private int health;
+    private int inkLevel;
+    private int maxHealth;
+    private int maxInkLevel;
+
+    private int coinCount;
+
+    [SerializeField]
+    private GameObject thePlayerObj;
+    [SerializeField]
+    private Rigidbody2D thePlayerRB;
+    [SerializeField]
+    private CharacterOverlap charCollisionScript;
+    [SerializeField]
+    private BoxCollider2D theBoxCol;
+    [SerializeField]
+    private CircleCollider2D theCircleTriggerCol;
+    [SerializeField]
+    private Animator playerAnimator;
 
     private bool menuActive;
 
     // Start is called before the first frame update
     void Start()
-    {        
+    {
+        normalizeGM();
+
+        charCollisionScript = thePlayerObj.GetComponent<CharacterOverlap>();
+        theBoxCol = thePlayerObj.GetComponent<BoxCollider2D>();
+        theCircleTriggerCol = thePlayerObj.GetComponent<CircleCollider2D>();
+        playerAnimator = thePlayerObj.GetComponent<Animator>();        
+        thePlayerScr = thePlayerObj.GetComponent<Player>();
+        thePlayerRB = thePlayerObj.GetComponent<Rigidbody2D>();
+
         destroyedObj = new List<SpawnObjects>();
-        thePlayerScr = thePlayerObj.GetComponent<Player>();        
+
         menuActive = false;
+    }
+
+    void normalizeGM()
+    {
+        maxHealth = 4;
+        health = maxHealth;
+        coinCount = 0;
+        inkLevel = 0;
+        changeInkLevel(inkLevel);
+        ChangeHealth(health);
+        ChangeMoney(coinCount);        
+        charCollisionScript.InstadeathTime = 0f;
+        theBoxCol.enabled = true;
+        theCircleTriggerCol.enabled = true;
+        thePlayerScr.enabled = true;
+        charCollisionScript.enabled = true;
     }
 
     // Update is called once per frame
@@ -53,25 +98,14 @@ public class GameManagerScript : MonoBehaviour
         Debug.Log(destroyedObj.Count);       
     }
 
+    private void midRestart()
+    {
+        thePlayerObj.transform.position = thePlayerScr.lastMovePos;
+        //he
+    }
+
     public void RestartGame()
     {
-        Debug.Log("Restarting the game!");
-        Debug.Log("deactiveObjs.Count " + destroyedObj.Count);
-
-        /*for(int i = 0; i < destroyedObj.Count; i++)
-        {
-            Debug.Log("\ntheObjToSpawn.nameOfPrefab: " + destroyedObj[i].nameOfPrefab);
-            for (int j = 0; j < allGameObj.Length; j++)
-            {
-                Debug.Log("theObjectZero.name: " + allGameObj[j].name + "\ntheObjToSpawn.nameOfPrefab: " + destroyedObj[i].nameOfPrefab);
-                if (destroyedObj[i].nameOfPrefab == allGameObj[j].name)
-                {
-                    Instantiate(allGameObj[j], destroyedObj[i].thePosition, Quaternion.identity);
-                    continue;
-                }
-            }
-        }*/
-
         foreach (SpawnObjects theObjToSpawn in destroyedObj)
         {
             foreach (GameObject theObjectZero in allGameObj)
@@ -115,19 +149,47 @@ public class GameManagerScript : MonoBehaviour
         theMenu.SetActive(false);
     }
 
+   public void toChangeHealth(int healthToChange)
+    {
+        if ((health + healthToChange) <= maxHealth && (health + healthToChange) > 0)
+        {
+            health -= healthToChange;
+            ChangeHealth(health);
+        }
+        else if((health + healthToChange) == 0)
+        {
+            theDeath();
+            
+        }
+        else if((health + healthToChange) > maxHealth)
+        {
+            Debug.LogWarning("Health is at maximum value.");
+        }
+        else if((health + healthToChange) < 0)
+        {
+            Debug.LogWarning("Health is at minimum value.");
+        }
+    }
+
+    public void theDeath()
+    {
+        //thePlayerRB.velocity = new Vector2(0, 0);
+        playerAnimator.SetBool("isMoving", false);
+        theBoxCol.enabled = false;
+        theCircleTriggerCol.enabled = false;
+        thePlayerScr.enabled = false;
+        charCollisionScript.enabled = false;
+        restartMenu.SetActive(true);
+    }    
+
     public void ChangeHealth(int currHealth)
     {
-        Debug.Log("currHealth: " + currHealth);
-        Debug.Log("(currHealth - theHealthHolder.transform.childCount)" + (currHealth - theHealthHolder.transform.childCount));
-        Debug.Log("theHealthHolder.transform.childCount" + theHealthHolder.transform.childCount);
-
         if (theHealthHolder.transform.childCount < currHealth)
         {
             int heartsToAdd = (currHealth - theHealthHolder.transform.childCount);
             Debug.Log("Health is less ");
             for (int j = 0; j < heartsToAdd; j++)
-            {
-                Debug.Log("(currHealth - theHealthHolder.transform.childCount): " + (currHealth - theHealthHolder.transform.childCount));
+            {                
                 Instantiate(healthIcon, theHealthHolder.transform);                
             }
         }        
@@ -143,15 +205,35 @@ public class GameManagerScript : MonoBehaviour
         }       
     }
 
-    public void changeInkLevel(int currInkLevel)
+    public void changeInkLevel(int newInk)
     {
-
+        if ((inkLevel + newInk) < maxInkLevel)
+        {
+            float tmpInk = inkLevel;
+            float howFast = 0.2f;
+            inkLevel = inkLevel + newInk;
+            inkLevelSlider.value = Mathf.Lerp(tmpInk, inkLevel, howFast);
+        }
+        else
+        {
+            //theInkDeath()
+            Debug.Log("Ink level is full!");
+            theDeath();
+        }
+        
     }
 
-    public void ChangeMoney(int currMoney, Vector2 posOftheCollidedObj)
+    public int GetCurrHealth()
     {
+        return health;
+    }
+
+    public void ChangeMoney(int currMoney, GameObject theObj)
+    {
+        coinCount += currMoney;
+        Destroy(theObj.gameObject);
         moneyCount.text = currMoney.ToString();
-        addNewDestroyedObj("Coin", posOftheCollidedObj);
+        addNewDestroyedObj("Coin", theObj.transform.position);
     }
 
     public void ChangeMoney(int currMoney)

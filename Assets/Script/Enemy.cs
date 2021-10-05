@@ -13,9 +13,11 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     GameObject thePlayer;
     PlayerManager thePlayerMG;
+    Transform theEnemy;
 
-    private void Start()
+    protected void Start()
     {
+        theEnemy = GetComponent<Transform>();
         thePlayerMG = thePlayer.GetComponent<PlayerManager>();
     }
 
@@ -35,8 +37,13 @@ public class Enemy : MonoBehaviour
 
     protected virtual void followPlayer()
     {
-        Vector2 distFromPlayer = thePlayer.gameObject.transform.position - transform.position;
-        //transform.position = Vector2.Lerp(new Vector2(transform.position.x, transform.position.y), new Vector2(thePlayer.gameObject.transform.position.x, thePlayer.gameObject.transform.position.y), speedOfMon * Time.deltaTime);
+        //theEnemy.
+        /*Vector2 distFromPlayer = col.transform.position - theEnemy.position;
+        Vector2 dirToPlayer = distFromPlayer.normalized;
+        Vector2 speedToPlayer = dirToPlayer * speedOfMon;
+        theEnemy.Translate(speedToPlayer);
+        */
+        theEnemy.position = Vector2.Lerp(theEnemy.position, thePlayer.transform.position, speedOfMon * Time.deltaTime);
     }
 
 }

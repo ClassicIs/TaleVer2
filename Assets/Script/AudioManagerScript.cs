@@ -59,7 +59,6 @@ public class AudioManagerScript : MonoBehaviour
         int theClipToPlay = theClipToFind(soundName);
         if(theClipToPlay != 404)
         {
-            //Debug.Log("Is playing " + soundName + " now.");
             AudioClips[theClipToPlay].source.Play();
         }
         else

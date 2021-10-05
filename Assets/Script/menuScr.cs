@@ -39,7 +39,7 @@ public class menuScr : MonoBehaviour
             theBlackBG.color = tmp;
             yield return null;
         }
-        SceneManager.LoadScene("level1");
+        SceneManager.LoadScene("Level 1");
     }
 
     IEnumerator toFadeOutCoroutine()
