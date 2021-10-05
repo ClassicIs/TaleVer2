@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 6846266899827844212}
   - component: {fileID: 6846266899827844215}
   - component: {fileID: 7134206480348954916}
-  - component: {fileID: 1962117622}
   m_Layer: 0
   m_Name: Letter
   m_TagString: Letter
@@ -28,9 +27,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6846266899827844171}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -5.3, y: 2.1, z: 11.423505}
-  m_LocalScale: {x: 0.62, y: 0.62, z: 1}
+  m_LocalScale: {x: 0.55, y: 0.55, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -50,7 +49,6 @@ SpriteRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
-  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -75,7 +73,8 @@ SpriteRenderer:
   m_SortingLayerID: 391407823
   m_SortingLayer: 2
   m_SortingOrder: -1
-  m_Sprite: {fileID: 21300000, guid: e2811890edd042c45b21674587e795f0, type: 3}
+  m_Sprite: {fileID: 5679472052088596111, guid: 2056ee1c5221dde40bfcfadf11a94831,
+    type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -101,7 +100,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 1.91
+  m_Radius: 15.19
 --- !u!114 &6846266899827844215
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -114,8 +113,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: adf1d93d63eee2e42b9b99969b5ed852, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sign: "\u0416\u0435\u043D\u044F"
-  theMassOfStrings: "\u0416\u0435\u043D\u044F \u043A\u0440\u0443\u0442\u0430\u044F!"
+  sign: "\u041F\u0435\u0442\u044F"
+  theMassOfStrings: "\u041F\u0435\u0442\u044F \u0431\u044B\u043B \u0442\u0443\u0442,
+    \u0430 \u0442\u044B \u043B\u043E\u0445!"
 --- !u!95 &7134206480348954916
 Animator:
   serializedVersion: 3
@@ -135,18 +135,3 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &1962117622
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6846266899827844171}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_EffectColor: {r: 0, g: 0, b: 0, a: 1}
-  m_EffectDistance: {x: 2.08, y: 0.59}
-  m_UseGraphicAlpha: 1
