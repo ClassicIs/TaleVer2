@@ -14,9 +14,9 @@ public class Player : MonoBehaviour
 
     public LayerMask theWallLayer;
 
-    public GameObject tmpGameObjHold;
+    /*public GameObject tmpGameObjHold;
     public Transform tmpGameObj;
-
+    */
     public bool isMoving;
     private AudioManagerScript theAudioManager;    
     public bool isRestarting;  
@@ -32,6 +32,7 @@ public class Player : MonoBehaviour
     [SerializeField]
     public bool isDodging;
     private float startDodgeTime;
+    [SerializeField]
     private float speedDodge;   
     
     public float speed;    
@@ -62,7 +63,7 @@ public class Player : MonoBehaviour
         //To check for last movement vector
         lastMoveDir = new Vector2(0, 0);
 
-        tmpGameObj = tmpGameObjHold.GetComponent<Transform>();
+        //tmpGameObj = tmpGameObjHold.GetComponent<Transform>();
         theVectRaw = new Vector2(0, 0);
         canWalk = true;
         theAudioManager = FindObjectOfType<AudioManagerScript>();
@@ -164,72 +165,9 @@ public class Player : MonoBehaviour
             lastMoveDir = theVectRaw;
         }
 
-        //speed = Mathf.Lerp(speed, normSpeed * slowModif, .1f);
-
-        /*
-        if (currTimeToFall > 0f)
-        {
-            if (fallLeft)
-            {
-                if (horMovement < 0f)
-                {
-                    JustStopHor();
-                }
-                else
-                {
-                    currTimeToFall = strTimeToFall;
-                }
-            }
-            if (fallRight)
-            {
-                if (horMovement > 0f)
-                {
-                    JustStopHor();
-                }
-                else
-                {
-                    currTimeToFall = strTimeToFall;
-                }
-            }
-            if (fallBottom)
-            {
-                if (verMovement < 0f)
-                {
-                    JustStopVer();
-                }
-                else
-                {
-                    currTimeToFall = strTimeToFall;
-                }
-            }
-            if (fallTop)
-            {
-                if (verMovement > 0f)
-                {
-                    JustStopVer();
-                }
-                else
-                {
-                    currTimeToFall = strTimeToFall;
-                }
-            }
-        }
-        */
+        speed = Mathf.Lerp(speed, normSpeed * slowModif, .1f);        
     }    
 
-    private void JustStopHor()
-    {
-        horMovement = 0f;
-        currTimeToFall -= Time.deltaTime;
-        isTryingToDie = true;
-    }
-
-    private void JustStopVer()
-    {
-        verMovement = 0f;
-        currTimeToFall -= Time.deltaTime;
-        isTryingToDie = true;
-    }
 
     private void forMovement()
     {
@@ -245,7 +183,7 @@ public class Player : MonoBehaviour
         
         if (Input.GetKeyDown(KeyCode.Space) && !isDodging)
         {
-            thePlayerAnim.SetBool("isDodging", true);
+            thePlayerAnim.SetTrigger("Dodge");
             //isDodging = true;
             //theFXScript.MakeTheGhosts(thePlayer.position, movePosition);
             //theFXScript.makeTheGhost = true;
@@ -255,15 +193,15 @@ public class Player : MonoBehaviour
             //!TODO
             RaycastHit2D theCheckForObjs = Physics2D.Raycast(transform.position, movePosition.normalized, movePosition.magnitude, theWallLayer);
             
-            if(theCheckForObjs.collider != null)
+           /* if(theCheckForObjs.collider != null)
             {
                 Debug.Log("The collider " + theCheckForObjs.collider.tag);
-                tmpGameObj.position = theCheckForObjs.point;
+                //tmpGameObj.position = theCheckForObjs.point;
                 movePosition = theCheckForObjs.point;
                 Debug.Log("New Move Position is " + movePosition);
                 //thePlayer1.position = movePosition;
             }
-            /*
+            */
             thePlayer.MovePosition(movePosition);
             Debug.Log("Dodge has started!");
             
@@ -271,7 +209,7 @@ public class Player : MonoBehaviour
             {
                 theAudioManager.Play("DodgeWoosh");
             }
-            StartCoroutine(hasDodged(lastMovePosition));            */
+            StartCoroutine(hasDodged(lastMovePosition));     
         }
     }
 
@@ -298,7 +236,7 @@ public class Player : MonoBehaviour
 
         Gizmos.DrawLine(transform.position, movePosition);
         
-        Gizmos.DrawWireCube(transform.position, transform.position + new Vector3(theVectRaw.x, theVectRaw.y, 0f));
+        //Gizmos.DrawWireCube(transform.position, transform.position + new Vector3(theVectRaw.x, theVectRaw.y, 0f));
         //Vector3 theVectNew = Vector3.right;
         //Gizmos.color
         /*if (lastMPos != null)
