@@ -38,6 +38,9 @@ public class CharacterOverlap : MonoBehaviour
     public float InstadeathTime;
     [SerializeField]
     private float timeToDeath;
+    [SerializeField]
+    private float strTimeToDeath;
+
     private float healthChange;
     private float changedHealth;
     public bool isReading;
@@ -49,8 +52,8 @@ public class CharacterOverlap : MonoBehaviour
         isReading = false;
         isOnGround = true;
         InstadeathTime = 0;
-        
-        timeToDeath = .45f;
+        strTimeToDeath = .45f;
+        timeToDeath = strTimeToDeath;
         isOnTheInstantDeath = false;
         changedHealth = 0;
         healthChange = 0.4f;
@@ -85,22 +88,25 @@ public class CharacterOverlap : MonoBehaviour
         bool fallTop = isLeftTop && isRightTop;
         */
         bool isOnTheDeathFloor = isLeftTop && isRightTop && isLeftBottom && isRightBottom;
+        //Physics2D.BoxCast()
+        //RaycastHit2D goingToDeath = Physics2D.BoxCast(transform.position, new Vector2(1f, 1f), 0f, thePlayerController.theVectRaw, 1f, theDeathLayer);
         RaycastHit2D goingToDeath = Physics2D.Raycast(new Vector2(playerLegPos.position.x, playerLegPos.position.y), thePlayerController.theVectRaw, radOfDetect, theDeathLayer);
         //RaycastHit2D goingToDeath = Physics2D.BoxCast(playerLegPos.position, new Vector2(radOfDetect, radOfDetect), 90, thePlayerController.theVectRaw, theDeathLayer);
 
-        if (goingToDeath.collider != null)
+        if (goingToDeath.collider != null && timeToDeath > 0f)
         {
             Debug.Log("The raycast is " + goingToDeath.collider.gameObject.name);
             thePlayer.velocity = new Vector2(0, 0);
             thePlayerController.canWalk = false;
+            timeToDeath -= 0.1f;
         }
         else
         {
+            timeToDeath = strTimeToDeath;
             thePlayerController.canWalk = true;
         }
 
-
-        if (isOnTheInstantDeath && !isOnGround && !thePlayerController.isSliding)
+        if (!isOnGround)
         {
             Debug.Log("Death is near!");
 
