@@ -12,6 +12,11 @@ public class Player : MonoBehaviour
     private PlayerManager thePlayerManager;
     private PlayerEffectsScript theFXScript;
 
+    public LayerMask theWallLayer;
+
+    public GameObject tmpGameObjHold;
+    public Transform tmpGameObj;
+
     public bool isMoving;
     private AudioManagerScript theAudioManager;    
     public bool isRestarting;  
@@ -19,6 +24,9 @@ public class Player : MonoBehaviour
     private Vector2 theVect;
     private Vector2 lastMoveDir;
     public Vector2 theVectRaw;
+
+    Vector2 movePosition;
+
 
     public float dodge;
     [SerializeField]
@@ -49,6 +57,12 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        movePosition = transform.position;
+        lastMovePosition = new Vector2(0, 0);
+        //To check for last movement vector
+        lastMoveDir = new Vector2(0, 0);
+
+        tmpGameObj = tmpGameObjHold.GetComponent<Transform>();
         theVectRaw = new Vector2(0, 0);
         canWalk = true;
         theAudioManager = FindObjectOfType<AudioManagerScript>();
@@ -74,13 +88,7 @@ public class Player : MonoBehaviour
         //For dodge
         speedDodge = 2.6f; //Speed of dodge
         startDodgeTime = 1f;
-        dodge = 0;
-        
-        lastMovePosition = new Vector2(0, 0);
-        //To check for last movement vector
-        lastMoveDir = new Vector2(0, 0);
-
-           
+        dodge = 0;             
     }
 
     private void Awake()
@@ -108,6 +116,23 @@ public class Player : MonoBehaviour
     {
         if (canWalk)
         {
+            if ((Mathf.Abs(theVect.x) > 0f) || (Mathf.Abs(theVect.y) > 0f))
+            {
+                if (!theAudioManager.isPlaying("WalkTile 1"))
+                {
+                    theAudioManager.Play("WalkTile 1");
+                }
+                isMoving = true;
+                thePlayerAnim.SetBool("isMoving", true);
+                thePlayerAnim.SetFloat("HorizontalMovement", theVect.x);
+                thePlayerAnim.SetFloat("VerticalMovement", theVect.y);
+            }
+            else
+            {
+                isMoving = false;
+                thePlayerAnim.SetBool("isMoving", false);
+            }
+
             forMovement();
         }
         toDodge();
@@ -132,22 +157,7 @@ public class Player : MonoBehaviour
         }
 
         theVect = new Vector2(horMovement, verMovement).normalized;
-        if((Mathf.Abs(theVect.x) > 0f) || (Mathf.Abs(theVect.y) > 0f))
-        {
-            if (!theAudioManager.isPlaying("WalkTile 1"))
-            {
-                theAudioManager.Play("WalkTile 1");
-            }
-            isMoving = true;
-            thePlayerAnim.SetBool("isMoving", true);
-            thePlayerAnim.SetFloat("HorizontalMovement", theVect.x);
-            thePlayerAnim.SetFloat("VerticalMovement", theVect.y);
-        }
-        else
-        {
-            isMoving = false;
-            thePlayerAnim.SetBool("isMoving", false);            
-        }
+        
 
         if (Mathf.Abs(theVectRaw.x) > 0.1 || Mathf.Abs(theVectRaw.y) > 0.1)
         {
@@ -231,24 +241,29 @@ public class Player : MonoBehaviour
 
     private void toDodge()
     {
-        Vector2 movePosition = thePlayer.position + lastMoveDir * speedDodge;
+        movePosition = thePlayer.position + lastMoveDir * speedDodge;
         
         if (Input.GetKeyDown(KeyCode.Space) && !isDodging)
         {
-            isDodging = true;
+            thePlayerAnim.SetBool("isDodging", true);
+            //isDodging = true;
             //theFXScript.MakeTheGhosts(thePlayer.position, movePosition);
-            theFXScript.makeTheGhost = true;
-            thePlayer.velocity = new Vector2(0, 0);
+            //theFXScript.makeTheGhost = true;
+            //thePlayer.velocity = new Vector2(0, 0);
             lastMovePosition = movePosition;
 
             //!TODO
-            RaycastHit2D theCheckForObjs = Physics2D.Raycast(transform.position, new Vector2(transform.position.x, transform.position.y) + movePosition);
-            if(theCheckForObjs.collider.tag != "Walls")
+            RaycastHit2D theCheckForObjs = Physics2D.Raycast(transform.position, movePosition.normalized, movePosition.magnitude, theWallLayer);
+            
+            if(theCheckForObjs.collider != null)
             {
-                movePosition = theCheckForObjs.collider.gameObject.transform.position;
+                Debug.Log("The collider " + theCheckForObjs.collider.tag);
+                tmpGameObj.position = theCheckForObjs.point;
+                movePosition = theCheckForObjs.point;
                 Debug.Log("New Move Position is " + movePosition);
+                //thePlayer1.position = movePosition;
             }
-
+            /*
             thePlayer.MovePosition(movePosition);
             Debug.Log("Dodge has started!");
             
@@ -256,7 +271,7 @@ public class Player : MonoBehaviour
             {
                 theAudioManager.Play("DodgeWoosh");
             }
-            StartCoroutine(hasDodged(lastMovePosition));            
+            StartCoroutine(hasDodged(lastMovePosition));            */
         }
     }
 
@@ -278,6 +293,12 @@ public class Player : MonoBehaviour
 
     private void OnDrawGizmos()
     {
+        Gizmos.color = new Color(1, 0, 0);
+        //Gizmos.DrawLine(transform.position, transform.position + new Vector3(theVectRaw.x * 0.5f, theVectRaw.y * 0.5f, 0f));
+
+        Gizmos.DrawLine(transform.position, movePosition);
+        
+        Gizmos.DrawWireCube(transform.position, transform.position + new Vector3(theVectRaw.x, theVectRaw.y, 0f));
         //Vector3 theVectNew = Vector3.right;
         //Gizmos.color
         /*if (lastMPos != null)
@@ -286,7 +307,7 @@ public class Player : MonoBehaviour
         }*/
         //Gizmos.DrawLine(transform.position, new Vector2(transform.position.x, transform.position.y) + theVectRaw);
 
-        
+
     }
 
 
