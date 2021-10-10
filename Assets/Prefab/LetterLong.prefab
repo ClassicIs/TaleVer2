@@ -26,12 +26,12 @@ PrefabInstance:
     - target: {fileID: 6846266899827844214, guid: 829a002f7fc0e40449b2230a1f6fa255,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -3.7
+      value: -1.48
       objectReference: {fileID: 0}
     - target: {fileID: 6846266899827844214, guid: 829a002f7fc0e40449b2230a1f6fa255,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.58
+      value: -2.74
       objectReference: {fileID: 0}
     - target: {fileID: 6846266899827844214, guid: 829a002f7fc0e40449b2230a1f6fa255,
         type: 3}
@@ -81,7 +81,7 @@ PrefabInstance:
     - target: {fileID: 6846266899827844215, guid: 829a002f7fc0e40449b2230a1f6fa255,
         type: 3}
       propertyPath: theMassOfStrings
-      value: WASD to Walk
+      value: Space to Dash
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 829a002f7fc0e40449b2230a1f6fa255, type: 3}

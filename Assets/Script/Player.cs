@@ -94,7 +94,6 @@ public class Player : MonoBehaviour
 
     private void Awake()
     {
-        theVectRaw = new Vector2(0, 0);
         //Taking all variables from game object
         thePlayer = GetComponent<Rigidbody2D>();
         thePlayerAnim = GetComponent<Animator>();
@@ -193,7 +192,7 @@ public class Player : MonoBehaviour
             //!TODO
             RaycastHit2D theCheckForObjs = Physics2D.Raycast(transform.position, movePosition.normalized, movePosition.magnitude, theWallLayer);
             
-           /* if(theCheckForObjs.collider != null)
+            if(theCheckForObjs.collider != null)
             {
                 Debug.Log("The collider " + theCheckForObjs.collider.tag);
                 //tmpGameObj.position = theCheckForObjs.point;
@@ -201,7 +200,7 @@ public class Player : MonoBehaviour
                 Debug.Log("New Move Position is " + movePosition);
                 //thePlayer1.position = movePosition;
             }
-            */
+            
             thePlayer.MovePosition(movePosition);
             Debug.Log("Dodge has started!");
             

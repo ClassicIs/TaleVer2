@@ -2,20 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LetterScript : MonoBehaviour
+public class LetterScript:MonoBehaviour
 {
     public string sign;
     [TextArea]
-    public string theMassOfStrings;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    public string theMassOfStrings;   
 }

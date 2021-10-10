@@ -13,11 +13,14 @@ public class PlayerManager : MonoBehaviour
     private Player thePlayerScript;
     private Rigidbody2D thePlayerBody;
 
-    [SerializeField]
+    //[SerializeField]
     private GameObject theGameManager;
     private GameManagerScript GMScript;
+
+
     [SerializeField]
     private GameObject restartMenu;
+
     private CharacterOverlap charCollisionScript;
     private BoxCollider2D theBoxCol;
     private CircleCollider2D theCircleTriggerCol;
@@ -34,9 +37,12 @@ public class PlayerManager : MonoBehaviour
         theBoxCol = GetComponent<BoxCollider2D>();
         theCircleTriggerCol = GetComponent<CircleCollider2D>();
         thePlayerBody = GetComponent<Rigidbody2D>();
+
+        theGameManager = GameObject.FindGameObjectWithTag("GameManager");
         GMScript = theGameManager.GetComponent<GameManagerScript>();
         GMScript.ChangeHealth(health);
         GMScript.ChangeMoney(coinCount);
+
         charCollisionScript = GetComponent<CharacterOverlap>(); ;
         thePlayerScript = GetComponent<Player>();
         playerAnimator = GetComponent<Animator>();
@@ -109,8 +115,7 @@ public class PlayerManager : MonoBehaviour
         theCircleTriggerCol.enabled = false;
         thePlayerScript.enabled = false;
         charCollisionScript.enabled = false;
-        restartMenu.SetActive(true);
-        
+        restartMenu.SetActive(true);        
     }
 
 

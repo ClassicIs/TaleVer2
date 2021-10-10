@@ -9,29 +9,20 @@ public class CharacterOverlap : MonoBehaviour
     private GameObject theLetter;
     private bool nearLetter;
     private PlayerManager thePlayerMG;
+    [SerializeField]
     private Player thePlayerController;
     private PlayerEffectsScript thePlayerFX;
+    [SerializeField]
+    private Transform playerLegPos;
 
-    private Rigidbody2D thePlayer;
+
+    private Rigidbody2D thePlayer;    
 
     [SerializeField]
-    private Transform leftTop;
-    [SerializeField]
-    private Transform rightTop;
-    [SerializeField]
-    private Transform leftBottom;
-    [SerializeField]
-    private Transform rightBottom;
-
-    private bool isLeftTop;
-    private bool isRightTop;
-    private bool isLeftBottom;
-    private bool isRightBottom;
     private bool isOnGround;
-    private bool isOnTheInstantDeath;
 
     [SerializeField]
-    private float radOfDetect;
+    private float radOfDetect = .05f;
     [SerializeField]
     private LayerMask theDeathLayer;
 
@@ -44,8 +35,7 @@ public class CharacterOverlap : MonoBehaviour
     private float healthChange;
     private float changedHealth;
     public bool isReading;
-    [SerializeField]
-    private Transform playerLegPos;
+    
 
     private void Start()
     {        
@@ -53,8 +43,7 @@ public class CharacterOverlap : MonoBehaviour
         isOnGround = true;
         InstadeathTime = 0;
         strTimeToDeath = .45f;
-        timeToDeath = strTimeToDeath;
-        isOnTheInstantDeath = false;
+        timeToDeath = strTimeToDeath;        
         changedHealth = 0;
         healthChange = 0.4f;
 
@@ -62,8 +51,7 @@ public class CharacterOverlap : MonoBehaviour
 
     private void Awake()
     {
-        radOfDetect = .05f;
-        thePlayerController = GetComponent<Player>();
+        //thePlayerController = GetComponent<Player>();
         thePlayer = GetComponent<Rigidbody2D>();
         thePlayerFX = GetComponent<PlayerEffectsScript>();
         thePlayerMG = GetComponent<PlayerManager>();
@@ -76,35 +64,23 @@ public class CharacterOverlap : MonoBehaviour
     }
 
     private void checkForDeath()
-    {
-        /*isLeftTop = Physics2D.OverlapCircle(leftTop.position, radOfDetect, theDeathLayer);
-        isRightTop = Physics2D.OverlapCircle(rightTop.position, radOfDetect, theDeathLayer);
-        isLeftBottom = Physics2D.OverlapCircle(leftBottom.position, radOfDetect, theDeathLayer);
-        isRightBottom = Physics2D.OverlapCircle(rightBottom.position, radOfDetect, theDeathLayer);
-
-        bool fallRight = isRightBottom && isRightTop;
-        bool fallLeft = isLeftBottom && isLeftTop;
-        bool fallBottom = isRightBottom || isLeftBottom;
-        bool fallTop = isLeftTop && isRightTop;
-        */
-        bool isOnTheDeathFloor = isLeftTop && isRightTop && isLeftBottom && isRightBottom;
-        //Physics2D.BoxCast()
-        //RaycastHit2D goingToDeath = Physics2D.BoxCast(transform.position, new Vector2(1f, 1f), 0f, thePlayerController.theVectRaw, 1f, theDeathLayer);
-        RaycastHit2D goingToDeath = Physics2D.Raycast(new Vector2(playerLegPos.position.x, playerLegPos.position.y), thePlayerController.theVectRaw, radOfDetect, theDeathLayer);
+    {        
+        RaycastHit2D goingToDeath = Physics2D.Raycast(new Vector2(playerLegPos.position.x, playerLegPos.position.y), thePlayerController.theVectRaw, radOfDetect);
         //RaycastHit2D goingToDeath = Physics2D.BoxCast(playerLegPos.position, new Vector2(radOfDetect, radOfDetect), 90, thePlayerController.theVectRaw, theDeathLayer);
-
-        if (goingToDeath.collider != null && timeToDeath > 0f)
+        if (goingToDeath.collider == null /*&& timeToDeath > 0f*/)
         {
-            Debug.Log("The raycast is " + goingToDeath.collider.gameObject.name);
+            
+            Debug.Log("The raycast is null");
+            //Debug.Log("The raycast is " + goingToDeath.collider.gameObject.name);
             thePlayer.velocity = new Vector2(0, 0);
             thePlayerController.canWalk = false;
             timeToDeath -= 0.1f;
         }
-        else
+        /*else
         {
             timeToDeath = strTimeToDeath;
             thePlayerController.canWalk = true;
-        }
+        }*/
 
         if (!isOnGround)
         {
@@ -112,10 +88,10 @@ public class CharacterOverlap : MonoBehaviour
 
             if (!thePlayerController.isDodging || thePlayerController.isRestarting)
             {
-                InstadeathTime += Time.deltaTime;
+                InstadeathTime = Mathf.Clamp(Time.deltaTime, 0, timeToDeath);
                 if (InstadeathTime >= timeToDeath)
                 {
-                    Debug.Log("Death is hear!");
+                    Debug.Log("Death!");
                     thePlayerMG.theDeath();
                 }
             }
@@ -128,10 +104,6 @@ public class CharacterOverlap : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.CompareTag("Instant Death"))
-        {
-            isOnTheInstantDeath = true;
-        }
         if (collision.CompareTag("Letter"))
         {
             nearLetter = true;
@@ -182,10 +154,6 @@ public class CharacterOverlap : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.CompareTag("Instant Death"))
-        {
-            isOnTheInstantDeath = false;
-        }
         if (collision.CompareTag("Scary"))
         {
             thePlayerController.slowModif = 1f;
@@ -250,17 +218,7 @@ public class CharacterOverlap : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        /*
-        Gizmos.DrawWireSphere(leftTop.position, radOfDetect);
-        Gizmos.DrawWireSphere(rightTop.position, radOfDetect);
-        Gizmos.DrawWireSphere(leftBottom.position, radOfDetect);
-        Gizmos.DrawWireSphere(rightBottom.position, radOfDetect);
-        */
-        //Gizmos.DrawLine(playerLegPos.position, playerLegPos.position + new Vector3(thePlayerController.theVectRaw.x, thePlayerController.theVectRaw.y, 0) * radOfDetect);
+        Gizmos.DrawLine(playerLegPos.position, playerLegPos.position + new Vector3(thePlayerController.theVectRaw.x, thePlayerController.theVectRaw.y, 0) * radOfDetect);
 
-        //Debug.Log("playerLegPos.position "+ playerLegPos.position);
-        //Debug.Log("thePlayerController.theVectRaw: " + thePlayerController.theVectRaw);
-    }
-
-    
+    }    
 }
