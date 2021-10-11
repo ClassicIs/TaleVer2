@@ -1,0 +1,2772 @@
+fileFormatVersion: 2
+guid: c917f06159649994dadcb503f2345af9
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 444441376645569551
+    second: furniture pack-1_0
+  - first:
+      213: -8939114461500499146
+    second: furniture pack-1_1
+  - first:
+      213: 7834449713704494477
+    second: furniture pack-1_2
+  - first:
+      213: -1907502831868492640
+    second: furniture pack-1_3
+  - first:
+      213: -4568007842087302434
+    second: furniture pack-1_4
+  - first:
+      213: -5025166263933146150
+    second: furniture pack-1_5
+  - first:
+      213: 95785438180850221
+    second: furniture pack-1_6
+  - first:
+      213: 3480256480755813688
+    second: furniture pack-1_7
+  - first:
+      213: 4242280859895270048
+    second: furniture pack-1_8
+  - first:
+      213: 7477891194692268352
+    second: furniture pack-1_9
+  - first:
+      213: -1622093362385235605
+    second: furniture pack-1_10
+  - first:
+      213: -4005616507375600326
+    second: furniture pack-1_11
+  - first:
+      213: -241401693106687012
+    second: furniture pack-1_12
+  - first:
+      213: 8860434711373010322
+    second: furniture pack-1_13
+  - first:
+      213: 5421737290021990261
+    second: furniture pack-1_14
+  - first:
+      213: 4224600280431423216
+    second: furniture pack-1_15
+  - first:
+      213: -4093686187735497756
+    second: furniture pack-1_16
+  - first:
+      213: 3132120183659540053
+    second: furniture pack-1_17
+  - first:
+      213: -1255703683445913041
+    second: furniture pack-1_18
+  - first:
+      213: -8257397873443751320
+    second: furniture pack-1_19
+  - first:
+      213: -2528082453191841693
+    second: furniture pack-1_20
+  - first:
+      213: -5474663772155944003
+    second: furniture pack-1_21
+  - first:
+      213: -2882450885777904711
+    second: furniture pack-1_22
+  - first:
+      213: 3798123680220258638
+    second: furniture pack-1_23
+  - first:
+      213: 4997025802981641761
+    second: furniture pack-1_24
+  - first:
+      213: 2635875023398594538
+    second: furniture pack-1_25
+  - first:
+      213: -5900963992673156836
+    second: furniture pack-1_26
+  - first:
+      213: 6279842711794040449
+    second: furniture pack-1_27
+  - first:
+      213: 4115235739993565843
+    second: furniture pack-1_28
+  - first:
+      213: -195486097185492922
+    second: furniture pack-1_29
+  - first:
+      213: -4062857031814355275
+    second: furniture pack-1_30
+  - first:
+      213: 6243749161279244303
+    second: furniture pack-1_31
+  - first:
+      213: 4539612748813975448
+    second: furniture pack-1_32
+  - first:
+      213: 1902679728200925004
+    second: furniture pack-1_33
+  - first:
+      213: 1562493895814575108
+    second: furniture pack-1_34
+  - first:
+      213: 3077688440369227381
+    second: furniture pack-1_35
+  - first:
+      213: 3550860397274211881
+    second: furniture pack-1_36
+  - first:
+      213: 4167231211239207406
+    second: furniture pack-1_37
+  - first:
+      213: 4185390084610088475
+    second: furniture pack-1_38
+  - first:
+      213: 4681988408947056048
+    second: furniture pack-1_39
+  - first:
+      213: 2547796669918567148
+    second: furniture pack-1_40
+  - first:
+      213: -3967175096047059303
+    second: furniture pack-1_41
+  - first:
+      213: -5042220726766121821
+    second: furniture pack-1_42
+  - first:
+      213: -8137020407492709545
+    second: furniture pack-1_43
+  - first:
+      213: -2884644490518469543
+    second: furniture pack-1_44
+  - first:
+      213: 126152794606289086
+    second: furniture pack-1_45
+  - first:
+      213: -3158887853331107168
+    second: furniture pack-1_46
+  - first:
+      213: 8489526396717527075
+    second: furniture pack-1_47
+  - first:
+      213: -7767216955142372208
+    second: furniture pack-1_48
+  - first:
+      213: 6719783361969989658
+    second: furniture pack-1_49
+  - first:
+      213: 4396200435221406334
+    second: furniture pack-1_50
+  - first:
+      213: 5864719874037718911
+    second: furniture pack-1_51
+  - first:
+      213: -9001486879460322219
+    second: furniture pack-1_52
+  - first:
+      213: 2952057581467018101
+    second: furniture pack-1_53
+  - first:
+      213: -7588611535724460029
+    second: furniture pack-1_54
+  - first:
+      213: -2937554228174830505
+    second: furniture pack-1_55
+  - first:
+      213: 1633898009575790757
+    second: furniture pack-1_56
+  - first:
+      213: 5967120808979718520
+    second: furniture pack-1_57
+  - first:
+      213: 1175655586367703504
+    second: furniture pack-1_58
+  - first:
+      213: 6536402458339675462
+    second: furniture pack-1_59
+  - first:
+      213: -2858300233013307125
+    second: furniture pack-1_60
+  - first:
+      213: -5047476858197702468
+    second: furniture pack-1_61
+  - first:
+      213: 3798560520234414388
+    second: furniture pack-1_62
+  - first:
+      213: -4844726293413435756
+    second: furniture pack-1_63
+  - first:
+      213: 3332199117014324569
+    second: furniture pack-1_64
+  - first:
+      213: 7394111404811313226
+    second: furniture pack-1_65
+  - first:
+      213: 5805392965647262489
+    second: furniture pack-1_66
+  - first:
+      213: -1600885030696436916
+    second: furniture pack-1_67
+  - first:
+      213: 8082767253041458327
+    second: furniture pack-1_68
+  - first:
+      213: 3058052626868269329
+    second: furniture pack-1_69
+  - first:
+      213: -5266377190072182042
+    second: furniture pack-1_70
+  - first:
+      213: -3629639160967980887
+    second: furniture pack-1_71
+  - first:
+      213: -940389369165809909
+    second: furniture pack-1_72
+  - first:
+      213: -150594243323879072
+    second: furniture pack-1_73
+  - first:
+      213: -1388816702363699452
+    second: furniture pack-1_74
+  - first:
+      213: 1508867902836790354
+    second: furniture pack-1_75
+  - first:
+      213: -3406371989237537656
+    second: furniture pack-1_76
+  - first:
+      213: 6083811434657003371
+    second: furniture pack-1_77
+  - first:
+      213: 2194288542565663852
+    second: furniture pack-1_78
+  - first:
+      213: -3596288552526318396
+    second: furniture pack-1_79
+  - first:
+      213: 5660414380386744269
+    second: furniture pack-1_80
+  - first:
+      213: -7614695495900492203
+    second: furniture pack-1_81
+  - first:
+      213: -2690766878784697947
+    second: furniture pack-1_82
+  - first:
+      213: 4060352765843375152
+    second: furniture pack-1_83
+  - first:
+      213: 5200725314720956790
+    second: furniture pack-1_84
+  - first:
+      213: 6538495632481112481
+    second: furniture pack-1_85
+  - first:
+      213: 5420383457646263645
+    second: furniture pack-1_86
+  - first:
+      213: 931716898428502944
+    second: furniture pack-1_87
+  - first:
+      213: 6338086728037719046
+    second: furniture pack-1_88
+  - first:
+      213: 3556693736205478209
+    second: furniture pack-1_89
+  - first:
+      213: -7670238847554509560
+    second: furniture pack-1_90
+  - first:
+      213: -7316189339600417886
+    second: furniture pack-1_91
+  - first:
+      213: 3878649675725181683
+    second: furniture pack-1_92
+  - first:
+      213: 8991170676939518533
+    second: furniture pack-1_93
+  - first:
+      213: -1235242908631293123
+    second: furniture pack-1_94
+  - first:
+      213: 3404295103600527621
+    second: furniture pack-1_95
+  - first:
+      213: 6155658283213834986
+    second: furniture pack-1_96
+  - first:
+      213: -5826523993335357570
+    second: furniture pack-1_97
+  - first:
+      213: -4777752545524503310
+    second: furniture pack-1_98
+  - first:
+      213: -7332571793744885791
+    second: furniture pack-1_99
+  - first:
+      213: -9213530600828021577
+    second: furniture pack-1_100
+  - first:
+      213: -2294674147258419288
+    second: furniture pack-1_101
+  - first:
+      213: -8492494883402699958
+    second: furniture pack-1_102
+  - first:
+      213: -6310275722025469330
+    second: furniture pack-1_103
+  - first:
+      213: 8246368488196207996
+    second: furniture pack-1_104
+  - first:
+      213: 7284340948697425191
+    second: furniture pack-1_105
+  - first:
+      213: -5533168109977354895
+    second: furniture pack-1_106
+  - first:
+      213: 3278437713335964873
+    second: furniture pack-1_107
+  - first:
+      213: 3767073649437757897
+    second: furniture pack-1_108
+  - first:
+      213: 6890592422584838513
+    second: furniture pack-1_109
+  - first:
+      213: 1429044215125815749
+    second: furniture pack-1_110
+  externalObjects: {}
+  serializedVersion: 11
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 16
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: furniture pack-1_0
+      rect:
+        serializedVersion: 2
+        x: 146
+        y: 620
+        width: 61
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f0cd17ac319fa2600800000000000000
+      internalID: 444441376645569551
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_1
+      rect:
+        serializedVersion: 2
+        x: 210
+        y: 620
+        width: 61
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 63b94bb32c2e1f380800000000000000
+      internalID: -8939114461500499146
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_2
+      rect:
+        serializedVersion: 2
+        x: 272
+        y: 619
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d856404818e89bc60800000000000000
+      internalID: 7834449713704494477
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_3
+      rect:
+        serializedVersion: 2
+        x: 311
+        y: 619
+        width: 23
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0a44d62e7403785e0800000000000000
+      internalID: -1907502831868492640
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_4
+      rect:
+        serializedVersion: 2
+        x: 340
+        y: 618
+        width: 30
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: eda0039e11d2b90c0800000000000000
+      internalID: -4568007842087302434
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_5
+      rect:
+        serializedVersion: 2
+        x: 376
+        y: 626
+        width: 24
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: adbecfc48e5034ab0800000000000000
+      internalID: -5025166263933146150
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_6
+      rect:
+        serializedVersion: 2
+        x: 408
+        y: 627
+        width: 21
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d2abc69395c445100800000000000000
+      internalID: 95785438180850221
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_7
+      rect:
+        serializedVersion: 2
+        x: 440
+        y: 627
+        width: 21
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 83d83be74da5c4030800000000000000
+      internalID: 3480256480755813688
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_8
+      rect:
+        serializedVersion: 2
+        x: 472
+        y: 627
+        width: 21
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0aa0f7b27fb9fda30800000000000000
+      internalID: 4242280859895270048
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_9
+      rect:
+        serializedVersion: 2
+        x: 504
+        y: 624
+        width: 21
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 04177a80c6ec6c760800000000000000
+      internalID: 7477891194692268352
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_10
+      rect:
+        serializedVersion: 2
+        x: 536
+        y: 624
+        width: 21
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b61528e5eaa2d79e0800000000000000
+      internalID: -1622093362385235605
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_11
+      rect:
+        serializedVersion: 2
+        x: 568
+        y: 627
+        width: 21
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a3dbf6b52013968c0800000000000000
+      internalID: -4005616507375600326
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_12
+      rect:
+        serializedVersion: 2
+        x: 600
+        y: 624
+        width: 21
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cd3b23a607e56acf0800000000000000
+      internalID: -241401693106687012
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_13
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 539
+        width: 96
+        height: 68
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 295dde6ec6696fa70800000000000000
+      internalID: 8860434711373010322
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_14
+      rect:
+        serializedVersion: 2
+        x: 208
+        y: 539
+        width: 32
+        height: 60
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 57fef35f651ed3b40800000000000000
+      internalID: 5421737290021990261
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_15
+      rect:
+        serializedVersion: 2
+        x: 240
+        y: 539
+        width: 128
+        height: 66
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0fe6129729bc0aa30800000000000000
+      internalID: 4224600280431423216
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_16
+      rect:
+        serializedVersion: 2
+        x: 376
+        y: 587
+        width: 23
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4e34a1ef91e4037c0800000000000000
+      internalID: -4093686187735497756
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_17
+      rect:
+        serializedVersion: 2
+        x: 408
+        y: 596
+        width: 21
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 55eabdc56b6877b20800000000000000
+      internalID: 3132120183659540053
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_18
+      rect:
+        serializedVersion: 2
+        x: 440
+        y: 595
+        width: 21
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f2a8e052728d29ee0800000000000000
+      internalID: -1255703683445913041
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_19
+      rect:
+        serializedVersion: 2
+        x: 472
+        y: 595
+        width: 21
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 86ab1583264d76d80800000000000000
+      internalID: -8257397873443751320
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_20
+      rect:
+        serializedVersion: 2
+        x: 504
+        y: 595
+        width: 21
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3682a9637627aecd0800000000000000
+      internalID: -2528082453191841693
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_21
+      rect:
+        serializedVersion: 2
+        x: 536
+        y: 595
+        width: 21
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: db3e1f32e461604b0800000000000000
+      internalID: -5474663772155944003
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_22
+      rect:
+        serializedVersion: 2
+        x: 562
+        y: 591
+        width: 32
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9bba2b6f03a7ff7d0800000000000000
+      internalID: -2882450885777904711
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_23
+      rect:
+        serializedVersion: 2
+        x: 600
+        y: 594
+        width: 21
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e4127842d55a5b430800000000000000
+      internalID: 3798123680220258638
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_24
+      rect:
+        serializedVersion: 2
+        x: 376
+        y: 563
+        width: 22
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 12e8e201e70095540800000000000000
+      internalID: 4997025802981641761
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_25
+      rect:
+        serializedVersion: 2
+        x: 408
+        y: 560
+        width: 21
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ae76ff94e52849420800000000000000
+      internalID: 2635875023398594538
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_26
+      rect:
+        serializedVersion: 2
+        x: 440
+        y: 563
+        width: 21
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c11885863809b1ea0800000000000000
+      internalID: -5900963992673156836
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_27
+      rect:
+        serializedVersion: 2
+        x: 472
+        y: 558
+        width: 21
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 18e3fc1acab762750800000000000000
+      internalID: 6279842711794040449
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_28
+      rect:
+        serializedVersion: 2
+        x: 497
+        y: 563
+        width: 31
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 39aee412a114c1930800000000000000
+      internalID: 4115235739993565843
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_29
+      rect:
+        serializedVersion: 2
+        x: 529
+        y: 563
+        width: 95
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6403bba2e6e794df0800000000000000
+      internalID: -195486097185492922
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_30
+      rect:
+        serializedVersion: 2
+        x: 61
+        y: 526
+        width: 24
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5b6e1853e05dd97c0800000000000000
+      internalID: -4062857031814355275
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_31
+      rect:
+        serializedVersion: 2
+        x: 370
+        y: 531
+        width: 25
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f0841b808c046a650800000000000000
+      internalID: 6243749161279244303
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_32
+      rect:
+        serializedVersion: 2
+        x: 403
+        y: 532
+        width: 24
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 89f34ee3eb1fffe30800000000000000
+      internalID: 4539612748813975448
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_33
+      rect:
+        serializedVersion: 2
+        x: 435
+        y: 532
+        width: 24
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c4fb0c8c12da76a10800000000000000
+      internalID: 1902679728200925004
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_34
+      rect:
+        serializedVersion: 2
+        x: 470
+        y: 532
+        width: 24
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4047eb77be71fa510800000000000000
+      internalID: 1562493895814575108
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_35
+      rect:
+        serializedVersion: 2
+        x: 502
+        y: 532
+        width: 24
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 576a889845526ba20800000000000000
+      internalID: 3077688440369227381
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_36
+      rect:
+        serializedVersion: 2
+        x: 534
+        y: 532
+        width: 24
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9262882d7b0374130800000000000000
+      internalID: 3550860397274211881
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_37
+      rect:
+        serializedVersion: 2
+        x: 561
+        y: 531
+        width: 31
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ee175da25baf4d930800000000000000
+      internalID: 4167231211239207406
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_38
+      rect:
+        serializedVersion: 2
+        x: 593
+        y: 526
+        width: 31
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b1e50a75b1e751a30800000000000000
+      internalID: 4185390084610088475
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_39
+      rect:
+        serializedVersion: 2
+        x: 49
+        y: 412
+        width: 32
+        height: 96
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0bd19c5d6a3c9f040800000000000000
+      internalID: 4681988408947056048
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_40
+      rect:
+        serializedVersion: 2
+        x: 110
+        y: 412
+        width: 64
+        height: 96
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cea5b6e82979b5320800000000000000
+      internalID: 2547796669918567148
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_41
+      rect:
+        serializedVersion: 2
+        x: 208
+        y: 475
+        width: 160
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 99eb656e443c1f8c0800000000000000
+      internalID: -3967175096047059303
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_42
+      rect:
+        serializedVersion: 2
+        x: 373
+        y: 500
+        width: 21
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3ac4efdb6fe660ab0800000000000000
+      internalID: -5042220726766121821
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_43
+      rect:
+        serializedVersion: 2
+        x: 407
+        y: 500
+        width: 20
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 753fa491d0f731f80800000000000000
+      internalID: -8137020407492709545
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_44
+      rect:
+        serializedVersion: 2
+        x: 435
+        y: 499
+        width: 26
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 954eb5f8e1fa7f7d0800000000000000
+      internalID: -2884644490518469543
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_45
+      rect:
+        serializedVersion: 2
+        x: 467
+        y: 499
+        width: 26
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: eb04eed5c4f20c100800000000000000
+      internalID: 126152794606289086
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_46
+      rect:
+        serializedVersion: 2
+        x: 500
+        y: 496
+        width: 21
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0a237e0eb306924d0800000000000000
+      internalID: -3158887853331107168
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_47
+      rect:
+        serializedVersion: 2
+        x: 531
+        y: 494
+        width: 29
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 32076a3474bd0d570800000000000000
+      internalID: 8489526396717527075
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_48
+      rect:
+        serializedVersion: 2
+        x: 562
+        y: 491
+        width: 16
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 094095fe45d453490800000000000000
+      internalID: -7767216955142372208
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_49
+      rect:
+        serializedVersion: 2
+        x: 594
+        y: 494
+        width: 15
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a182dc16d57714d50800000000000000
+      internalID: 6719783361969989658
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_50
+      rect:
+        serializedVersion: 2
+        x: 464
+        y: 416
+        width: 32
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e722ac6f001720d30800000000000000
+      internalID: 4396200435221406334
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_51
+      rect:
+        serializedVersion: 2
+        x: 512
+        y: 436
+        width: 48
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f7f113f17aba36150800000000000000
+      internalID: 5864719874037718911
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_52
+      rect:
+        serializedVersion: 2
+        x: 530
+        y: 476
+        width: 11
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5549d63006b441380800000000000000
+      internalID: -9001486879460322219
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_53
+      rect:
+        serializedVersion: 2
+        x: 544
+        y: 476
+        width: 11
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 57327dbcab0d7f820800000000000000
+      internalID: 2952057581467018101
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_54
+      rect:
+        serializedVersion: 2
+        x: 563
+        y: 475
+        width: 11
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 30846b2b306dfa690800000000000000
+      internalID: -7588611535724460029
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_55
+      rect:
+        serializedVersion: 2
+        x: 577
+        y: 475
+        width: 11
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 75441394ef5bb37d0800000000000000
+      internalID: -2937554228174830505
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_56
+      rect:
+        serializedVersion: 2
+        x: 594
+        y: 475
+        width: 11
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5a89bfb3595cca610800000000000000
+      internalID: 1633898009575790757
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_57
+      rect:
+        serializedVersion: 2
+        x: 608
+        y: 475
+        width: 11
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 871e317b2c87fc250800000000000000
+      internalID: 5967120808979718520
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_58
+      rect:
+        serializedVersion: 2
+        x: 372
+        y: 401
+        width: 67
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0d986a3e684c05010800000000000000
+      internalID: 1175655586367703504
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_59
+      rect:
+        serializedVersion: 2
+        x: 499
+        y: 432
+        width: 14
+        height: 35
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 64d835e8767f5ba50800000000000000
+      internalID: 6536402458339675462
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_60
+      rect:
+        serializedVersion: 2
+        x: 563
+        y: 459
+        width: 11
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b0953ddf4174558d0800000000000000
+      internalID: -2858300233013307125
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_61
+      rect:
+        serializedVersion: 2
+        x: 579
+        y: 455
+        width: 15
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cb80f174a82c3f9b0800000000000000
+      internalID: -5047476858197702468
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_62
+      rect:
+        serializedVersion: 2
+        x: 595
+        y: 459
+        width: 11
+        height: 14
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4313562eaa237b430800000000000000
+      internalID: 3798560520234414388
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_63
+      rect:
+        serializedVersion: 2
+        x: 610
+        y: 459
+        width: 11
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 496e817ca1314ccb0800000000000000
+      internalID: -4844726293413435756
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_64
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 403
+        width: 64
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 955528231795e3e20800000000000000
+      internalID: 3332199117014324569
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_65
+      rect:
+        serializedVersion: 2
+        x: 272
+        y: 411
+        width: 96
+        height: 48
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a406171a5292d9660800000000000000
+      internalID: 7394111404811313226
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_66
+      rect:
+        serializedVersion: 2
+        x: 570
+        y: 436
+        width: 22
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 913e4fad426e09050800000000000000
+      internalID: 5805392965647262489
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_67
+      rect:
+        serializedVersion: 2
+        x: 593
+        y: 429
+        width: 29
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c4b3913eb8388c9e0800000000000000
+      internalID: -1600885030696436916
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_68
+      rect:
+        serializedVersion: 2
+        x: 502
+        y: 408
+        width: 12
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 79c22b70ef1cb2070800000000000000
+      internalID: 8082767253041458327
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_69
+      rect:
+        serializedVersion: 2
+        x: 514
+        y: 402
+        width: 12
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 111fee079a2607a20800000000000000
+      internalID: 3058052626868269329
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_70
+      rect:
+        serializedVersion: 2
+        x: 529
+        y: 400
+        width: 29
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6ea178c19d11ae6b0800000000000000
+      internalID: -5266377190072182042
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_71
+      rect:
+        serializedVersion: 2
+        x: 560
+        y: 395
+        width: 31
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9a818abe96ee0adc0800000000000000
+      internalID: -3629639160967980887
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_72
+      rect:
+        serializedVersion: 2
+        x: 592
+        y: 397
+        width: 32
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b077154e9d013f2f0800000000000000
+      internalID: -940389369165809909
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_73
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 304
+        width: 32
+        height: 80
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0612675655bf8edf0800000000000000
+      internalID: -150594243323879072
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_74
+      rect:
+        serializedVersion: 2
+        x: 116
+        y: 299
+        width: 32
+        height: 96
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4077b75419ee9bce0800000000000000
+      internalID: -1388816702363699452
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_75
+      rect:
+        serializedVersion: 2
+        x: 165
+        y: 290
+        width: 32
+        height: 96
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 25453910d5390f410800000000000000
+      internalID: 1508867902836790354
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_76
+      rect:
+        serializedVersion: 2
+        x: 208
+        y: 295
+        width: 32
+        height: 100
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 884e7a839b22ab0d0800000000000000
+      internalID: -3406371989237537656
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_77
+      rect:
+        serializedVersion: 2
+        x: 265
+        y: 382
+        width: 64
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b67b033344a0e6450800000000000000
+      internalID: 6083811434657003371
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_78
+      rect:
+        serializedVersion: 2
+        x: 343
+        y: 379
+        width: 16
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c64065abdcda37e10800000000000000
+      internalID: 2194288542565663852
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_79
+      rect:
+        serializedVersion: 2
+        x: 371
+        y: 371
+        width: 28
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4c47ddc8d9a671ec0800000000000000
+      internalID: -3596288552526318396
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_80
+      rect:
+        serializedVersion: 2
+        x: 403
+        y: 371
+        width: 28
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dc7f67883e4dd8e40800000000000000
+      internalID: 5660414380386744269
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_81
+      rect:
+        serializedVersion: 2
+        x: 435
+        y: 371
+        width: 28
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 55e85167aca235690800000000000000
+      internalID: -7614695495900492203
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_82
+      rect:
+        serializedVersion: 2
+        x: 476
+        y: 375
+        width: 18
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5a9c6a0b7c978aad0800000000000000
+      internalID: -2690766878784697947
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_83
+      rect:
+        serializedVersion: 2
+        x: 499
+        y: 362
+        width: 28
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0348edee355495830800000000000000
+      internalID: 4060352765843375152
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_84
+      rect:
+        serializedVersion: 2
+        x: 528
+        y: 362
+        width: 32
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 671035e7e10bc2840800000000000000
+      internalID: 5200725314720956790
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_85
+      rect:
+        serializedVersion: 2
+        x: 563
+        y: 362
+        width: 28
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1a1da73a2276dba50800000000000000
+      internalID: 6538495632481112481
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_86
+      rect:
+        serializedVersion: 2
+        x: 592
+        y: 362
+        width: 32
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d5db86b4902193b40800000000000000
+      internalID: 5420383457646263645
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_87
+      rect:
+        serializedVersion: 2
+        x: 307
+        y: 304
+        width: 65
+        height: 63
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0a34f0a259f1eec00800000000000000
+      internalID: 931716898428502944
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_88
+      rect:
+        serializedVersion: 2
+        x: 468
+        y: 366
+        width: 13
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 60c5e4c6c4865f750800000000000000
+      internalID: 6338086728037719046
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_89
+      rect:
+        serializedVersion: 2
+        x: 241
+        y: 314
+        width: 62
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1496261eb1aeb5130800000000000000
+      internalID: 3556693736205478209
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_90
+      rect:
+        serializedVersion: 2
+        x: 375
+        y: 331
+        width: 52
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 805ac152866dd8590800000000000000
+      internalID: -7670238847554509560
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_91
+      rect:
+        serializedVersion: 2
+        x: 432
+        y: 311
+        width: 67
+        height: 52
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2ab0e97fe8ca77a90800000000000000
+      internalID: -7316189339600417886
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_92
+      rect:
+        serializedVersion: 2
+        x: 528
+        y: 311
+        width: 96
+        height: 49
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3f298c1845bb3d530800000000000000
+      internalID: 3878649675725181683
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_93
+      rect:
+        serializedVersion: 2
+        x: 376
+        y: 269
+        width: 16
+        height: 56
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 54273e9e71e07cc70800000000000000
+      internalID: 8991170676939518533
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_94
+      rect:
+        serializedVersion: 2
+        x: 404
+        y: 302
+        width: 19
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d3326b38e198bdee0800000000000000
+      internalID: -1235242908631293123
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_95
+      rect:
+        serializedVersion: 2
+        x: 437
+        y: 303
+        width: 20
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 50906b82c5c7e3f20800000000000000
+      internalID: 3404295103600527621
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_96
+      rect:
+        serializedVersion: 2
+        x: 78
+        y: 256
+        width: 26
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: aeac6a1389a4d6550800000000000000
+      internalID: 6155658283213834986
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_97
+      rect:
+        serializedVersion: 2
+        x: 120
+        y: 234
+        width: 80
+        height: 47
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e7f94fd5c47042fa0800000000000000
+      internalID: -5826523993335357570
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_98
+      rect:
+        serializedVersion: 2
+        x: 232
+        y: 234
+        width: 48
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2fc2b4b9f5302bdb0800000000000000
+      internalID: -4777752545524503310
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_99
+      rect:
+        serializedVersion: 2
+        x: 277
+        y: 267
+        width: 24
+        height: 24
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1e789cf9dc87d3a90800000000000000
+      internalID: -7332571793744885791
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_100
+      rect:
+        serializedVersion: 2
+        x: 316
+        y: 235
+        width: 52
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7b45472ebb6f22080800000000000000
+      internalID: -9213530600828021577
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_101
+      rect:
+        serializedVersion: 2
+        x: 400
+        y: 267
+        width: 224
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8a7b361550ea720e0800000000000000
+      internalID: -2294674147258419288
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_102
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 139
+        width: 256
+        height: 96
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a4ba5f116e8942a80800000000000000
+      internalID: -8492494883402699958
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_103
+      rect:
+        serializedVersion: 2
+        x: 372
+        y: 226
+        width: 57
+        height: 38
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e6a76e10aa56d68a0800000000000000
+      internalID: -6310275722025469330
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_104
+      rect:
+        serializedVersion: 2
+        x: 435
+        y: 226
+        width: 58
+        height: 38
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c75f8e9e27cf07270800000000000000
+      internalID: 8246368488196207996
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_105
+      rect:
+        serializedVersion: 2
+        x: 500
+        y: 227
+        width: 57
+        height: 38
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 72521fdaf7d271560800000000000000
+      internalID: 7284340948697425191
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_106
+      rect:
+        serializedVersion: 2
+        x: 560
+        y: 208
+        width: 64
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 17db7428bec3633b0800000000000000
+      internalID: -5533168109977354895
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_107
+      rect:
+        serializedVersion: 2
+        x: 382
+        y: 164
+        width: 39
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9c452a9fab95f7d20800000000000000
+      internalID: 3278437713335964873
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_108
+      rect:
+        serializedVersion: 2
+        x: 446
+        y: 164
+        width: 39
+        height: 37
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9c1d87d7685574430800000000000000
+      internalID: 3767073649437757897
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_109
+      rect:
+        serializedVersion: 2
+        x: 510
+        y: 164
+        width: 39
+        height: 36
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 179ea28ec4d40af50800000000000000
+      internalID: 6890592422584838513
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: furniture pack-1_110
+      rect:
+        serializedVersion: 2
+        x: 560
+        y: 144
+        width: 64
+        height: 58
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5c1b6ea642cf4d310800000000000000
+      internalID: 1429044215125815749
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
