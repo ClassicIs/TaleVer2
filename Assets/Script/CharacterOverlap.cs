@@ -14,19 +14,21 @@ public class CharacterOverlap : MonoBehaviour
     private PlayerEffectsScript thePlayerFX;
     [SerializeField]
     private Transform playerLegPos;
-
-
-    private Rigidbody2D thePlayer;    
-
+    private Rigidbody2D thePlayer; 
+    
     [SerializeField]
     private bool isOnGround;
 
     [SerializeField]
     private float radOfDetect = .05f;
     [SerializeField]
-    private LayerMask theDeathLayer;
+    private LayerMask theDeathLayer;    
 
+    [SerializeField]
     public float InstadeathTime;
+    [SerializeField]
+    public float timeToInstaTime;
+
     [SerializeField]
     private float timeToDeath;
     [SerializeField]
@@ -41,7 +43,10 @@ public class CharacterOverlap : MonoBehaviour
     {        
         isReading = false;
         isOnGround = true;
-        InstadeathTime = 0;
+        
+        timeToInstaTime = 3f;
+        InstadeathTime = timeToInstaTime;
+
         strTimeToDeath = .45f;
         timeToDeath = strTimeToDeath;        
         changedHealth = 0;
@@ -51,7 +56,6 @@ public class CharacterOverlap : MonoBehaviour
 
     private void Awake()
     {
-        //thePlayerController = GetComponent<Player>();
         thePlayer = GetComponent<Rigidbody2D>();
         thePlayerFX = GetComponent<PlayerEffectsScript>();
         thePlayerMG = GetComponent<PlayerManager>();
@@ -65,31 +69,42 @@ public class CharacterOverlap : MonoBehaviour
 
     private void checkForDeath()
     {        
-        RaycastHit2D goingToDeath = Physics2D.Raycast(new Vector2(playerLegPos.position.x, playerLegPos.position.y), thePlayerController.theVectRaw, radOfDetect);
+        RaycastHit2D goingToDeath = Physics2D.Raycast(new Vector2(playerLegPos.position.x, playerLegPos.position.y), thePlayerController.theVectRaw, radOfDetect, theDeathLayer);
         //RaycastHit2D goingToDeath = Physics2D.BoxCast(playerLegPos.position, new Vector2(radOfDetect, radOfDetect), 90, thePlayerController.theVectRaw, theDeathLayer);
-        if (goingToDeath.collider == null /*&& timeToDeath > 0f*/)
+
+        if (goingToDeath.collider != null)
         {
-            
-            Debug.Log("The raycast is null");
-            //Debug.Log("The raycast is " + goingToDeath.collider.gameObject.name);
-            thePlayer.velocity = new Vector2(0, 0);
-            thePlayerController.canWalk = false;
-            timeToDeath -= 0.1f;
+            if(timeToDeath > 0f)
+            {
+                Debug.Log("Raycast is " + goingToDeath.collider.tag);
+                thePlayer.velocity = new Vector2(0, 0);
+                thePlayerController.canWalk = false;
+                timeToDeath -= 0.5f * Time.deltaTime;
+            }
+            else
+            {
+                thePlayerController.canWalk = true;
+            }            
         }
-        /*else
+        else
         {
             timeToDeath = strTimeToDeath;
             thePlayerController.canWalk = true;
-        }*/
+            //Debug.Log("The raycast is null");
+        }
+
 
         if (!isOnGround)
         {
             Debug.Log("Death is near!");
-
             if (!thePlayerController.isDodging || thePlayerController.isRestarting)
             {
-                InstadeathTime = Mathf.Clamp(Time.deltaTime, 0, timeToDeath);
-                if (InstadeathTime >= timeToDeath)
+                if (InstadeathTime > 0f)
+                {
+                    InstadeathTime -= 0.5f * Time.deltaTime;
+
+                }
+                else
                 {
                     Debug.Log("Death!");
                     thePlayerMG.theDeath();
@@ -98,7 +113,7 @@ public class CharacterOverlap : MonoBehaviour
         }
         else
         {
-            InstadeathTime = 0f;
+            InstadeathTime = timeToInstaTime;
         }
     }
 
@@ -218,7 +233,7 @@ public class CharacterOverlap : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.DrawLine(playerLegPos.position, playerLegPos.position + new Vector3(thePlayerController.theVectRaw.x, thePlayerController.theVectRaw.y, 0) * radOfDetect);
+        //Gizmos.DrawLine(playerLegPos.position, playerLegPos.position + new Vector3(thePlayerController.theVectRaw.x, thePlayerController.theVectRaw.y, 0) * radOfDetect);
 
     }    
 }

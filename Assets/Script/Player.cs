@@ -13,20 +13,18 @@ public class Player : MonoBehaviour
     private PlayerEffectsScript theFXScript;
 
     public LayerMask theWallLayer;
-
-    /*public GameObject tmpGameObjHold;
+    
     public Transform tmpGameObj;
-    */
     public bool isMoving;
     private AudioManagerScript theAudioManager;    
     public bool isRestarting;  
     private Vector2 lastMovePosition;
     private Vector2 theVect;
+    [SerializeField]
     private Vector2 lastMoveDir;
     public Vector2 theVectRaw;
-
+    [SerializeField]
     Vector2 movePosition;
-
 
     public float dodge;
     [SerializeField]
@@ -63,7 +61,6 @@ public class Player : MonoBehaviour
         //To check for last movement vector
         lastMoveDir = new Vector2(0, 0);
 
-        //tmpGameObj = tmpGameObjHold.GetComponent<Transform>();
         theVectRaw = new Vector2(0, 0);
         canWalk = true;
         theAudioManager = FindObjectOfType<AudioManagerScript>();
@@ -114,28 +111,31 @@ public class Player : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (canWalk)
+        if (!isDodging)
         {
-            if ((Mathf.Abs(theVect.x) > 0f) || (Mathf.Abs(theVect.y) > 0f))
+            if (canWalk)
             {
-                if (!theAudioManager.isPlaying("WalkTile 1"))
+                if ((Mathf.Abs(theVect.x) > 0f) || (Mathf.Abs(theVect.y) > 0f))
                 {
-                    theAudioManager.Play("WalkTile 1");
+                    if (!theAudioManager.isPlaying("WalkTile 1"))
+                    {
+                        theAudioManager.Play("WalkTile 1");
+                    }
+                    isMoving = true;
+                    thePlayerAnim.SetBool("isMoving", true);
+                    thePlayerAnim.SetFloat("HorizontalMovement", theVect.x);
+                    thePlayerAnim.SetFloat("VerticalMovement", theVect.y);
                 }
-                isMoving = true;
-                thePlayerAnim.SetBool("isMoving", true);
-                thePlayerAnim.SetFloat("HorizontalMovement", theVect.x);
-                thePlayerAnim.SetFloat("VerticalMovement", theVect.y);
-            }
-            else
-            {
-                isMoving = false;
-                thePlayerAnim.SetBool("isMoving", false);
-            }
+                else
+                {
+                    isMoving = false;
+                    thePlayerAnim.SetBool("isMoving", false);
+                }
 
-            forMovement();
+                forMovement();
+            }
+            toDodge();
         }
-        toDodge();
     } 
     
     private void CheckMovement()
@@ -178,52 +178,48 @@ public class Player : MonoBehaviour
 
     private void toDodge()
     {
-        movePosition = thePlayer.position + lastMoveDir * speedDodge;
+        //movePosition = thePlayer.position + lastMoveDir * speedDodge;
         
         if (Input.GetKeyDown(KeyCode.Space) && !isDodging)
         {
             thePlayerAnim.SetTrigger("Dodge");
-            //isDodging = true;
-            //theFXScript.MakeTheGhosts(thePlayer.position, movePosition);
-            //theFXScript.makeTheGhost = true;
-            //thePlayer.velocity = new Vector2(0, 0);
-            lastMovePosition = movePosition;
+            isDodging = true;
+            theFXScript.MakeTheGhosts(true);            
+            thePlayer.velocity = new Vector2(0, 0);
+            //lastMovePosition = movePosition;
 
-            //!TODO
-            RaycastHit2D theCheckForObjs = Physics2D.Raycast(transform.position, movePosition.normalized, movePosition.magnitude, theWallLayer);
+            ////!TODO
+            //RaycastHit2D theCheckForObjs = Physics2D.Raycast(transform.position, movePosition.normalized, movePosition.magnitude, theWallLayer);
             
-            if(theCheckForObjs.collider != null)
-            {
-                Debug.Log("The collider " + theCheckForObjs.collider.tag);
-                //tmpGameObj.position = theCheckForObjs.point;
-                movePosition = theCheckForObjs.point;
-                Debug.Log("New Move Position is " + movePosition);
-                //thePlayer1.position = movePosition;
-            }
-            
-            thePlayer.MovePosition(movePosition);
+            //if(theCheckForObjs.collider != null)
+            //{
+            //    Debug.Log("The collider " + theCheckForObjs.collider.tag);
+            //    tmpGameObj.position = theCheckForObjs.point;
+            //    lastMovePosition = theCheckForObjs.point;
+            //    Debug.Log("New Move Position is " + lastMovePosition);                
+            //}
+
+            ////thePlayer.MovePosition(lastMovePosition);
+            thePlayer.AddForce(lastMoveDir * 1000 * speedDodge);
             Debug.Log("Dodge has started!");
             
             if (!theAudioManager.isPlaying("DodgeWoosh"))
             {
                 theAudioManager.Play("DodgeWoosh");
             }
-            StartCoroutine(hasDodged(lastMovePosition));     
+            StartCoroutine(hasDodged());     
         }
     }
 
-    private IEnumerator hasDodged(Vector2 lastMPos)
+    private IEnumerator hasDodged()
     {
-        int counter1 = 0;
         
-        while (thePlayer.position != lastMPos)
+        while (thePlayer.velocity.x > 0.1 && thePlayer.velocity.y > 0.1f)
         {
-            counter1++;
-            Debug.Log("Dodge is in process!" + counter1);
             yield return null;
         }
         isDodging = false;
-        //theFXScript.makeTheGhost = false;
+        theFXScript.MakeTheGhosts(false);
         Debug.Log("Dodge is made!");
     }
 

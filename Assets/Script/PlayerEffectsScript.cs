@@ -22,9 +22,17 @@ public class PlayerEffectsScript : MonoBehaviour
     }
 
     
-    public void MakeTheGhosts(Vector2 currPos, Vector2 NeedPosition)
+    public void MakeTheGhosts(bool endOrStart)
     {
-        ghost.MakeTheGhost();
+        if (endOrStart)
+        {
+            ghost.enabled = true;
+            
+        }
+        else
+        {
+            ghost.enabled = false;
+        }
 
     }
 

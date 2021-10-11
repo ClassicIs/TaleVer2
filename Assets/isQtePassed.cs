@@ -49,6 +49,7 @@ public class isQtePassed : MonoBehaviour
 
     public void QTESuccess()
     {
+        gameObject.SetActive(true);
         QTEUnderCircle.SetActive(true);
         R_Button.SetActive(true);
 
@@ -72,7 +73,12 @@ public class isQtePassed : MonoBehaviour
         if (fillImage < 0 && countDown <= 0)
         {
             fillImage = 0;
+
+            countDown = 1;
+
             qteSuccess = false;
+
+            qteActive = false;
 
             gameObject.SetActive(false);
             QTEUnderCircle.SetActive(false);
@@ -89,6 +95,8 @@ public class isQtePassed : MonoBehaviour
         {
             qteSuccess = true;
             lev.OpenDoor();
+
+            qteActive = false;
 
             gameObject.SetActive(false);
             QTEUnderCircle.SetActive(false);
