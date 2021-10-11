@@ -23,6 +23,9 @@ public class isQtePassed : MonoBehaviour
     [SerializeField]
     Lever lev;
 
+    //[SerializeField]
+    //BearTrap trap;
+
     [SerializeField]
     float countDown = 1;
 
@@ -56,7 +59,7 @@ public class isQtePassed : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.R))
         {
             fillImage += .2f;
-            //Debug.Log("R is pressed");
+            Debug.Log("R is pressed");
         }
 
         timePassed += Time.deltaTime;
@@ -65,7 +68,7 @@ public class isQtePassed : MonoBehaviour
         {
             timePassed = 0;
             fillImage -= .02f;
-            //Debug.Log("AFK");
+           Debug.Log("AFK");
         }
 
         QTECircle.fillAmount = fillImage;
@@ -83,7 +86,7 @@ public class isQtePassed : MonoBehaviour
             gameObject.SetActive(false);
             QTEUnderCircle.SetActive(false);
             R_Button.SetActive(false);
-            //Debug.Log("not passed");
+            Debug.Log("not passed");
         }
 
         if (countDown > 0)
@@ -101,7 +104,7 @@ public class isQtePassed : MonoBehaviour
             gameObject.SetActive(false);
             QTEUnderCircle.SetActive(false);
             R_Button.SetActive(false);
-            //Debug.Log("passed");
+            Debug.Log("passed");
         }
     }
 }
