@@ -10,7 +10,7 @@ public class HeartScript : MonoBehaviour
     {
         theHeartAnim = GetComponent<Animator>();    
     }
-    private void OnDestroy()
+    private void OnDisable()
     {
         theHeartAnim.SetTrigger("Loss");
         

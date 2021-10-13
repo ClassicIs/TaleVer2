@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 999602363}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.3599987, y: -0.77, z: 0}
+  m_LocalPosition: {x: 0.3599987, y: -0.674, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1198205554}
@@ -148,7 +148,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2113821813}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.29999924, y: -0.81, z: 0}
+  m_LocalPosition: {x: -0.29999924, y: -0.674, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1198205554}
@@ -371,13 +371,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f1a22631d69a0b4ebbb38ef7a87af1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  goingToDie: 0
+  currState: 0
   theWallLayer:
     serializedVersion: 2
     m_Bits: 12288
   tmpGameObj: {fileID: 0}
   isMoving: 0
-  isRestarting: 0
   lastMoveDir: {x: 0, y: 0}
   theVectRaw: {x: 0, y: 0}
   movePosition: {x: 0, y: 0}
@@ -397,7 +396,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2770220322474851733}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d5c95f48e81e0ca41ab6e712babcdf2b, type: 3}
   m_Name: 
@@ -428,15 +427,21 @@ MonoBehaviour:
   theGroundLayer:
     serializedVersion: 2
     m_Bits: 2048
+  theWallLayer:
+    serializedVersion: 2
+    m_Bits: 4096
   theLetter: {fileID: 0}
   thePlayerController: {fileID: 2770220322474851734}
   playerLegPos: {fileID: 2770220321613325425}
+  tmpObj: {fileID: 0}
   isOnGround: 0
   isAlive: 0
   timeToCheck: 0
   theLastAlivePosition: {x: 0, y: 0}
   theLastCheckpoint: {x: 0, y: 0}
-  radOfDetect: 0.07
+  radOfGroundDetect: 0.05
+  radOfWallDetect: 1
+  radOfDropDetect: 0.1
   theDeathLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -444,6 +449,7 @@ MonoBehaviour:
   timeToInstaTime: 0
   timeToDeath: 0
   strTimeToDeath: 0
+  firstCheckPoint: {fileID: 0}
   isReading: 0
 --- !u!114 &2770220322474851743
 MonoBehaviour:

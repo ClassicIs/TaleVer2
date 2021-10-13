@@ -57,25 +57,33 @@ public class GameManagerScript : MonoBehaviour
     void Start()
     {
         inkLevelLoss = 1;
+        
         inkLevel = 100;
+        tmpInkLevel = inkLevel;
+
         timeToDecreaseInk = 3;
+
         inkCoroutine = inkStay();
 
         maxPlayerHealth = 8;
         minPlayerHealth = 0;
-        playerHealth = 4;//maxPlayerHealth;
+        
+        tmpHealth = 4;
+        playerHealth = tmpHealth;
+
         ChangeHealth(0);
 
-        playerMoney = 0;
-        ChangeMoney(playerMoney);
+        tmpMoney = 0;
+        playerMoney = tmpMoney;
+        ChangeMoney(0);
 
         startPos = thePlayerObj.transform.position;
-
         thePlayerOver = thePlayerObj.GetComponent<CharacterOverlap>();
         thePlayerOver.OnFalling += changeHealthWhenFalling;
         thePlayerOver.OnEnteringInk += ifEnteredInk;
         thePlayerOver.OnEscapingInk += ifEscapedInk;
         thePlayerOver.OnSaving += IfSave;
+        thePlayerOver.OnTakingCoin += IfTookCoin;
         destroyedObj = new List<SpawnObjects>();
         thePlayerScr = thePlayerObj.GetComponent<Player>();        
         menuActive = false;
@@ -86,7 +94,7 @@ public class GameManagerScript : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.H))
         {
-            ChangeHealth(- 1);
+            ChangeHealth(-1);
         }
         else if (Input.GetKeyDown(KeyCode.J))
         {
@@ -103,9 +111,9 @@ public class GameManagerScript : MonoBehaviour
         destroyedObj.Clear();
     }
 
-    private void IfTookCoin(object sender, EventArgs e)
+    private void IfTookCoin(int money, Vector2 pos)
     {
-        ChangeMoney(1);
+        ChangeMoney(money, pos);
     }
 
     private void ifEnteredInk(object sender, EventArgs e)
@@ -114,8 +122,7 @@ public class GameManagerScript : MonoBehaviour
     }
 
     void ifEscapedInk(object sender, EventArgs e)
-    {
-        Debug.Log("Escaped ink!");
+    {        
         StopCoroutine(inkCoroutine);
     }
 
@@ -133,10 +140,8 @@ public class GameManagerScript : MonoBehaviour
         ChangeHealth(-1);        
     }
 
-    private void restartTheGame()
+    private void RestartTheGame()
     {
-        thePlayerObj.transform.position = startPos;
-        thePlayerScr.NormalizeAll();
         tmpMoney = playerMoney;
         ChangeMoney(0);
         tmpHealth = playerHealth;
@@ -146,11 +151,9 @@ public class GameManagerScript : MonoBehaviour
     }
 
     public void addNewDestroyedObj(string theName, Vector2 theCurPos)
-    {
-        
+    {        
         SpawnObjects newSpawnObject = new SpawnObjects (theName, theCurPos);
-        Debug.Log("Name of the object " + newSpawnObject.nameOfPrefab + "\nThe position of object is " + newSpawnObject.thePosition);
-        
+        Debug.Log("Name of the object " + newSpawnObject.nameOfPrefab + "\nThe position of object is " + newSpawnObject.thePosition);        
         destroyedObj.Add(newSpawnObject);
         Debug.Log(destroyedObj.Count);       
     }
@@ -172,7 +175,6 @@ public class GameManagerScript : MonoBehaviour
                 }
             }
         }
-
         destroyedObj.Clear();
     }
 
@@ -203,88 +205,88 @@ public class GameManagerScript : MonoBehaviour
         theMenu.SetActive(false);
     }
 
-    public void ChangeHealth(int addOrDelHealth, bool afterFall)
-    {        
-        int changedHealth = playerHealth + addOrDelHealth;
+    //public void ChangeHealth(int addOrDelHealth, bool afterFall)
+    //{        
+    //    int changedHealth = playerHealth + addOrDelHealth;
 
-        Debug.Log("playerHealth: " + playerHealth);
-        Debug.Log("changedHealth " + changedHealth);
-        Debug.Log("theHealthHolder.transform.childCount " + theHealthHolder.transform.childCount);
+    //    Debug.Log("playerHealth: " + playerHealth);
+    //    Debug.Log("changedHealth " + changedHealth);
+    //    Debug.Log("theHealthHolder.transform.childCount " + theHealthHolder.transform.childCount);
 
-        if (changedHealth > minPlayerHealth && changedHealth <= maxPlayerHealth)
-        {
-            playerHealth = changedHealth;
-            if (theHealthHolder.transform.childCount - 1 < playerHealth)
-            {
-                Debug.Log("Add health ");
-                int heartsToAdd = (changedHealth - theHealthHolder.transform.childCount);
+    //    if (changedHealth > minPlayerHealth && changedHealth <= maxPlayerHealth)
+    //    {
+    //        playerHealth = changedHealth;
+    //        if (theHealthHolder.transform.childCount - 1 < playerHealth)
+    //        {
+    //            Debug.Log("Add health ");
+    //            int heartsToAdd = (changedHealth - theHealthHolder.transform.childCount);
 
-                for (int j = 0; j < heartsToAdd; j++)
-                {
-                    Debug.Log("(currHealth - theHealthHolder.transform.childCount): " + (playerHealth - theHealthHolder.transform.childCount));
-                    Instantiate(healthIcon, theHealthHolder.transform);
-                }
-            }
-            else if (theHealthHolder.transform.childCount > playerHealth)
-            {
-                int heartsToDestroy = theHealthHolder.transform.childCount - (theHealthHolder.transform.childCount - playerHealth);
-                int currHeartsCount = theHealthHolder.transform.childCount;
-                Debug.Log("Need to delete health ");
-                Debug.Log("currHeartsCount is " + currHeartsCount);
-                Debug.Log("heartsToDestroy is " + heartsToDestroy);
+    //            for (int j = 0; j < heartsToAdd; j++)
+    //            {
+    //                Debug.Log("(currHealth - theHealthHolder.transform.childCount): " + (playerHealth - theHealthHolder.transform.childCount));
+    //                Instantiate(healthIcon, theHealthHolder.transform);
+    //            }
+    //        }
+    //        else if (theHealthHolder.transform.childCount > playerHealth)
+    //        {
+    //            int heartsToDestroy = theHealthHolder.transform.childCount - (theHealthHolder.transform.childCount - playerHealth);
+    //            int currHeartsCount = theHealthHolder.transform.childCount;
+    //            Debug.Log("Need to delete health ");
+    //            Debug.Log("currHeartsCount is " + currHeartsCount);
+    //            Debug.Log("heartsToDestroy is " + heartsToDestroy);
                 
-                for (int i = currHeartsCount - 1; i >= heartsToDestroy; i--)
-                {
-                    Destroy(theHealthHolder.transform.GetChild(i).gameObject);
-                }
-                if(afterFall)
-                {
-                    thePlayerOver.NearlyDeath();
-                }
-            }
-            else
-            {
-                Debug.Log("Health is already of that value " + changedHealth);
-            }
-        }
-        else if(changedHealth == minPlayerHealth)
-        {            
-            playerHealth = changedHealth;
-            Destroy(theHealthHolder.transform.GetChild(0).gameObject);
-            Debug.Log("Instantiate theDeath");
-            restartTheGame();
-        }
-        else
-        {
-            Debug.Log("Health is out of boundaries");
-        }
-    }
+    //            for (int i = currHeartsCount - 1; i >= heartsToDestroy; i--)
+    //            {
+    //                Destroy(theHealthHolder.transform.GetChild(i).gameObject);
+    //            }
+    //            if(afterFall)
+    //            {
+    //                thePlayerOver.NearlyDeath();
+    //            }
+    //        }
+    //        else
+    //        {
+    //            Debug.Log("Health is already of that value " + changedHealth);
+    //        }
+    //    }
+    //    else if(changedHealth == minPlayerHealth)
+    //    {            
+    //        playerHealth = changedHealth;
+    //        Destroy(theHealthHolder.transform.GetChild(0).gameObject);
+    //        Debug.Log("Instantiate theDeath");
+    //        RestartTheGame();
+    //    }
+    //    else
+    //    {
+    //        Debug.Log("Health is out of boundaries");
+    //    }
+    //}
 
     public void ChangeHealth(int addOrDelHealth)
     {
-        int changedHealth = playerHealth + addOrDelHealth;
+        int changedHealth = tmpHealth + addOrDelHealth;
 
-        Debug.Log("playerHealth: " + playerHealth);
+        Debug.Log("playerHealth: " + tmpHealth);
         Debug.Log("changedHealth " + changedHealth);
         Debug.Log("theHealthHolder.transform.childCount " + theHealthHolder.transform.childCount);
 
         if (changedHealth > minPlayerHealth && changedHealth <= maxPlayerHealth)
         {
             tmpHealth = changedHealth;
-            if (theHealthHolder.transform.childCount - 1 < playerHealth)
+            if (theHealthHolder.transform.childCount - 1 < tmpHealth)
             {
                 Debug.Log("Add health ");
                 int heartsToAdd = (changedHealth - theHealthHolder.transform.childCount);
 
                 for (int j = 0; j < heartsToAdd; j++)
                 {
-                    Debug.Log("(currHealth - theHealthHolder.transform.childCount): " + (playerHealth - theHealthHolder.transform.childCount));
+                    Debug.Log("(currHealth - theHealthHolder.transform.childCount): " + (tmpHealth - theHealthHolder.transform.childCount));
                     Instantiate(healthIcon, theHealthHolder.transform);
                 }
             }
-            else if (theHealthHolder.transform.childCount > playerHealth)
+            else if (theHealthHolder.transform.childCount > tmpHealth)
             {
-                int heartsToDestroy = theHealthHolder.transform.childCount - (theHealthHolder.transform.childCount - playerHealth);
+                int heartsToDestroy = theHealthHolder.transform.childCount - (theHealthHolder.transform.childCount - tmpHealth);
                 int currHeartsCount = theHealthHolder.transform.childCount;
                 Debug.Log("Need to delete health ");
                 Debug.Log("currHeartsCount is " + currHeartsCount);
@@ -302,10 +304,10 @@ public class GameManagerScript : MonoBehaviour
         }
         else if (changedHealth == minPlayerHealth)
         {
-            playerHealth = changedHealth;
-            Destroy(theHealthHolder.transform.GetChild(0).gameObject);
+            tmpHealth = changedHealth;
+            Destroy(theHealthHolder.transform.GetChild(0).gameObject);            
             Debug.Log("Instantiate theDeath");
-            restartTheGame();
+            RestartTheGame();
         }
         else
         {
@@ -330,9 +332,9 @@ public class GameManagerScript : MonoBehaviour
         {
             StopCoroutine(inkCoroutine);
             thePlayerOver.InkDeath();
+            RestartTheGame();
         }
     }
-
 
     public void ChangeMoney(int addMoney, Vector2 posOftheCollidedObj)
     {

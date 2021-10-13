@@ -39,14 +39,9 @@ public class RestartScript : MonoBehaviour
         while (!isItThere)
         {
             isItThere = Vector2.Distance(thePlayer.transform.position, strPos) <= 0.1f;
-            thePlayer.transform.position = Vector2.Lerp(thePlayer.transform.position, strPos, Time.deltaTime);
-            /*Debug.Log("isItThere: " + isItThere);
-            Debug.Log("Distance is: " + Vector2.Distance(thePlayer.transform.position, strPos));*/
+            thePlayer.transform.position = Vector2.Lerp(thePlayer.transform.position, strPos, Time.deltaTime);            
             yield return null;
         }
-        //Debug.Log("Is on position!");
-        thePlayerScript.NormalizeAll();
         theGMScript.RestartGame();        
-        thePlayerScript.isRestarting = false;        
     }
 }

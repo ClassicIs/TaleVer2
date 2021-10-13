@@ -8,22 +8,30 @@ public class CharacterOverlap : MonoBehaviour
 {
     public event EventHandler OnFalling;
     public event EventHandler OnEnteringInk;
-    public event EventHandler OnEscapingInk;
-    public event EventHandler OnTakingCoin;
+    public event EventHandler OnEscapingInk;    
     public event EventHandler OnSaving;
-    
+    public event Action <int, Vector2> OnTakingCoin;
+    //public event Action<string, string> OnReadingLetter;
+
+    public enum PlayerDeath
+    {
+        allInDeath,
+        intermidiateDeath,
+        inkDeath
+    }
+
     [SerializeField]
     Transform[] checkForGround;
     [SerializeField]
     LayerMask theGroundLayer;
+    [SerializeField]
+    LayerMask theWallLayer;
 
     [SerializeField]
     private GameObject theLetter;
     private bool nearLetter;
 
     private IEnumerator timeToRes;
-
-    private GameManagerScript theGMScript;
 
     [SerializeField]
     private Player thePlayerController;
@@ -32,11 +40,14 @@ public class CharacterOverlap : MonoBehaviour
 
     [SerializeField]
     private Transform playerLegPos;
+    [SerializeField]
+    Transform tmpObj;
     private Rigidbody2D thePlayer; 
     
     [SerializeField]
     private bool isOnGround;
     public bool isAlive;
+    Vector2 lastHitObject;
     [SerializeField]
     private int timeToCheck;
 
@@ -44,7 +55,11 @@ public class CharacterOverlap : MonoBehaviour
     public Vector2 theLastCheckpoint;
 
     [SerializeField]
-    private float radOfDetect = .05f;
+    private float radOfGroundDetect = .05f;
+    [SerializeField]
+    private float radOfWallDetect = 1f;
+    [SerializeField]
+    private float radOfDropDetect = 0.1f;
     [SerializeField]
     private LayerMask theDeathLayer;    
 
@@ -58,17 +73,19 @@ public class CharacterOverlap : MonoBehaviour
     [SerializeField]
     private float strTimeToDeath;
 
-    private float healthChange;
-    private float changedHealth;
-    public bool isReading;
-    
-    
+    [SerializeField]
+    Transform firstCheckPoint;
 
+
+    public bool isReading; 
+    
     private void Start()
     {
-        theLastCheckpoint = transform.position;
-        theGMScript = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManagerScript>();
+        timeToRes = ResetTheGame();
+        theLastCheckpoint = firstCheckPoint.position;
         thePlayerAnim = GetComponent<Animator>();
+        thePlayer = GetComponent<Rigidbody2D>();
+        thePlayerFX = GetComponent<PlayerEffectsScript>();
 
         theLastAlivePosition = transform.position;
         
@@ -80,21 +97,22 @@ public class CharacterOverlap : MonoBehaviour
         InstadeathTime = timeToInstaTime;
 
         strTimeToDeath = .45f;
-        timeToDeath = strTimeToDeath;        
+        timeToDeath = strTimeToDeath;      
         
         StartCoroutine(findSafePlace());
     }
 
-    private void Awake()
-    {
-        thePlayer = GetComponent<Rigidbody2D>();
-        thePlayerFX = GetComponent<PlayerEffectsScript>();
-    }
-
     private void Update()
     {
-        checkForDeath();
-        CheckForLetter();
+        if (isAlive)
+        {
+            checkForDeath();
+            CheckForLetter();
+        }
+        if (Input.GetKeyDown(KeyCode.U))
+        {
+            tmpObj.position = lastHitObject;
+        }
     }
 
     IEnumerator findSafePlace()
@@ -104,7 +122,7 @@ public class CharacterOverlap : MonoBehaviour
             bool isItSafe = false;
             foreach(Transform transf1 in checkForGround)
             {
-                if (Physics2D.OverlapCircle(transf1.position, radOfDetect, theGroundLayer))
+                if (Physics2D.OverlapCircle(transf1.position, radOfGroundDetect, theGroundLayer))
                 {
                     isItSafe = true;
                 }
@@ -123,43 +141,55 @@ public class CharacterOverlap : MonoBehaviour
     }
 
     private void checkForDeath()
-    {        
-        RaycastHit2D goingToDeath = Physics2D.Raycast(new Vector2(playerLegPos.position.x, playerLegPos.position.y), thePlayerController.theVectRaw, radOfDetect, theDeathLayer);
+    {
+        RaycastHit2D goingIntoWall = Physics2D.Raycast(transform.position, thePlayerController.theVectRaw, radOfWallDetect, theWallLayer);
+        if(goingIntoWall.collider != null)
+        {
+            
+            Debug.Log("Is hitting into a wall");
+            lastHitObject = goingIntoWall.point;
+            thePlayerController.currState = Player.PlayerStates.stunned;
+        }
+        else
+        {
+            thePlayerController.currState = Player.PlayerStates.moving;
+        }
+        RaycastHit2D goingToDeath = Physics2D.Raycast(new Vector2(playerLegPos.position.x, playerLegPos.position.y), thePlayerController.theVectRaw, radOfDropDetect, theDeathLayer);
         if (goingToDeath.collider != null)
         {
             if(timeToDeath > 0f)
             {
-                Debug.Log("Raycast is " + goingToDeath.collider.tag);
+                //Debug.Log("Raycast is " + goingToDeath.collider.tag);
                 thePlayer.velocity = new Vector2(0, 0);
-                thePlayerController.canWalk = false;
+                thePlayerController.currState = Player.PlayerStates.stunned;
                 timeToDeath -= 0.5f * Time.deltaTime;
             }
             else
             {
-                thePlayerController.canWalk = true;
+                thePlayerController.currState = Player.PlayerStates.moving;
             }            
         }
         else
         {
             timeToDeath = strTimeToDeath;
-            thePlayerController.canWalk = true;
+            thePlayerController.currState = Player.PlayerStates.moving;
         }
 
-
-        if (!isOnGround && isAlive)
+        if (!isOnGround)
         {
             Debug.Log("Death is near!");
-            if (!thePlayerController.isDodging || thePlayerController.isRestarting)
+            if (!thePlayerController.isDodging)
             {
                 if (InstadeathTime > 0f)
                 {
-                    InstadeathTime -= 0.5f * Time.deltaTime;
-
+                    InstadeathTime -= 5f * Time.deltaTime;
                 }
                 else
                 {
+                    isAlive = false;
                     if (OnFalling != null)
                     {
+                        Debug.Log("OnFalling");
                         OnFalling(this, EventArgs.Empty);
                     }
                 }
@@ -173,94 +203,93 @@ public class CharacterOverlap : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.CompareTag("Checkpoint"))
+        if (isAlive)
         {
-            if (OnSaving != null)
+            if (collision.CompareTag("Checkpoint"))
             {
-                OnSaving(this, EventArgs.Empty);
+                if (OnSaving != null)
+                {
+                    OnSaving(this, EventArgs.Empty);
+                }
+                Debug.Log("Saved");
+                theLastCheckpoint = collision.gameObject.transform.position;
+                collision.gameObject.SetActive(false);
             }
 
-            theLastCheckpoint = collision.gameObject.transform.position;
-            collision.gameObject.SetActive(false);
-        }
-        if (collision.CompareTag("Letter"))
-        {
-            nearLetter = true;
-            Text[] allText = theLetter.GetComponentsInChildren<Text>();
-            allText[0].text = collision.GetComponent<LetterScript>().sign;
-            allText[1].text = collision.GetComponent<LetterScript>().theMassOfStrings;
-        }
-
-        if (collision.CompareTag("Coin"))
-        {
-            /*
-            if (OnTakingCoin != null)
+            if (collision.CompareTag("Letter"))
             {
-                OnTakingCoin(this, EventArgs.Empty);
-            }*/
-
-            theGMScript.ChangeMoney(1, collision.gameObject.transform.position);
-            Destroy(collision.gameObject);
-        }
-        if (collision.CompareTag("Scary"))
-        {
-            if(OnEnteringInk != null)
-            {
-                OnEnteringInk(this, EventArgs.Empty);
+                nearLetter = true;
+                Text[] allText = theLetter.GetComponentsInChildren<Text>();
+                allText[0].text = collision.GetComponent<LetterScript>().sign;
+                allText[1].text = collision.GetComponent<LetterScript>().theMassOfStrings;
             }
-            thePlayerController.slowModif = 0.4f;
-        }
-        if (collision.CompareTag("MovingPlatform"))
-        {
-            Debug.Log("is on the moving plat");
-            thePlayerController. isSliding = true;
+
+            if (collision.CompareTag("Coin"))
+            {
+                if (OnTakingCoin != null)
+                {
+                    OnTakingCoin(1, collision.gameObject.transform.position);
+                }
+                Destroy(collision.gameObject);
+            }
+
+            if (collision.CompareTag("Scary"))
+            {
+                if (OnEnteringInk != null)
+                {
+                    OnEnteringInk(this, EventArgs.Empty);
+                }
+                thePlayerController.slowModif = 0.4f;
+            }
         }
     }
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.CompareTag("MovingPlatform"))
+        if (isAlive)
         {
-            Debug.Log("is on the moving plat");
-            thePlayerController.isSliding = true;
-        }
+            if (collision.CompareTag("Floor"))
+            {
+                isOnGround = true;
 
-        if (collision.CompareTag("Floor"))
-        {
-            isOnGround = true;
-            thePlayerController.isGrounded = true;
+            }
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.CompareTag("Scary"))
+        if (isAlive)
         {
-            thePlayerController.slowModif = 1f;
-            if(OnEscapingInk != null)
+            if (collision.CompareTag("Scary"))
             {
-                OnEscapingInk(this, EventArgs.Empty);
+                thePlayerController.slowModif = 1f;
+                if (OnEscapingInk != null)
+                {
+                    OnEscapingInk(this, EventArgs.Empty);
+                }
+                //thePlayerFX.endTrail = true;
             }
-            //thePlayerFX.endTrail = true;
-        }
 
-        if (collision.CompareTag("Letter"))
-        {
-            Debug.Log("Letter out is.");
-            nearLetter = false;
-            PaperClose();
-        }
+            if (collision.CompareTag("Letter"))
+            {
+                nearLetter = false;
+                if (isReading)
+                {
+                    PaperClose();
+                }
+            }
 
-        if (collision.CompareTag("Floor"))
-        {
-            isOnGround = false;
-            thePlayerController. isGrounded = false;
-        }
+            if (collision.CompareTag("Floor"))
+            {
+                isOnGround = false;
+                thePlayerController.isGrounded = false;
+            }
 
-        if (collision.CompareTag("MovingPlatform"))
-        {
-            Debug.Log("Not on the moving plat");
-            thePlayerController.isSliding = false;
+            if (collision.CompareTag("MovingPlatform"))
+            {
+                Debug.Log("Not on the moving plat");
+                thePlayerController.isSliding = false;
+            }
         }
     }
 
@@ -281,60 +310,85 @@ public class CharacterOverlap : MonoBehaviour
         {
             PaperClose();
         }
-
     }
 
     private void PaperOpen()
     {
+        Debug.Log("Paper Opened");
         isReading = true;
-        Debug.Log("Here we are opening!");
-        theLetter.GetComponent<Animator>().SetBool("LetterOpen", true);
-
+        theLetter.SetActive(true);
     }
 
     private void PaperClose()
     {
+        Debug.Log("Paper closed");
         isReading = false;
-        Debug.Log("Here we are closing!");
-        theLetter.GetComponent<Animator>().SetBool("LetterOpen", false);
+        theLetter.SetActive(false);
     }
+    
+    public void Death(PlayerDeath states)
+    {
+        thePlayerController.currState = Player.PlayerStates.stunned;
+        switch (states)
+        {
+            case PlayerDeath.allInDeath:
+                DeathInAll();
+                break;
+            case PlayerDeath.inkDeath:
+                InkDeath();
+                break;
+            case PlayerDeath.intermidiateDeath:
+                NearlyDeath();
+                break;
+        }        
+    }
+
+    private void DeathInAll()
+    {
+        transform.position = theLastCheckpoint;
+        thePlayerController.currState = Player.PlayerStates.moving;
+    }    
 
     public void NearlyDeath()
-    {
-        isAlive = false;
+    {        
         Debug.Log("Dead!");
-        
         transform.position = theLastAlivePosition;
         isAlive = true;
-    }
-    public void Death()
-    {
-        timeToRes = resetTheGame();
-        StartCoroutine(timeToRes);
-    }
-    IEnumerator resetTheGame()
-    {
-        yield return new WaitForSeconds(10);
-        transform.position = theLastCheckpoint;
-        thePlayerController.NormalizeAll();
-
     }
 
     public void InkDeath()
     {
-        thePlayerAnim.SetBool("IsDeadInk", true);
+        isAlive = false;
+        thePlayerController.currState = Player.PlayerStates.stunned;
+        thePlayerAnim.SetBool("IsDeadInk", true);        
         StartCoroutine(AfterInk());
     }
 
     IEnumerator AfterInk()
     {
-        yield return new WaitForSeconds(10);
+        yield return new WaitForSeconds(1);
         thePlayerAnim.SetBool("IsDeadInk", false);
-        StartCoroutine(resetTheGame());
+        StartCoroutine(timeToRes);
+    }
+
+    IEnumerator ResetTheGame()
+    {
+        yield return new WaitForSeconds(1);
+        Debug.LogWarning("Position of the player must be " + theLastCheckpoint);
+        transform.position = theLastCheckpoint;
+        thePlayerController.currState = Player.PlayerStates.moving;
+        isAlive = true;
     }
 
     private void OnDrawGizmos()
     {
+        foreach(Transform obj in checkForGround)
+        {
+            Gizmos.DrawWireSphere(obj.position, radOfGroundDetect);
+        }
+        Gizmos.color = new Color(1, 0, 0);
+        Gizmos.DrawLine(transform.position, transform.position + new Vector3(thePlayerController.theVectRaw.x, thePlayerController.theVectRaw.y, 0f) * radOfWallDetect);
+
         //Gizmos.DrawLine(playerLegPos.position, playerLegPos.position + new Vector3(thePlayerController.theVectRaw.x, thePlayerController.theVectRaw.y, 0) * radOfDetect);
 
     }    

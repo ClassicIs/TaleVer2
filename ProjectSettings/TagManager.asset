@@ -12,6 +12,7 @@ TagManager:
   - MovingPlatform
   - Walls
   - GameManager
+  - Checkpoint
   layers:
   - Default
   - TransparentFX

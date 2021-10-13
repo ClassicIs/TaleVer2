@@ -6,5 +6,6 @@ public class LetterScript:MonoBehaviour
 {
     public string sign;
     [TextArea]
-    public string theMassOfStrings;   
+    public string theMassOfStrings;
+    public Sprite theSprite;
 }

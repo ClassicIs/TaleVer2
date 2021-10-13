@@ -6,26 +6,25 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public enum PlayerStates
-    { 
+    {
         moving,
         dashing,
+        attacking,
         stunned
     }
-    public PlayerStates currState;
-    private Rigidbody2D thePlayer;
-
-    public bool goingToDie;
     
+    public PlayerStates currState;
+
+    private Rigidbody2D thePlayer;
     private Animator thePlayerAnim;
-    private PlayerManager thePlayerManager;
     private PlayerEffectsScript theFXScript;
+    private AudioManagerScript theAudioManager;
 
     public LayerMask theWallLayer;
     
     public Transform tmpGameObj;
     public bool isMoving;
-    private AudioManagerScript theAudioManager;    
-    public bool isRestarting;  
+    
     private Vector2 lastMovePosition;
     private Vector2 theVect;
     [SerializeField]
@@ -49,9 +48,7 @@ public class Player : MonoBehaviour
 
     private float horMovement;
     private float verMovement;
-    private bool isTryingToDie;
-
-    
+    private bool isTryingToDie;   
 
     private float currTimeToFall;
     [SerializeField] 
@@ -71,24 +68,12 @@ public class Player : MonoBehaviour
         lastMoveDir = new Vector2(0, 0);
 
         theVectRaw = new Vector2(0, 0);
-        canWalk = true;
-        theAudioManager = FindObjectOfType<AudioManagerScript>();
-        thePlayerManager = GetComponent<PlayerManager>();
+        theAudioManager = FindObjectOfType<AudioManagerScript>();   
         theFXScript = GetComponent<PlayerEffectsScript>();
-
-        isSliding = false;
-        strTimeToFall = 3f;
-        currTimeToFall = strTimeToFall;
-        isTryingToDie = false;
         isDodging = false;
-
-        isRestarting = false;
         
-        goingToDie = false;      
-
         //Speed variables        
-        normSpeed = 1.5f;
-        
+        normSpeed = 1.5f;        
         speed = normSpeed;
         slowModif = 1f; //Modifikator for going in ink        
 
@@ -105,18 +90,9 @@ public class Player : MonoBehaviour
         thePlayerAnim = GetComponent<Animator>();
     }
 
-    public void NormalizeAll()
-    {                     
-        isRestarting = true;
-        currTimeToFall = 3f;
-        thePlayerManager.NormalizeAll();
-    }
-
-    // Update is called once per frame
     void Update()
     {
-        //print("thePlayer.velocity" + thePlayer.velocity);
-        CheckMovement();           
+        CheckMovement();
     }
 
     void FixedUpdate()
@@ -124,54 +100,73 @@ public class Player : MonoBehaviour
         switch (currState)
         {
             case PlayerStates.moving:
-                if (canWalk)
+                if ((Mathf.Abs(theVect.x) > 0f) || (Mathf.Abs(theVect.y) > 0f))
                 {
-                    if ((Mathf.Abs(theVect.x) > 0f) || (Mathf.Abs(theVect.y) > 0f))
+                    if (!theAudioManager.isPlaying("WalkTile 1"))
                     {
-                        if (!theAudioManager.isPlaying("WalkTile 1"))
-                        {
-                            theAudioManager.Play("WalkTile 1");
-                        }
-                        isMoving = true;
-                        thePlayerAnim.SetBool("isMoving", true);
-                        thePlayerAnim.SetFloat("HorizontalMovement", theVect.x);
-                        thePlayerAnim.SetFloat("VerticalMovement", theVect.y);
-                    }
-                    else
-                    {
-                        isMoving = false;
-                        thePlayerAnim.SetBool("isMoving", false);
-                    }
-
-                    forMovement();
-                    
+                        theAudioManager.Play("WalkTile 1");
+                    }                    
+                    thePlayerAnim.SetBool("isMoving", true);
+                    thePlayerAnim.SetFloat("HorizontalMovement", theVect.x);
+                    thePlayerAnim.SetFloat("VerticalMovement", theVect.y);
                 }
+                else
+                {                    
+                    thePlayerAnim.SetBool("isMoving", false);
+                }
+                forMovement();
                 break;
             case PlayerStates.dashing:
                 toDodge();
                 break;
             case PlayerStates.stunned:
+                thePlayerAnim.SetBool("isMoving", false);
+                Debug.Log("Is Stunned");
+                break;
+            case PlayerStates.attacking:
+                Debug.Log("Attacking");
                 break;
         }
     }
     
-    
+    private void Stunned()
+    {
+        currState = PlayerStates.stunned;
+    }
+    private void Unstunned()
+    {
+        currState = PlayerStates.moving;
+    }
+
     private void CheckMovement()
     {
         horMovement = Input.GetAxisRaw("Horizontal");
         verMovement = Input.GetAxisRaw("Vertical");
-        theVectRaw = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized;        
-        theVect = new Vector2(horMovement, verMovement).normalized;       
-
-        if (Mathf.Abs(theVectRaw.x) > 0.1 || Mathf.Abs(theVectRaw.y) > 0.1)
+        theVectRaw = new Vector2(horMovement, verMovement).normalized;
+        theVect = new Vector2(horMovement, verMovement).normalized;
+        if (Mathf.Abs(theVectRaw.x) > 0.1f || Mathf.Abs(theVectRaw.y) > 0.1f)
         {
-            
+            isMoving = true;
             lastMoveDir = theVectRaw;
         }
+        else
+        {
+            isMoving = false;
+        }
+        speed = Mathf.Lerp(speed, normSpeed * slowModif, .1f);
+        if (currState != PlayerStates.stunned)
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                currState = PlayerStates.dashing;
+            }
 
-        speed = Mathf.Lerp(speed, normSpeed * slowModif, .1f);        
+            if (Input.GetKeyDown(KeyCode.G))
+            {
+                currState = PlayerStates.attacking;
+            }
+        }
     }    
-
 
     private void forMovement()
     {
@@ -182,9 +177,8 @@ public class Player : MonoBehaviour
     {
         //movePosition = thePlayer.position + lastMoveDir * speedDodge;
         
-        if (Input.GetKeyDown(KeyCode.Space) && !isDodging)
-        {
-            currState = PlayerStates.dashing;
+        if (!isDodging)
+        {            
             isDodging = true;
             theFXScript.MakeTheGhosts(true);            
             thePlayer.velocity = Vector2.zero;
@@ -211,11 +205,11 @@ public class Player : MonoBehaviour
             {
                 theAudioManager.Play("DodgeWoosh");
             }
-            StartCoroutine(hasDodged());     
+            StartCoroutine(HasDodged());     
         }
     }
 
-    private IEnumerator hasDodged()
+    private IEnumerator HasDodged()
     {
         int count = 0;
         print("thePlayer.velocity" + thePlayer.velocity);
@@ -236,16 +230,7 @@ public class Player : MonoBehaviour
         //Gizmos.color = new Color(1, 0, 0);
         //Gizmos.DrawLine(transform.position, transform.position + new Vector3(theVectRaw.x * 0.5f, theVectRaw.y * 0.5f, 0f));
 
-        //Gizmos.DrawLine(transform.position, movePosition);
-        
-        //Gizmos.DrawWireCube(transform.position, transform.position + new Vector3(theVectRaw.x, theVectRaw.y, 0f));
-        //Vector3 theVectNew = Vector3.right;
-        //Gizmos.color
-        /*if (lastMPos != null)
-        {
-            Gizmos.DrawLine(transform.position, new Vector2(transform.position.x, transform.position.y) + lastMPos);
-        }*/
-        //Gizmos.DrawLine(transform.position, new Vector2(transform.position.x, transform.position.y) + theVectRaw);
+        //Gizmos.DrawLine(transform.position, movePosition);       
 
 
     }
