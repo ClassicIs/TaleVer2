@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 public class GameManagerScript : MonoBehaviour
 {
@@ -16,22 +17,65 @@ public class GameManagerScript : MonoBehaviour
     [SerializeField] 
     private GameObject[] allGameObj;
     [SerializeField]
-    private Slider healthSlider;
+    private Slider inkSlider;
     [SerializeField]
     private Text moneyCount;
+    
 
     [SerializeField]
     private GameObject thePlayerObj;
     private Player thePlayerScr;
+    private CharacterOverlap thePlayerOver;
     [SerializeField]
     private GameObject theMenu;
 
+    private int playerHealth;
+    private int tmpHealth;
+    private int maxPlayerHealth;
+    private int minPlayerHealth;
+    
+    private int playerMoney;
+    private int tmpMoney;
+
+    private int inkLevel;
+    private int tmpInkLevel;
+
+    private Vector2 startPos;
 
     private bool menuActive;
 
+    [SerializeField]
+    [Range(0, 100)]
+    private int inkLevelLoss;
+    [SerializeField]
+    float timeToDecreaseInk;
+    bool isInInk = false;
+    
+    private IEnumerator inkCoroutine;
+
     // Start is called before the first frame update
     void Start()
-    {        
+    {
+        inkLevelLoss = 1;
+        inkLevel = 100;
+        timeToDecreaseInk = 3;
+        inkCoroutine = inkStay();
+
+        maxPlayerHealth = 8;
+        minPlayerHealth = 0;
+        playerHealth = 4;//maxPlayerHealth;
+        ChangeHealth(0);
+
+        playerMoney = 0;
+        ChangeMoney(playerMoney);
+
+        startPos = thePlayerObj.transform.position;
+
+        thePlayerOver = thePlayerObj.GetComponent<CharacterOverlap>();
+        thePlayerOver.OnFalling += changeHealthWhenFalling;
+        thePlayerOver.OnEnteringInk += ifEnteredInk;
+        thePlayerOver.OnEscapingInk += ifEscapedInk;
+        thePlayerOver.OnSaving += IfSave;
         destroyedObj = new List<SpawnObjects>();
         thePlayerScr = thePlayerObj.GetComponent<Player>();        
         menuActive = false;
@@ -40,7 +84,65 @@ public class GameManagerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(Input.GetKeyDown(KeyCode.H))
+        {
+            ChangeHealth(- 1);
+        }
+        else if (Input.GetKeyDown(KeyCode.J))
+        {
+            ChangeHealth(1);
+        }
         MenuFunc();
+    }
+
+    private void IfSave(object sender, EventArgs e)
+    {
+        playerHealth = tmpHealth;
+        playerMoney = tmpMoney;
+        inkLevel = tmpInkLevel;
+        destroyedObj.Clear();
+    }
+
+    private void IfTookCoin(object sender, EventArgs e)
+    {
+        ChangeMoney(1);
+    }
+
+    private void ifEnteredInk(object sender, EventArgs e)
+    {
+        StartCoroutine(inkCoroutine);
+    }
+
+    void ifEscapedInk(object sender, EventArgs e)
+    {
+        Debug.Log("Escaped ink!");
+        StopCoroutine(inkCoroutine);
+    }
+
+    private IEnumerator inkStay()
+    {
+        while(true)
+        {
+            changeInkLevel(inkLevelLoss);
+            yield return new WaitForSeconds(timeToDecreaseInk);
+        }
+    }    
+
+    private void changeHealthWhenFalling(object sender, EventArgs e)
+    {
+        ChangeHealth(-1);        
+    }
+
+    private void restartTheGame()
+    {
+        thePlayerObj.transform.position = startPos;
+        thePlayerScr.NormalizeAll();
+        tmpMoney = playerMoney;
+        ChangeMoney(0);
+        tmpHealth = playerHealth;
+        ChangeHealth(0);
+        tmpInkLevel = inkLevel;
+        changeInkLevel(0);
     }
 
     public void addNewDestroyedObj(string theName, Vector2 theCurPos)
@@ -57,20 +159,6 @@ public class GameManagerScript : MonoBehaviour
     {
         Debug.Log("Restarting the game!");
         Debug.Log("deactiveObjs.Count " + destroyedObj.Count);
-
-        /*for(int i = 0; i < destroyedObj.Count; i++)
-        {
-            Debug.Log("\ntheObjToSpawn.nameOfPrefab: " + destroyedObj[i].nameOfPrefab);
-            for (int j = 0; j < allGameObj.Length; j++)
-            {
-                Debug.Log("theObjectZero.name: " + allGameObj[j].name + "\ntheObjToSpawn.nameOfPrefab: " + destroyedObj[i].nameOfPrefab);
-                if (destroyedObj[i].nameOfPrefab == allGameObj[j].name)
-                {
-                    Instantiate(allGameObj[j], destroyedObj[i].thePosition, Quaternion.identity);
-                    continue;
-                }
-            }
-        }*/
 
         foreach (SpawnObjects theObjToSpawn in destroyedObj)
         {
@@ -115,47 +203,153 @@ public class GameManagerScript : MonoBehaviour
         theMenu.SetActive(false);
     }
 
-    public void ChangeHealth(int currHealth)
-    {
-        Debug.Log("currHealth: " + currHealth);
-        Debug.Log("(currHealth - theHealthHolder.transform.childCount)" + (currHealth - theHealthHolder.transform.childCount));
-        Debug.Log("theHealthHolder.transform.childCount" + theHealthHolder.transform.childCount);
+    public void ChangeHealth(int addOrDelHealth, bool afterFall)
+    {        
+        int changedHealth = playerHealth + addOrDelHealth;
 
-        if (theHealthHolder.transform.childCount < currHealth)
+        Debug.Log("playerHealth: " + playerHealth);
+        Debug.Log("changedHealth " + changedHealth);
+        Debug.Log("theHealthHolder.transform.childCount " + theHealthHolder.transform.childCount);
+
+        if (changedHealth > minPlayerHealth && changedHealth <= maxPlayerHealth)
         {
-            int heartsToAdd = (currHealth - theHealthHolder.transform.childCount);
-            Debug.Log("Health is less ");
-            for (int j = 0; j < heartsToAdd; j++)
+            playerHealth = changedHealth;
+            if (theHealthHolder.transform.childCount - 1 < playerHealth)
             {
-                Debug.Log("(currHealth - theHealthHolder.transform.childCount): " + (currHealth - theHealthHolder.transform.childCount));
-                Instantiate(healthIcon, theHealthHolder.transform);                
+                Debug.Log("Add health ");
+                int heartsToAdd = (changedHealth - theHealthHolder.transform.childCount);
+
+                for (int j = 0; j < heartsToAdd; j++)
+                {
+                    Debug.Log("(currHealth - theHealthHolder.transform.childCount): " + (playerHealth - theHealthHolder.transform.childCount));
+                    Instantiate(healthIcon, theHealthHolder.transform);
+                }
             }
-        }        
+            else if (theHealthHolder.transform.childCount > playerHealth)
+            {
+                int heartsToDestroy = theHealthHolder.transform.childCount - (theHealthHolder.transform.childCount - playerHealth);
+                int currHeartsCount = theHealthHolder.transform.childCount;
+                Debug.Log("Need to delete health ");
+                Debug.Log("currHeartsCount is " + currHeartsCount);
+                Debug.Log("heartsToDestroy is " + heartsToDestroy);
+                
+                for (int i = currHeartsCount - 1; i >= heartsToDestroy; i--)
+                {
+                    Destroy(theHealthHolder.transform.GetChild(i).gameObject);
+                }
+                if(afterFall)
+                {
+                    thePlayerOver.NearlyDeath();
+                }
+            }
+            else
+            {
+                Debug.Log("Health is already of that value " + changedHealth);
+            }
+        }
+        else if(changedHealth == minPlayerHealth)
+        {            
+            playerHealth = changedHealth;
+            Destroy(theHealthHolder.transform.GetChild(0).gameObject);
+            Debug.Log("Instantiate theDeath");
+            restartTheGame();
+        }
         else
         {
-            int heartsToDestroy = (theHealthHolder.transform.childCount - currHealth);
-            int currHeartsCount = theHealthHolder.transform.childCount;
-            Debug.Log("Health is more ");
-            for (int i = currHeartsCount; i >= heartsToDestroy; i--)
+            Debug.Log("Health is out of boundaries");
+        }
+    }
+
+    public void ChangeHealth(int addOrDelHealth)
+    {
+        int changedHealth = playerHealth + addOrDelHealth;
+
+        Debug.Log("playerHealth: " + playerHealth);
+        Debug.Log("changedHealth " + changedHealth);
+        Debug.Log("theHealthHolder.transform.childCount " + theHealthHolder.transform.childCount);
+
+        if (changedHealth > minPlayerHealth && changedHealth <= maxPlayerHealth)
+        {
+            tmpHealth = changedHealth;
+            if (theHealthHolder.transform.childCount - 1 < playerHealth)
             {
-                Destroy(theHealthHolder.transform.GetChild(i));
+                Debug.Log("Add health ");
+                int heartsToAdd = (changedHealth - theHealthHolder.transform.childCount);
+
+                for (int j = 0; j < heartsToAdd; j++)
+                {
+                    Debug.Log("(currHealth - theHealthHolder.transform.childCount): " + (playerHealth - theHealthHolder.transform.childCount));
+                    Instantiate(healthIcon, theHealthHolder.transform);
+                }
             }
-        }       
+            else if (theHealthHolder.transform.childCount > playerHealth)
+            {
+                int heartsToDestroy = theHealthHolder.transform.childCount - (theHealthHolder.transform.childCount - playerHealth);
+                int currHeartsCount = theHealthHolder.transform.childCount;
+                Debug.Log("Need to delete health ");
+                Debug.Log("currHeartsCount is " + currHeartsCount);
+                Debug.Log("heartsToDestroy is " + heartsToDestroy);
+
+                for (int i = currHeartsCount - 1; i >= heartsToDestroy; i--)
+                {
+                    Destroy(theHealthHolder.transform.GetChild(i).gameObject);
+                }
+            }
+            else
+            {
+                Debug.Log("Health is already of that value " + changedHealth);
+            }
+        }
+        else if (changedHealth == minPlayerHealth)
+        {
+            playerHealth = changedHealth;
+            Destroy(theHealthHolder.transform.GetChild(0).gameObject);
+            Debug.Log("Instantiate theDeath");
+            restartTheGame();
+        }
+        else
+        {
+            Debug.Log("Health is out of boundaries");
+        }
     }
 
-    public void changeInkLevel(int currInkLevel)
+    public void changeInkLevel(int deltaInkLevel)
     {
-
+        int tmpInk = tmpInkLevel - deltaInkLevel;
+        if (tmpInk > 0)
+        {
+            tmpInkLevel -= deltaInkLevel;            
+        }
+        else
+        {
+            tmpInkLevel = 0;
+            Debug.LogWarning("Ink level is out of bounds!");
+        }
+        inkSlider.value = tmpInkLevel;
+        if (tmpInkLevel == 0)
+        {
+            StopCoroutine(inkCoroutine);
+            thePlayerOver.InkDeath();
+        }
     }
 
-    public void ChangeMoney(int currMoney, Vector2 posOftheCollidedObj)
+
+    public void ChangeMoney(int addMoney, Vector2 posOftheCollidedObj)
     {
-        moneyCount.text = currMoney.ToString();
-        addNewDestroyedObj("Coin", posOftheCollidedObj);
+        if (addMoney > 0)
+        {
+            tmpMoney = tmpMoney + addMoney; 
+            moneyCount.text = tmpMoney.ToString();
+            addNewDestroyedObj("Coin", posOftheCollidedObj);
+        }
+    }
+    public void ChangeMoney(int justMoney)
+    {
+        if (justMoney > 0)
+        {
+            tmpMoney = justMoney;
+            moneyCount.text = tmpMoney.ToString();
+        }
     }
 
-    public void ChangeMoney(int currMoney)
-    {
-        moneyCount.text = currMoney.ToString();
-    }
 }

@@ -2,22 +2,46 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 public class CharacterOverlap : MonoBehaviour
 {
+    public event EventHandler OnFalling;
+    public event EventHandler OnEnteringInk;
+    public event EventHandler OnEscapingInk;
+    public event EventHandler OnTakingCoin;
+    public event EventHandler OnSaving;
+    
+    [SerializeField]
+    Transform[] checkForGround;
+    [SerializeField]
+    LayerMask theGroundLayer;
+
     [SerializeField]
     private GameObject theLetter;
     private bool nearLetter;
-    private PlayerManager thePlayerMG;
+
+    private IEnumerator timeToRes;
+
+    private GameManagerScript theGMScript;
+
     [SerializeField]
     private Player thePlayerController;
     private PlayerEffectsScript thePlayerFX;
+    private Animator thePlayerAnim;
+
     [SerializeField]
     private Transform playerLegPos;
     private Rigidbody2D thePlayer; 
     
     [SerializeField]
     private bool isOnGround;
+    public bool isAlive;
+    [SerializeField]
+    private int timeToCheck;
+
+    public Vector2 theLastAlivePosition;
+    public Vector2 theLastCheckpoint;
 
     [SerializeField]
     private float radOfDetect = .05f;
@@ -38,27 +62,33 @@ public class CharacterOverlap : MonoBehaviour
     private float changedHealth;
     public bool isReading;
     
+    
 
     private void Start()
-    {        
+    {
+        theLastCheckpoint = transform.position;
+        theGMScript = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManagerScript>();
+        thePlayerAnim = GetComponent<Animator>();
+
+        theLastAlivePosition = transform.position;
+        
+        isAlive = true;
         isReading = false;
-        isOnGround = true;
+        isOnGround = true;    
         
         timeToInstaTime = 3f;
         InstadeathTime = timeToInstaTime;
 
         strTimeToDeath = .45f;
         timeToDeath = strTimeToDeath;        
-        changedHealth = 0;
-        healthChange = 0.4f;
-
+        
+        StartCoroutine(findSafePlace());
     }
 
     private void Awake()
     {
         thePlayer = GetComponent<Rigidbody2D>();
         thePlayerFX = GetComponent<PlayerEffectsScript>();
-        thePlayerMG = GetComponent<PlayerManager>();
     }
 
     private void Update()
@@ -67,11 +97,34 @@ public class CharacterOverlap : MonoBehaviour
         CheckForLetter();
     }
 
+    IEnumerator findSafePlace()
+    {
+        while(isAlive)
+        {
+            bool isItSafe = false;
+            foreach(Transform transf1 in checkForGround)
+            {
+                if (Physics2D.OverlapCircle(transf1.position, radOfDetect, theGroundLayer))
+                {
+                    isItSafe = true;
+                }
+                else
+                {
+                    isItSafe = false;
+                    break;
+                }                    
+            }
+            if (isItSafe)
+            {
+                theLastAlivePosition = transform.position;
+            }
+            yield return new WaitForSeconds(timeToCheck);
+        }
+    }
+
     private void checkForDeath()
     {        
         RaycastHit2D goingToDeath = Physics2D.Raycast(new Vector2(playerLegPos.position.x, playerLegPos.position.y), thePlayerController.theVectRaw, radOfDetect, theDeathLayer);
-        //RaycastHit2D goingToDeath = Physics2D.BoxCast(playerLegPos.position, new Vector2(radOfDetect, radOfDetect), 90, thePlayerController.theVectRaw, theDeathLayer);
-
         if (goingToDeath.collider != null)
         {
             if(timeToDeath > 0f)
@@ -90,11 +143,10 @@ public class CharacterOverlap : MonoBehaviour
         {
             timeToDeath = strTimeToDeath;
             thePlayerController.canWalk = true;
-            //Debug.Log("The raycast is null");
         }
 
 
-        if (!isOnGround)
+        if (!isOnGround && isAlive)
         {
             Debug.Log("Death is near!");
             if (!thePlayerController.isDodging || thePlayerController.isRestarting)
@@ -106,8 +158,10 @@ public class CharacterOverlap : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log("Death!");
-                    thePlayerMG.theDeath();
+                    if (OnFalling != null)
+                    {
+                        OnFalling(this, EventArgs.Empty);
+                    }
                 }
             }
         }
@@ -119,6 +173,16 @@ public class CharacterOverlap : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if(collision.CompareTag("Checkpoint"))
+        {
+            if (OnSaving != null)
+            {
+                OnSaving(this, EventArgs.Empty);
+            }
+
+            theLastCheckpoint = collision.gameObject.transform.position;
+            collision.gameObject.SetActive(false);
+        }
         if (collision.CompareTag("Letter"))
         {
             nearLetter = true;
@@ -129,11 +193,21 @@ public class CharacterOverlap : MonoBehaviour
 
         if (collision.CompareTag("Coin"))
         {
-            thePlayerMG.ToChangeCoins(1, collision.gameObject);
+            /*
+            if (OnTakingCoin != null)
+            {
+                OnTakingCoin(this, EventArgs.Empty);
+            }*/
 
+            theGMScript.ChangeMoney(1, collision.gameObject.transform.position);
+            Destroy(collision.gameObject);
         }
         if (collision.CompareTag("Scary"))
         {
+            if(OnEnteringInk != null)
+            {
+                OnEnteringInk(this, EventArgs.Empty);
+            }
             thePlayerController.slowModif = 0.4f;
         }
         if (collision.CompareTag("MovingPlatform"))
@@ -150,15 +224,6 @@ public class CharacterOverlap : MonoBehaviour
             Debug.Log("is on the moving plat");
             thePlayerController.isSliding = true;
         }
-        if (collision.CompareTag("Scary"))
-        {
-            changedHealth += healthChange * Time.deltaTime;
-            if (changedHealth >= 0f)
-            {
-                thePlayerMG.ToChangeHealth(Mathf.RoundToInt(changedHealth));
-                changedHealth = 0;                
-            }
-        }
 
         if (collision.CompareTag("Floor"))
         {
@@ -172,7 +237,11 @@ public class CharacterOverlap : MonoBehaviour
         if (collision.CompareTag("Scary"))
         {
             thePlayerController.slowModif = 1f;
-            thePlayerFX.endTrail = true;
+            if(OnEscapingInk != null)
+            {
+                OnEscapingInk(this, EventArgs.Empty);
+            }
+            //thePlayerFX.endTrail = true;
         }
 
         if (collision.CompareTag("Letter"))
@@ -215,7 +284,6 @@ public class CharacterOverlap : MonoBehaviour
 
     }
 
-
     private void PaperOpen()
     {
         isReading = true;
@@ -229,6 +297,40 @@ public class CharacterOverlap : MonoBehaviour
         isReading = false;
         Debug.Log("Here we are closing!");
         theLetter.GetComponent<Animator>().SetBool("LetterOpen", false);
+    }
+
+    public void NearlyDeath()
+    {
+        isAlive = false;
+        Debug.Log("Dead!");
+        
+        transform.position = theLastAlivePosition;
+        isAlive = true;
+    }
+    public void Death()
+    {
+        timeToRes = resetTheGame();
+        StartCoroutine(timeToRes);
+    }
+    IEnumerator resetTheGame()
+    {
+        yield return new WaitForSeconds(10);
+        transform.position = theLastCheckpoint;
+        thePlayerController.NormalizeAll();
+
+    }
+
+    public void InkDeath()
+    {
+        thePlayerAnim.SetBool("IsDeadInk", true);
+        StartCoroutine(AfterInk());
+    }
+
+    IEnumerator AfterInk()
+    {
+        yield return new WaitForSeconds(10);
+        thePlayerAnim.SetBool("IsDeadInk", false);
+        StartCoroutine(resetTheGame());
     }
 
     private void OnDrawGizmos()

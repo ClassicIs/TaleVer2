@@ -11,8 +11,7 @@ public class PlayerEffectsScript : MonoBehaviour
     public bool makeTheGhost;
 
     void Start()
-    {
-        
+    {       
         //For trail
         timeForTrail = 3f;
         endTrail = false;
@@ -32,31 +31,6 @@ public class PlayerEffectsScript : MonoBehaviour
         else
         {
             ghost.enabled = false;
-        }
-
-    }
-
-    private void ToMakeTrail()
-    {
-        if (timeForTrail >= 0)
-        {
-            if (endTrail)
-            {
-                theTrail.time = Mathf.Lerp(theTrail.time, 0, .1f);
-
-                if (theTrail.time <= 0)
-                {
-                    theTrail.enabled = true;
-                }
-
-            }
-        }
-        else
-        {
-            timeForTrail = 3f;
-            theTrail.enabled = false;
-            theTrail.time = 0.53f;
-            endTrail = false;
         }
     }
 }

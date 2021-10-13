@@ -40,8 +40,8 @@ public class PlayerManager : MonoBehaviour
 
         theGameManager = GameObject.FindGameObjectWithTag("GameManager");
         GMScript = theGameManager.GetComponent<GameManagerScript>();
-        GMScript.ChangeHealth(health);
-        GMScript.ChangeMoney(coinCount);
+        //GMScript.ChangeHealth(health);
+        //GMScript.ChangeMoney(coinCount);
 
         charCollisionScript = GetComponent<CharacterOverlap>(); ;
         thePlayerScript = GetComponent<Player>();
@@ -105,8 +105,6 @@ public class PlayerManager : MonoBehaviour
             theDeath();
         }
     }
-
-
     public void theDeath()
     {
         thePlayerBody.velocity = new Vector2(0, 0);
@@ -117,6 +115,4 @@ public class PlayerManager : MonoBehaviour
         charCollisionScript.enabled = false;
         restartMenu.SetActive(true);        
     }
-
-
 }

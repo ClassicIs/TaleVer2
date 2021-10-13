@@ -51,8 +51,8 @@ public class GhostScript : MonoBehaviour
         {
             GameObject currGhost = Instantiate(theGhost, transform.position, transform.rotation);
             currGhost.GetComponent<SpriteRenderer>().sprite = GetComponent<SpriteRenderer>().sprite;
-
             ghostCount -= 1;
+            Destroy(currGhost, 1f);
             yield return new WaitForSeconds(timeToNextGhost);
         }
 
