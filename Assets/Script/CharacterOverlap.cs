@@ -11,7 +11,10 @@ public class CharacterOverlap : MonoBehaviour
     public event EventHandler OnEscapingInk;    
     public event EventHandler OnSaving;
     public event Action <int, Vector2> OnTakingCoin;
-    //public event Action<string, string> OnReadingLetter;
+
+    public event Action<string, string> OnNearLetter;
+    public event EventHandler OnFarLetter;
+
 
     public enum PlayerDeath
     {
@@ -26,10 +29,6 @@ public class CharacterOverlap : MonoBehaviour
     LayerMask theGroundLayer;
     [SerializeField]
     LayerMask theWallLayer;
-
-    [SerializeField]
-    private GameObject theLetter;
-    private bool nearLetter;
 
     private IEnumerator timeToRes;
 
@@ -76,12 +75,10 @@ public class CharacterOverlap : MonoBehaviour
     [SerializeField]
     Transform firstCheckPoint;
 
-
-    public bool isReading; 
     
     private void Start()
     {
-        timeToRes = ResetTheGame();
+        //timeToRes = ResetTheGame();
         theLastCheckpoint = firstCheckPoint.position;
         thePlayerAnim = GetComponent<Animator>();
         thePlayer = GetComponent<Rigidbody2D>();
@@ -90,7 +87,6 @@ public class CharacterOverlap : MonoBehaviour
         theLastAlivePosition = transform.position;
         
         isAlive = true;
-        isReading = false;
         isOnGround = true;    
         
         timeToInstaTime = 3f;
@@ -106,8 +102,8 @@ public class CharacterOverlap : MonoBehaviour
     {
         if (isAlive)
         {
+            //Debug.LogWarning()
             checkForDeath();
-            CheckForLetter();
         }
         if (Input.GetKeyDown(KeyCode.U))
         {
@@ -148,11 +144,11 @@ public class CharacterOverlap : MonoBehaviour
             
             Debug.Log("Is hitting into a wall");
             lastHitObject = goingIntoWall.point;
-            thePlayerController.currState = Player.PlayerStates.stunned;
+            thePlayerController.Stunned();
         }
         else
         {
-            thePlayerController.currState = Player.PlayerStates.moving;
+            thePlayerController.Unstunned();
         }
         RaycastHit2D goingToDeath = Physics2D.Raycast(new Vector2(playerLegPos.position.x, playerLegPos.position.y), thePlayerController.theVectRaw, radOfDropDetect, theDeathLayer);
         if (goingToDeath.collider != null)
@@ -161,18 +157,18 @@ public class CharacterOverlap : MonoBehaviour
             {
                 //Debug.Log("Raycast is " + goingToDeath.collider.tag);
                 thePlayer.velocity = new Vector2(0, 0);
-                thePlayerController.currState = Player.PlayerStates.stunned;
+                thePlayerController.Stunned();
                 timeToDeath -= 0.5f * Time.deltaTime;
             }
             else
             {
-                thePlayerController.currState = Player.PlayerStates.moving;
+                thePlayerController.Unstunned();
             }            
         }
         else
         {
             timeToDeath = strTimeToDeath;
-            thePlayerController.currState = Player.PlayerStates.moving;
+            thePlayerController.Unstunned();
         }
 
         if (!isOnGround)
@@ -185,8 +181,7 @@ public class CharacterOverlap : MonoBehaviour
                     InstadeathTime -= 5f * Time.deltaTime;
                 }
                 else
-                {
-                    isAlive = false;
+                {                    
                     if (OnFalling != null)
                     {
                         Debug.Log("OnFalling");
@@ -218,10 +213,13 @@ public class CharacterOverlap : MonoBehaviour
 
             if (collision.CompareTag("Letter"))
             {
-                nearLetter = true;
-                Text[] allText = theLetter.GetComponentsInChildren<Text>();
-                allText[0].text = collision.GetComponent<LetterScript>().sign;
-                allText[1].text = collision.GetComponent<LetterScript>().theMassOfStrings;
+                //nearLetter = true;
+                Debug.Log("nearLetter = true;!");
+                if (OnNearLetter != null)
+                {
+                    Debug.Log("OnNearLetter!");
+                    OnNearLetter (collision.GetComponent<LetterScript>().sign, collision.GetComponent<LetterScript>().theMassOfStrings);                    
+                }
             }
 
             if (collision.CompareTag("Coin"))
@@ -272,11 +270,12 @@ public class CharacterOverlap : MonoBehaviour
 
             if (collision.CompareTag("Letter"))
             {
-                nearLetter = false;
-                if (isReading)
+                Debug.Log("nearLetter = false;!");
+                if (OnFarLetter != null)
                 {
-                    PaperClose();
-                }
+                    Debug.Log("OnFarLetter!");
+                    OnFarLetter(this, EventArgs.Empty);
+                }                
             }
 
             if (collision.CompareTag("Floor"))
@@ -291,94 +290,60 @@ public class CharacterOverlap : MonoBehaviour
                 thePlayerController.isSliding = false;
             }
         }
-    }
-
-    private void CheckForLetter()
-    {
-        if (nearLetter)
-        {
-            if (Input.GetKeyDown(KeyCode.F) && !isReading)
-            {
-                PaperOpen();
-            }
-            else if (Input.GetKeyDown(KeyCode.F) && isReading)
-            {
-                PaperClose();
-            }
-        }
-        else if (!nearLetter && isReading)
-        {
-            PaperClose();
-        }
-    }
-
-    private void PaperOpen()
-    {
-        Debug.Log("Paper Opened");
-        isReading = true;
-        theLetter.SetActive(true);
-    }
-
-    private void PaperClose()
-    {
-        Debug.Log("Paper closed");
-        isReading = false;
-        theLetter.SetActive(false);
-    }
+    }  
     
-    public void Death(PlayerDeath states)
+    public void InterDeath()
     {
-        thePlayerController.currState = Player.PlayerStates.stunned;
-        switch (states)
-        {
-            case PlayerDeath.allInDeath:
-                DeathInAll();
-                break;
-            case PlayerDeath.inkDeath:
-                InkDeath();
-                break;
-            case PlayerDeath.intermidiateDeath:
-                NearlyDeath();
-                break;
-        }        
+        isAliveOrNot(false);
     }
 
-    private void DeathInAll()
+    public void allInDeath()
     {
-        transform.position = theLastCheckpoint;
-        thePlayerController.currState = Player.PlayerStates.moving;
-    }    
+        isAliveOrNot(false);
+    }
 
-    public void NearlyDeath()
+    public void SetPlayerTo(bool wasHeDead)
     {        
-        Debug.Log("Dead!");
-        transform.position = theLastAlivePosition;
-        isAlive = true;
+        if (wasHeDead)
+        {
+            transform.position = theLastCheckpoint;
+        }
+        else
+        {
+            transform.position = theLastAlivePosition;
+        }
+        isAliveOrNot(true);
+    }       
+    
+    private void isAliveOrNot(bool isOrNot)
+    {
+        if (isOrNot)
+        {            
+            thePlayerController.Unstunned();
+            isAlive = true;
+        }
+        else
+        {
+            thePlayer.velocity = Vector2.zero;
+            thePlayerController.Stunned();
+            isAlive = false;
+        }
     }
 
-    public void InkDeath()
-    {
-        isAlive = false;
-        thePlayerController.currState = Player.PlayerStates.stunned;
-        thePlayerAnim.SetBool("IsDeadInk", true);        
-        StartCoroutine(AfterInk());
+    public void InkDeath(bool isDeadOr)
+    {        
+        if (isDeadOr)
+        {
+            isAliveOrNot(false);
+            thePlayerAnim.SetBool("IsDeadInk", true);
+        }
+        else
+        {
+            isAliveOrNot(true);
+            thePlayerAnim.SetBool("IsDeadInk", false);
+        }
     }
 
-    IEnumerator AfterInk()
-    {
-        yield return new WaitForSeconds(1);
-        thePlayerAnim.SetBool("IsDeadInk", false);
-        StartCoroutine(timeToRes);
-    }
-
-    IEnumerator ResetTheGame()
-    {
-        yield return new WaitForSeconds(1);
-        Debug.LogWarning("Position of the player must be " + theLastCheckpoint);
-        transform.position = theLastCheckpoint;
-        thePlayerController.currState = Player.PlayerStates.moving;
-        isAlive = true;
-    }
 
     private void OnDrawGizmos()
     {

@@ -13,6 +13,7 @@ TagManager:
   - Walls
   - GameManager
   - Checkpoint
+  - LetterUI
   layers:
   - Default
   - TransparentFX

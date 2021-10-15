@@ -5,11 +5,7 @@ using UnityEngine;
 public class ScriptForLetter : MonoBehaviour
 {
     [SerializeField]
-    Animator theLetterAnim;
-    private void Start()
-    {
-        theLetterAnim = GetComponent<Animator>();
-    }
+    Animator theLetterAnim;    
 
     private void OnEnable()
     {

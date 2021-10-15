@@ -42,6 +42,6 @@ public class RestartScript : MonoBehaviour
             thePlayer.transform.position = Vector2.Lerp(thePlayer.transform.position, strPos, Time.deltaTime);            
             yield return null;
         }
-        theGMScript.RestartGame();        
+        //theGMScript.RestartGame();        
     }
 }

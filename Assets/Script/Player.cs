@@ -1,11 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 
 public class Player : MonoBehaviour
 {
-    public enum PlayerStates
+    private enum PlayerStates
     {
         moving,
         dashing,
@@ -13,7 +14,8 @@ public class Player : MonoBehaviour
         stunned
     }
     
-    public PlayerStates currState;
+    private PlayerStates currState;
+    public event EventHandler OnInteracting;
 
     private Rigidbody2D thePlayer;
     private Animator thePlayerAnim;
@@ -129,11 +131,11 @@ public class Player : MonoBehaviour
         }
     }
     
-    private void Stunned()
+    public void Stunned()
     {
         currState = PlayerStates.stunned;
     }
-    private void Unstunned()
+    public void Unstunned()
     {
         currState = PlayerStates.moving;
     }
@@ -166,6 +168,15 @@ public class Player : MonoBehaviour
                 currState = PlayerStates.attacking;
             }
         }
+        if (Input.GetKeyDown(KeyCode.F))
+        {
+            Debug.Log("F is Pressed!");
+            if (OnInteracting != null)
+            {
+                OnInteracting(this, EventArgs.Empty);
+            }
+        }
+
     }    
 
     private void forMovement()
