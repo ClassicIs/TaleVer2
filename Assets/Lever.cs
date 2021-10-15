@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 public class Lever : MonoBehaviour
 {
@@ -12,6 +13,11 @@ public class Lever : MonoBehaviour
 
     [SerializeField]
     isQtePassed qte;
+
+    void Subscribe(object sender, EventArgs e)
+    {
+        OpenDoor();
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -42,6 +48,7 @@ public class Lever : MonoBehaviour
         {
             if (Input.GetKeyDown("e"))
             {
+                qte.EventPassed += Subscribe;
                 Debug.Log("E is pressed");
                 qte.qteActive = true;
                 qte.QTESuccess();
@@ -54,5 +61,6 @@ public class Lever : MonoBehaviour
         DoorAnim.SetBool("DoorIsOpen", true);
         GetComponent<Animator>().SetBool("QTEisPassed", true);
         GetComponent<Lever>().enabled = false;
+        qte.EventPassed -= Subscribe;
     }
 }
