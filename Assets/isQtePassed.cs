@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
 
 public class isQtePassed : MonoBehaviour
 {
@@ -20,14 +21,16 @@ public class isQtePassed : MonoBehaviour
     [SerializeField]
     GameObject R_Button;
 
-    [SerializeField]
-    Lever lev;
+    //[SerializeField]
+    //Lever lev;
 
     //[SerializeField]
     //BearTrap trap;
 
     [SerializeField]
     float countDown = 1;
+
+    public event EventHandler EventPassed;
 
     // Start is called before the first frame update
     void Start()
@@ -96,8 +99,13 @@ public class isQtePassed : MonoBehaviour
 
         if (fillImage >= 1)
         {
+            if (EventPassed != null)
+            {
+                EventPassed(this, EventArgs.Empty);
+            }
+
             qteSuccess = true;
-            lev.OpenDoor();
+            //lev.OpenDoor();
 
             qteActive = false;
 

@@ -11,9 +11,7 @@ TagManager:
   - Coin
   - MovingPlatform
   - Walls
-  - GameManager
-  - Checkpoint
-  - LetterUI
+  - Spikes
   layers:
   - Default
   - TransparentFX
