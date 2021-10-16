@@ -11,6 +11,7 @@ public class CharacterOverlap : MonoBehaviour
     public event EventHandler OnEscapingInk;    
     public event EventHandler OnSaving;
     public event Action <int, Vector2> OnTakingCoin;
+    public event Action <GameObject> OnDangerCollision;
 
     public event Action<string, string> OnNearLetter;
     public event EventHandler OnFarLetter;
@@ -200,6 +201,11 @@ public class CharacterOverlap : MonoBehaviour
     {
         if (isAlive)
         {
+            if(collision.CompareTag("Dangerous"))
+            {
+                
+            }
+
             if (collision.CompareTag("Checkpoint"))
             {
                 if (OnSaving != null)

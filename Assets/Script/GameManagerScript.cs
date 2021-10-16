@@ -70,7 +70,6 @@ public class GameManagerScript : MonoBehaviour
     }
     private DeathTypes currDeath;
 
-    // Start is called before the first frame update
     void Start()
     {
         currDeath = DeathTypes.none;
@@ -78,6 +77,7 @@ public class GameManagerScript : MonoBehaviour
         
         inkLevel = 100;
         tmpInkLevel = inkLevel;
+        changeInkLevel(0);
 
         timeToDecreaseInk = 3;
 
@@ -96,6 +96,7 @@ public class GameManagerScript : MonoBehaviour
         tmpMoney = 0;
         playerMoney = tmpMoney;
         ChangeMoney(0);
+
 
         theLetterUI = GameObject.FindGameObjectWithTag("LetterUI");
         theLetterScript = theLetterUI.GetComponent<ScriptForLetter>();
@@ -155,9 +156,7 @@ public class GameManagerScript : MonoBehaviour
             thePlayerScr.Unstunned();
         }        
     }
-
-
-
+    
     private void IfLetterClose (string sign, string contain)
     {
         theLetterText[0].text = sign;
@@ -426,5 +425,4 @@ public class GameManagerScript : MonoBehaviour
             moneyCount.text = tmpMoney.ToString();
         }
     }
-
 }

@@ -31,6 +31,7 @@ public class isQtePassed : MonoBehaviour
     float countDown = 1;
 
     public event EventHandler EventPassed;
+    public event EventHandler EventNotPassed;
 
     // Start is called before the first frame update
     void Start()
@@ -71,7 +72,7 @@ public class isQtePassed : MonoBehaviour
         {
             timePassed = 0;
             fillImage -= .02f;
-           Debug.Log("AFK");
+            Debug.Log("AFK");
         }
 
         QTECircle.fillAmount = fillImage;
@@ -90,6 +91,10 @@ public class isQtePassed : MonoBehaviour
             QTEUnderCircle.SetActive(false);
             R_Button.SetActive(false);
             Debug.Log("not passed");
+            if(EventNotPassed != null)
+            {
+                EventNotPassed(this, EventArgs.Empty);
+            }
         }
 
         if (countDown > 0)

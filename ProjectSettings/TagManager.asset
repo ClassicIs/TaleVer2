@@ -12,6 +12,10 @@ TagManager:
   - MovingPlatform
   - Walls
   - Spikes
+  - LetterUI
+  - GameManager
+  - Checkpoint
+  - Dangerous
   layers:
   - Default
   - TransparentFX

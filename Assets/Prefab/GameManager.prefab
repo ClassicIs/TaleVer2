@@ -48,7 +48,10 @@ MonoBehaviour:
     type: 3}
   allGameObj:
   - {fileID: 6179185329695178260, guid: 07c5a4169e2238a48a3c606e48f9ea13, type: 3}
-  healthSlider: {fileID: 0}
+  inkSlider: {fileID: 0}
   moneyCount: {fileID: 0}
+  theLetterUI: {fileID: 0}
   thePlayerObj: {fileID: 0}
   theMenu: {fileID: 0}
+  inkLevelLoss: 0
+  timeToDecreaseInk: 0
