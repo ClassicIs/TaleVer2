@@ -11,11 +11,11 @@ public class CharacterOverlap : MonoBehaviour
     public event EventHandler OnEscapingInk;    
     public event EventHandler OnSaving;
     public event Action <int, Vector2> OnTakingCoin;
-    public event Action <GameObject> OnDangerCollision;
-
+    public event EventHandler OnDangerCollision;
+    public event EventHandler OnFountainIn;
+    public event EventHandler OnFountainOut;
     public event Action<string, string> OnNearLetter;
     public event EventHandler OnFarLetter;
-
 
     public enum PlayerDeath
     {
@@ -201,9 +201,25 @@ public class CharacterOverlap : MonoBehaviour
     {
         if (isAlive)
         {
-            if(collision.CompareTag("Dangerous"))
+            if(collision.CompareTag("Spikes"))
             {
-                
+                Debug.Log("Spikes!");
+                if (OnDangerCollision != null)
+                {
+                    Debug.Log("OnDangerCollision!");
+                    OnDangerCollision(this, EventArgs.Empty);
+                }
+            }
+
+            if(collision.CompareTag("InkFountain"))
+            {
+                Debug.Log("Ink fountain!");
+                if(OnFountainIn != null)
+                {
+                    Debug.Log("OnFountainIn!");
+
+                    OnFountainIn(this, EventArgs.Empty);
+                }
             }
 
             if (collision.CompareTag("Checkpoint"))
@@ -263,7 +279,16 @@ public class CharacterOverlap : MonoBehaviour
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (isAlive)
-        {
+        {            
+
+            if (collision.CompareTag("InkFountain"))
+            {
+                if (OnFountainOut != null)
+                {
+                    OnFountainOut(this, EventArgs.Empty);
+                }
+            }
+
             if (collision.CompareTag("Scary"))
             {
                 thePlayerController.slowModif = 1f;

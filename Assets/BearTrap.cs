@@ -10,13 +10,15 @@ public class BearTrap : MonoBehaviour
 
     [SerializeField]
     isQtePassed qte;
-
+    [SerializeField]
+    GameManagerScript theGM;
     //[SerializeField]
     //Player PlayerScript;
 
     // Start is called before the first frame update
     void Start()
     {
+        theGM = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManagerScript>();
 
     }
 
@@ -44,6 +46,8 @@ public class BearTrap : MonoBehaviour
             Debug.Log("You are in trap, silly boy!");
 
             qte.EventPassed += Subscribe;
+            qte.EventNotPassed += SubscribeBad;
+
             qte.qteActive = true;
             firstStep = false;
             GetComponent<Animator>().SetBool("isPlayerCaught", true);
@@ -53,7 +57,18 @@ public class BearTrap : MonoBehaviour
 
     void Subscribe(object sender, EventArgs e)
     {
-        qte.EventPassed -= Subscribe;
+        UnSub();
+    }
+    void SubscribeBad(object sender, EventArgs e)
+    {
+        theGM.ChangeHealth(-1);
+        UnSub();
+    }
+
+    void UnSub()
+    {
+        qte.EventPassed += Subscribe;
+        qte.EventPassed += SubscribeBad;
     }
 }
 

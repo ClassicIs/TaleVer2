@@ -28,7 +28,9 @@ public class isQtePassed : MonoBehaviour
     //BearTrap trap;
 
     [SerializeField]
-    float countDown = 1;
+    float countDown = 1f;
+    [SerializeField]
+    float strCountDown = 1f;
 
     public event EventHandler EventPassed;
     public event EventHandler EventNotPassed;
@@ -118,6 +120,8 @@ public class isQtePassed : MonoBehaviour
             QTEUnderCircle.SetActive(false);
             R_Button.SetActive(false);
             Debug.Log("passed");
+            fillImage = 0;
+            countDown = strCountDown;
         }
     }
 }

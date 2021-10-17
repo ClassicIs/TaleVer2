@@ -42,6 +42,7 @@ public class GameManagerScript : MonoBehaviour
 
     private int inkLevel;
     private int tmpInkLevel;
+    private int maxInklevel;
 
     private Vector2 startPos;
 
@@ -54,6 +55,8 @@ public class GameManagerScript : MonoBehaviour
     float timeToDecreaseInk;
     bool isInInk = false;
     bool nearLetter = false;
+    bool nearFountain = false;
+    bool nearDanger = false;
 
     private bool isItAfterFall;
 
@@ -74,10 +77,12 @@ public class GameManagerScript : MonoBehaviour
     {
         currDeath = DeathTypes.none;
         inkLevelLoss = 1;
-        
-        inkLevel = 100;
+
+        maxInklevel = 100;
+        inkLevel = maxInklevel;
         tmpInkLevel = inkLevel;
         changeInkLevel(0);
+
 
         timeToDecreaseInk = 3;
 
@@ -118,6 +123,11 @@ public class GameManagerScript : MonoBehaviour
         thePlayerOver.OnSaving += IfSave;
         thePlayerOver.OnTakingCoin += IfTookCoin;
 
+        thePlayerOver.OnDangerCollision += IfEnteredDanger;
+
+        thePlayerOver.OnFountainIn += IfEnteredFountain;
+        thePlayerOver.OnFountainOut += IfExitedFountain;
+
         destroyedObj = new List<SpawnObjects>();
         thePlayerScr = thePlayerObj.GetComponent<Player>();        
         menuActive = false;
@@ -137,7 +147,7 @@ public class GameManagerScript : MonoBehaviour
         MenuFunc();        
     }
 
-    private void LetterFunc(object sender, EventArgs e)
+    private void LetterFunc()
     {
         if (!isReading)
         {
@@ -156,7 +166,55 @@ public class GameManagerScript : MonoBehaviour
             thePlayerScr.Unstunned();
         }        
     }
-    
+
+    private void IfEnteredFountain(object sender, EventArgs e)
+    {
+        Debug.Log("We are here");
+        thePlayerScr.OnInteracting += FountainFunc;       
+    }
+
+    private void IfExitedFountain(object sender, EventArgs e)
+    {
+        thePlayerScr.OnInteracting -= FountainFunc;
+    }
+
+    private void FountainFunc()
+    {
+        if (tmpInkLevel != maxInklevel)
+        {
+            tmpInkLevel = maxInklevel;
+            changeInkLevel(0);
+        }
+        else
+        {
+            Debug.Log("You already have maxed out!");
+        }
+    }
+
+    private void IfEnteredDanger(object sender, EventArgs e)
+    {        
+        Debug.Log("Entered danger");
+        ChangeHealth(-1);
+        /*
+        nearDanger = !nearDanger;
+        if (nearDanger)
+        {
+            Debug.Log("Consumed danger");
+            float strTimeCount = 3;
+            float timeCount = strTimeCount;
+            if (timeCount > 0)
+            {
+                timeCount -= 0.2f;
+            }
+            else
+            {
+                ChangeHealth(-1);
+                timeCount = strTimeCount;
+            }
+
+        }*/
+    }
+
     private void IfLetterClose (string sign, string contain)
     {
         theLetterText[0].text = sign;

@@ -4,18 +4,9 @@ using UnityEngine;
 using System;
 
 
-public class Player : MonoBehaviour
-{
-    private enum PlayerStates
-    {
-        moving,
-        dashing,
-        attacking,
-        stunned
-    }
-    
-    private PlayerStates currState;
-    public event EventHandler OnInteracting;
+public class Player : AliveBeeing
+{   
+    public event Action OnInteracting;
 
     private Rigidbody2D thePlayer;
     private Animator thePlayerAnim;
@@ -55,7 +46,6 @@ public class Player : MonoBehaviour
     private float currTimeToFall;
     [SerializeField] 
     private float strTimeToFall;
-
     
     public bool isGrounded;
     public bool isSliding;
@@ -80,7 +70,7 @@ public class Player : MonoBehaviour
         slowModif = 1f; //Modifikator for going in ink        
 
         //For dodge
-        speedDodge = 2.6f; //Speed of dodge
+        speedDodge = 500f; //Speed of dodge
         startDodgeTime = 1f;
         dodge = 0;             
     }
@@ -173,7 +163,7 @@ public class Player : MonoBehaviour
             Debug.Log("F is Pressed!");
             if (OnInteracting != null)
             {
-                OnInteracting(this, EventArgs.Empty);
+                OnInteracting();
             }
         }
 

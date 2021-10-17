@@ -16,6 +16,7 @@ TagManager:
   - GameManager
   - Checkpoint
   - Dangerous
+  - InkFountain
   layers:
   - Default
   - TransparentFX

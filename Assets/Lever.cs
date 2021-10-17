@@ -4,10 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 
-public class Lever : MonoBehaviour
+public class Lever : InteractObject 
 {
-    bool PlayerStay;
-
     public GameObject Door;
     Animator DoorAnim;
 
@@ -20,12 +18,13 @@ public class Lever : MonoBehaviour
     }
 
     // Start is called before the first frame update
-    void Start()
+    protected override void Start()
     {
+        base.Start();
         DoorAnim = Door.GetComponent<Animator>();
     }
 
-    void OnTriggerEnter2D(Collider2D collision) 
+    /*void OnTriggerEnter2D(Collider2D collision) 
     {
         if (collision.tag == "Player")
         {
@@ -40,9 +39,9 @@ public class Lever : MonoBehaviour
             PlayerStay = false;
         }
     }
-
+    */
     // Update is called once per frame
-    void Update()
+    /*void Update()
     {
         if (PlayerStay == true)
         {
@@ -54,13 +53,22 @@ public class Lever : MonoBehaviour
                 qte.QTESuccess();
             }
         }
+    }*/
+
+    protected override void InterAction()
+    {
+        base.InterAction();
+        qte.EventPassed += Subscribe;
+        Debug.Log("E is pressed");
+        qte.qteActive = true;
+        qte.QTESuccess();
     }
 
-    public void OpenDoor()
+    private void OpenDoor()
     {
         DoorAnim.SetBool("DoorIsOpen", true);
         GetComponent<Animator>().SetBool("QTEisPassed", true);
-        GetComponent<Lever>().enabled = false;
         qte.EventPassed -= Subscribe;
+        GetComponent<Lever>().enabled = false;        
     }
 }
