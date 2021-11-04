@@ -6,7 +6,16 @@ using System;
 
 public class GameManagerScript : MonoBehaviour
 {
+    public static GameManagerScript gmInstance;
+    private event Action nullAction;
+
+    [SerializeField]
+    private LockConvasScr theLockScript;
+    private GameObject theLockObject;
+    private List<string> theInventory = new List<string>();
+
     public List<SpawnObjects> destroyedObj;
+
 
     [SerializeField]
     private GameObject theHealthHolder;
@@ -32,6 +41,8 @@ public class GameManagerScript : MonoBehaviour
     [SerializeField]
     private GameObject theMenu;
 
+    private menuScr theMenuScript;
+
     private int playerHealth;
     private int tmpHealth;
     private int maxPlayerHealth;
@@ -43,6 +54,8 @@ public class GameManagerScript : MonoBehaviour
     private int inkLevel;
     private int tmpInkLevel;
     private int maxInklevel;
+
+    private FadeInScript theFadeInScr;
 
     private Vector2 startPos;
 
@@ -57,6 +70,7 @@ public class GameManagerScript : MonoBehaviour
     bool nearLetter = false;
     bool nearFountain = false;
     bool nearDanger = false;
+    bool notEndOfLevel = true;
 
     private bool isItAfterFall;
 
@@ -101,11 +115,12 @@ public class GameManagerScript : MonoBehaviour
         tmpMoney = 0;
         playerMoney = tmpMoney;
         ChangeMoney(0);
-
-
+        
         theLetterUI = GameObject.FindGameObjectWithTag("LetterUI");
         theLetterScript = theLetterUI.GetComponent<ScriptForLetter>();
         theLetterText = theLetterUI.GetComponentsInChildren<Text>();
+
+        theFadeInScr = GameObject.FindGameObjectWithTag("Fade").GetComponent<FadeInScript>();
 
         startPos = thePlayerObj.transform.position;
 
@@ -128,6 +143,11 @@ public class GameManagerScript : MonoBehaviour
         thePlayerOver.OnFountainIn += IfEnteredFountain;
         thePlayerOver.OnFountainOut += IfExitedFountain;
 
+        thePlayerOver.OnNearLock += IfNearLock;
+        thePlayerOver.OnFarLock += IfFarLock;
+
+        thePlayerOver.OnEndOfLevel += IfEndOfLevel;
+
         destroyedObj = new List<SpawnObjects>();
         thePlayerScr = thePlayerObj.GetComponent<Player>();        
         menuActive = false;
@@ -144,18 +164,37 @@ public class GameManagerScript : MonoBehaviour
         {
             ChangeHealth(1);
         }
-        MenuFunc();        
+        if (notEndOfLevel)
+        {
+            MenuFunc();
+        }
+
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            if (thePlayerScr.currState != Player.PlayerStates.stunned)
+            {
+                Debug.Log("P Stunned");
+                thePlayerOver.Stunned();
+                //thePlayerScr.currState = Player.PlayerStates.stunned;
+            }
+            else
+            {
+                Debug.Log("P Untunned");
+                thePlayerOver.Unstunned();
+                //thePlayerScr.currState = Player.PlayerStates.moving;
+            }
+        }
+        
     }
 
     private void LetterFunc()
     {
         if (!isReading)
         {
-
             Debug.Log("Letter is opening");
             isReading = true;
             theLetterScript.enabled = true;
-            thePlayerScr.Stunned();
+            thePlayerOver.Stunned();
 
         }
         else
@@ -163,7 +202,7 @@ public class GameManagerScript : MonoBehaviour
             Debug.Log("Letter is closing");
             isReading = false;
             theLetterScript.enabled = false;
-            thePlayerScr.Unstunned();
+            thePlayerOver.Unstunned();
         }        
     }
 
@@ -177,6 +216,49 @@ public class GameManagerScript : MonoBehaviour
     {
         thePlayerScr.OnInteracting -= FountainFunc;
     }
+
+    private void IfNearLock(GameObject theObj)
+    {
+        thePlayerScr.ClearAllInter();
+        thePlayerScr.OnInteracting += LockFunc;
+        theLockObject = theObj;
+    }
+
+    private void IfFarLock()
+    {
+        theLockObject = null;
+        thePlayerScr.OnInteracting -= LockFunc;
+    }
+
+    private void LockFunc()
+    {
+        thePlayerOver.Stunned();
+        theLockScript.OnFail += NotOpenTheLock;
+        theLockScript.OnSuccess += OpenTheLock;
+        theLockScript.Activate();
+    }
+
+    private void NotOpenTheLock()
+    {
+        thePlayerOver.Unstunned();
+        Debug.Log("Box not openned!");
+    }
+
+    private void OpenTheLock()
+    {
+        BoxScript theBoxScript = theLockObject.GetComponent<BoxScript>();
+        theBoxScript.OpenTheBox();
+        foreach (string theItem in theBoxScript.contentOfBox)
+        {
+            theInventory.Add(theItem);
+        }
+        foreach (string theItemObj in theInventory)
+        {
+            Debug.Log(theItemObj);
+        }
+        thePlayerOver.Unstunned();
+    }
+
 
     private void FountainFunc()
     {
@@ -195,24 +277,6 @@ public class GameManagerScript : MonoBehaviour
     {        
         Debug.Log("Entered danger");
         ChangeHealth(-1);
-        /*
-        nearDanger = !nearDanger;
-        if (nearDanger)
-        {
-            Debug.Log("Consumed danger");
-            float strTimeCount = 3;
-            float timeCount = strTimeCount;
-            if (timeCount > 0)
-            {
-                timeCount -= 0.2f;
-            }
-            else
-            {
-                ChangeHealth(-1);
-                timeCount = strTimeCount;
-            }
-
-        }*/
     }
 
     private void IfLetterClose (string sign, string contain)
@@ -241,6 +305,14 @@ public class GameManagerScript : MonoBehaviour
         playerMoney = tmpMoney;
         inkLevel = tmpInkLevel;
         destroyedObj.Clear();
+    }
+
+    private void IfEndOfLevel(object sender, EventArgs e)
+    {
+        IfSave(sender, e);
+        StartCoroutine(theFadeInScr.toFadeInCoroutine(false));
+        MenuOn(true, "To be continued...");
+        
     }
 
     private void IfTookCoin(int money, Vector2 pos)
@@ -336,27 +408,37 @@ public class GameManagerScript : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape) && !menuActive)
         {
-            MenuOn();
+            MenuOn(true);
         }
         else if (Input.GetKeyDown(KeyCode.Escape) && menuActive)
         {
-            MenuOff();
+            MenuOn(false);
         }
     }
 
-    public void MenuOn()
-    {
-        thePlayerScr.enabled = false;
-        Time.timeScale = 0f;
-        menuActive = true;
-        theMenu.SetActive(true);
-    }
-    public void MenuOff()
-    {
-        thePlayerScr.enabled = true;
-        Time.timeScale = 1f;
-        menuActive = false;
-        theMenu.SetActive(false);
+    public void MenuOn(bool onOrOff, string theString = "")
+    {        
+        if (onOrOff)
+        {
+            if(theString != "")
+            {
+                theMenu.GetComponentInChildren<Text>().text = theString;
+                theMenu.GetComponentInChildren<Image>().enabled = false;
+            }
+            thePlayerScr.enabled = false;
+            thePlayerOver.Stunned();
+            //Time.timeScale = 0f;
+            menuActive = true;
+            theMenu.SetActive(true);
+        }
+        else
+        {
+            thePlayerOver.Unstunned();
+            thePlayerScr.enabled = true;
+            //Time.timeScale = 1f;
+            menuActive = false;
+            theMenu.SetActive(false);
+        }
     }
 
     public void ChangeHealth(int addOrDelHealth)

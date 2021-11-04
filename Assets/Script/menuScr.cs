@@ -10,60 +10,38 @@ public class menuScr : MonoBehaviour
     [SerializeField]
     private GameObject opMenu;
 
-    [SerializeField]
-    private GameObject theBlackPanel;
-    private Image theBlackBG;
+    bool coroutineEnd = false;
+    FadeInScript theFadeInScr;    
 
     private void Start()
     {
-        
-        theBlackBG = theBlackPanel.GetComponent<Image>();
+        theFadeInScr = GameObject.FindGameObjectWithTag("Fade").GetComponent<FadeInScript>();
     }
 
-    public void continueB()
+    public void ContinueB()
     {
-        theBlackPanel.SetActive(true);
-        StartCoroutine(toFadeInCoroutine());
+        StartCoroutine(theFadeInScr.toFadeInCoroutine(true));
+        theFadeInScr.CoroutineEnd += StartCurrScene;
+    }    
+
+    private void StartCurrScene()
+    {        
+        theFadeInScr.CoroutineEnd -= StartCurrScene;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);        
     }
 
-    IEnumerator toFadeInCoroutine()
+    private void StartFromNewScene()
     {
-        float theOpacity = 0;
-        while (theOpacity < 0.99f)
-        {
-            theOpacity += Time.deltaTime;
-
-            Color tmp = theBlackBG.color;
-            tmp.a = theOpacity;
-
-            theBlackBG.color = tmp;
-            yield return null;
-        }
-        SceneManager.LoadScene("level1");
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
-    IEnumerator toFadeOutCoroutine()
-    {
-        float theOpacity = 1;
-        while(theOpacity > 0.01f)
-        {
-            theOpacity -= Time.deltaTime;
-
-            Color tmp = theBlackBG.color;
-            tmp.a = theOpacity;
-            
-            theBlackBG.color = tmp;
-            yield return null;
-        }        
-    }
-
-    public void optionsB()
+    public void OptionsB()
     {
         mainMenu.SetActive(false);
         opMenu.SetActive(true);
     }
 
-    public void backToMenuB()
+    public void BackToMenuB()
     {
         mainMenu.SetActive(true);
         opMenu.SetActive(false);

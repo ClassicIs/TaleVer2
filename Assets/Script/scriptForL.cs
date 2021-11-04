@@ -12,15 +12,7 @@ public class scriptForL : MonoBehaviour
         anim1 = GetComponent<Animator>();
         startTimer = 100;
         timer = startTimer;
-    }
-    private void Update()
-    {
-        
-    }
-    private void FixedUpdate()
-    {
-        
-    }
+    }   
 
     private void OnTriggerEnter2D(Collider2D collision)
     {

@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class RestartScript : MonoBehaviour
 {
-    [SerializeField]
     private GameObject thePlayer;
     [SerializeField]
     private GameObject thisMenu;
@@ -22,6 +21,7 @@ public class RestartScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        thePlayer = GameObject.FindGameObjectWithTag("Player");
         thePlayerScript = thePlayer.GetComponent<Player>();
         theGMScript = theGameManager.GetComponent<GameManagerScript>();
     }

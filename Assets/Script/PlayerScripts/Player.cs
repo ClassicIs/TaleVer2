@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-
 public class Player : AliveBeeing
 {   
     public event Action OnInteracting;
@@ -12,6 +11,7 @@ public class Player : AliveBeeing
     private Animator thePlayerAnim;
     private PlayerEffectsScript theFXScript;
     private AudioManagerScript theAudioManager;
+    private List <string> theInventory;
 
     public LayerMask theWallLayer;
     
@@ -27,8 +27,6 @@ public class Player : AliveBeeing
     Vector2 movePosition;
 
     public float dodge;
-    [SerializeField]
-    public bool isDodging;
     private float startDodgeTime;
     [SerializeField]
     private float speedDodge;   
@@ -60,9 +58,8 @@ public class Player : AliveBeeing
         lastMoveDir = new Vector2(0, 0);
 
         theVectRaw = new Vector2(0, 0);
-        theAudioManager = FindObjectOfType<AudioManagerScript>();   
+        theAudioManager = FindObjectOfType<AudioManagerScript>();
         theFXScript = GetComponent<PlayerEffectsScript>();
-        isDodging = false;
         
         //Speed variables        
         normSpeed = 1.5f;        
@@ -85,6 +82,11 @@ public class Player : AliveBeeing
     void Update()
     {
         CheckMovement();
+    }
+
+    public void ClearAllInter()
+    {
+        OnInteracting = null;
     }
 
     void FixedUpdate()
@@ -118,16 +120,9 @@ public class Player : AliveBeeing
             case PlayerStates.attacking:
                 Debug.Log("Attacking");
                 break;
+            case PlayerStates.isDead:
+                break;
         }
-    }
-    
-    public void Stunned()
-    {
-        currState = PlayerStates.stunned;
-    }
-    public void Unstunned()
-    {
-        currState = PlayerStates.moving;
     }
 
     private void CheckMovement()
@@ -178,9 +173,9 @@ public class Player : AliveBeeing
     {
         //movePosition = thePlayer.position + lastMoveDir * speedDodge;
         
-        if (!isDodging)
-        {            
-            isDodging = true;
+        if (currState != PlayerStates.dashing)
+        {
+            currState = PlayerStates.dashing;
             theFXScript.MakeTheGhosts(true);            
             thePlayer.velocity = Vector2.zero;
             thePlayerAnim.SetTrigger("Dodge");
@@ -219,8 +214,7 @@ public class Player : AliveBeeing
             count++;
             print("Dodge in proccess" + count);
             yield return null;
-        }
-        isDodging = false;
+        }        
         currState = PlayerStates.moving;
         theFXScript.MakeTheGhosts(false);
         Debug.Log("Dodge is made!");
@@ -230,10 +224,7 @@ public class Player : AliveBeeing
     {
         //Gizmos.color = new Color(1, 0, 0);
         //Gizmos.DrawLine(transform.position, transform.position + new Vector3(theVectRaw.x * 0.5f, theVectRaw.y * 0.5f, 0f));
-
-        //Gizmos.DrawLine(transform.position, movePosition);       
-
-
+        //Gizmos.DrawLine(transform.position, movePosition);
     }
 
 
