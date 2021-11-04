@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class LockConvasScr : QTEObject
+public class LockCanvasScr : QTEObject
 {
     [SerializeField]
     private GameObject thePoint;

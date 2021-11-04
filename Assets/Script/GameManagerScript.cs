@@ -10,7 +10,7 @@ public class GameManagerScript : MonoBehaviour
     private event Action nullAction;
 
     [SerializeField]
-    private LockConvasScr theLockScript;
+    private LockCanvasScript theLockScript;
     private GameObject theLockObject;
     private List<string> theInventory = new List<string>();
 
