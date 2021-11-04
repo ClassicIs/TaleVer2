@@ -47,8 +47,9 @@ public class LockCanvasScript : QTEObject
         StartCoroutine(TheCapsule());
     }
 
-    void EndOfLock()
+    protected override void Close()
     {
+        base.Close();
         thePlayerTransform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
         thePointTransform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
         TurnSprites(false);
@@ -114,7 +115,7 @@ public class LockCanvasScript : QTEObject
             }
             yield return null;
         }
-        EndOfLock();
+        Close();
     }
     protected override void Failed()
     {

@@ -8,6 +8,7 @@ public class QTEObject : MonoBehaviour
     public event Action OnFail;
     protected virtual void Failed()
     {
+        Debug.Log("Fail!");
         if (OnFail != null)
         {
             OnFail();
@@ -15,9 +16,18 @@ public class QTEObject : MonoBehaviour
     }
     protected virtual void Success()
     {
+        Debug.Log("Success!");
         if (OnSuccess != null)
         {
             OnSuccess();
         }
+    }
+
+    public virtual void Activate()
+    { 
+    }
+
+    protected virtual void Close()
+    {
     }
 }
