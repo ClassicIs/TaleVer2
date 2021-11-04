@@ -115,7 +115,7 @@ public class Player : AliveBeeing
                 break;
             case PlayerStates.stunned:
                 thePlayerAnim.SetBool("isMoving", false);
-                Debug.Log("Is Stunned");
+                //Debug.Log("Is Stunned");
                 break;
             case PlayerStates.attacking:
                 Debug.Log("Attacking");

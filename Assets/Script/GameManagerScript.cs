@@ -238,26 +238,29 @@ public class GameManagerScript : MonoBehaviour
         theLockScript.Activate();
     }
 
-    private void NotOpenTheLock()
-    {
-        thePlayerOver.Unstunned();
-        Debug.Log("Box not openned!");
-    }
-
     private void OpenTheLock()
     {
         BoxScript theBoxScript = theLockObject.GetComponent<BoxScript>();
         theBoxScript.OpenTheBox();
         foreach (string theItem in theBoxScript.contentOfBox)
-        {
+        {            
             theInventory.Add(theItem);
         }
+
         foreach (string theItemObj in theInventory)
         {
             Debug.Log(theItemObj);
         }
         thePlayerOver.Unstunned();
     }
+
+    private void NotOpenTheLock()
+    {
+        thePlayerOver.Unstunned();
+        Debug.Log("Box not openned!");
+    }
+
+    
 
 
     private void FountainFunc()
