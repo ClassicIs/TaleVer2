@@ -118,8 +118,7 @@ public class GameManagerScript : MonoBehaviour
         ChangeMoney(0);
 
         theCypherScr = GameObject.FindObjectOfType<CypherScript>();
-        theCypherScr.Activate();
-
+        //theCypherScr.Activate();
 
         theLetterUI = GameObject.FindGameObjectWithTag("LetterUI");
         theLetterScript = theLetterUI.GetComponent<ScriptForLetter>();

@@ -24,6 +24,7 @@ public class MoveOnj : MonoBehaviour
     {        
         while (true)
         {
+            Debug.Log("The vector distance is " + Vector2.Distance(transform.position, pointsToVisit[i].position));
             while (Vector2.Distance(transform.position, pointsToVisit[i].position) > 0.1f)
             {
                 transform.position = Vector2.MoveTowards(transform.position, pointsToVisit[i].position, speedToGo);

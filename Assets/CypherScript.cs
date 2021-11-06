@@ -24,7 +24,6 @@ public class CypherScript : QTEObject
     // Start is called before the first frame update
     public void Activate(string cypherComb = "123")
     {
-        base.Activate();
         QTEHolder.SetActive(true);
         ButtonInstantiate();
         OutputText("");
@@ -99,7 +98,6 @@ public class CypherScript : QTEObject
 
     public void Close()
     {
-        base.Close();
         int currSize = theButton.Length;
         for (int i = 0; i < currSize; i++)
         {
