@@ -24,8 +24,11 @@ public class QTEObject : MonoBehaviour
     }
 
     public virtual void Activate()
-    { 
+    {
+        
     }
+
+    
 
     protected virtual void Close()
     {

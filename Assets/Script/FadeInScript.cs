@@ -11,6 +11,10 @@ public class FadeInScript : MonoBehaviour
 
     private void Start()
     {
+        foreach(Transform child in transform)
+        {
+            child.gameObject.SetActive(true);
+        }
         theBlackBG = GetComponentInChildren<Image>();
     }
     private void Awake()

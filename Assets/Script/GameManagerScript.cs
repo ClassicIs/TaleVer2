@@ -12,6 +12,7 @@ public class GameManagerScript : MonoBehaviour
     [SerializeField]
     private LockCanvasScript theLockScript;
     private GameObject theLockObject;
+    private CypherScript theCypherScr;
     private List<string> theInventory = new List<string>();
 
     public List<SpawnObjects> destroyedObj;
@@ -115,7 +116,11 @@ public class GameManagerScript : MonoBehaviour
         tmpMoney = 0;
         playerMoney = tmpMoney;
         ChangeMoney(0);
-        
+
+        theCypherScr = GameObject.FindObjectOfType<CypherScript>();
+        theCypherScr.Activate();
+
+
         theLetterUI = GameObject.FindGameObjectWithTag("LetterUI");
         theLetterScript = theLetterUI.GetComponent<ScriptForLetter>();
         theLetterText = theLetterUI.GetComponentsInChildren<Text>();
@@ -151,6 +156,7 @@ public class GameManagerScript : MonoBehaviour
         destroyedObj = new List<SpawnObjects>();
         thePlayerScr = thePlayerObj.GetComponent<Player>();        
         menuActive = false;
+        
     }
 
     // Update is called once per frame

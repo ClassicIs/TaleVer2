@@ -115,7 +115,7 @@ public class LockCanvasScript : QTEObject
             }
             yield return null;
         }
-        Close();
+        Close ();
     }
     protected override void Failed()
     {

@@ -9,62 +9,95 @@ public class CypherScript : QTEObject
     GameObject [] theButton = new GameObject[9];
     [SerializeField]
     GameObject strButton;
+    [SerializeField]
+    GameObject QTEHolder;
+    [SerializeField]
+    Transform QTEButtonHolder;
 
     [SerializeField]
     string cypherComb;
     [SerializeField]
     string yourComb;
-
+    [SerializeField]
+    Text theOutText;
+    bool buttonsActive;
     // Start is called before the first frame update
-    void Start()
+    public void Activate(string cypherComb = "123")
     {
-        
+        base.Activate();
+        QTEHolder.SetActive(true);
         ButtonInstantiate();
+        OutputText("");
+        buttonsActive = true;
     }
 
     void ButtonInstantiate()
-    {
-        
+    {        
         for (int i = 0; i < theButton.Length; i++)
         {
-
-            int count = i + 1;
-            Debug.Log("the true i is " + i);
-            theButton[i] = Instantiate(strButton, transform);
+            int count = i + 1;            
+            theButton[i] = Instantiate(strButton, QTEButtonHolder);
             
             theButton[i].GetComponent<Button>().onClick.AddListener(() => OnButtonClick(count));
 
-            theButton[i].GetComponentInChildren<Text>().text = (i + 1).ToString();
+            theButton[i].GetComponentInChildren<Text>().text = count.ToString();
         }
+    }
+
+    void ButtonOn(bool onOrOff)
+    {
+        for (int i = 0; i < 0; i++)
+        {
+            theButton[i].GetComponent<Button>().interactable = onOrOff;
+        }
+        buttonsActive = onOrOff;
     }
 
     void OnButtonClick(int numOfButton)
     {
         string tmpComb = yourComb + numOfButton;
-        CheckForComb(tmpComb);
+        if(tmpComb.Length <= cypherComb.Length)
+        {            
+            yourComb = tmpComb;
+            OutputText(yourComb);
+        }
+        else
+        {
+            ButtonOn(false);
+        }
+    }
+    
+    public void ButtonReset()
+    {
+        yourComb = "";
+        OutputText(yourComb);
+        ButtonOn(true);
     }
 
-    void CheckForComb(string tryComb)
+    void OutputText(string theText)
     {
-        if(tryComb.Length < cypherComb.Length)
+        theOutText.text = theText;
+    }
+
+    public void CheckForComb()
+    {
+        if(yourComb.Length == cypherComb.Length)
         {
-            yourComb = tryComb;
-        }
-        else if(tryComb.Length == cypherComb.Length)
-        {
-            if(tryComb == cypherComb)
+            if(yourComb == cypherComb)
             {
                 Success();
+                Close();
             }
             else
             {
-                Failed();                
+                Failed();
+                ButtonReset();
             }
-            Close();
+            
         }
     }
 
-    protected override void Close()
+    public void Close()
     {
         base.Close();
         int currSize = theButton.Length;
@@ -72,15 +105,6 @@ public class CypherScript : QTEObject
         {
             Destroy(theButton[i]);
         }
-        gameObject.SetActive(false);
-        
-    }
-
-    
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        QTEHolder.SetActive(false);        
     }
 }
