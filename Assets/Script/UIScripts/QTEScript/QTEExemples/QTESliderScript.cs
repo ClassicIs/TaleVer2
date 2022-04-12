@@ -24,8 +24,7 @@ public class QTESliderScript : QTEObject
 
     // Start is called before the first frame update
     void Start()
-    {
-        theSlider = GetComponentInChildren<Slider>();
+    {        
         theSlider.interactable = false;
     }
 

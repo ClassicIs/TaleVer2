@@ -5,26 +5,27 @@ using System;
 
 public class Player : AliveBeeing
 {   
-    public event Action OnInteracting;
-
     private Rigidbody2D thePlayer;
     private Animator thePlayerAnim;
     private PlayerEffectsScript theFXScript;
     private AudioManagerScript theAudioManager;
+    private PlayerCharacterInput thePlayerInput;
     private List <string> theInventory;
 
     public LayerMask theWallLayer;
     
     public Transform tmpGameObj;
-    public bool isMoving;
-    
-    private Vector2 lastMovePosition;
+    public Vector2 theVectRaw;
     private Vector2 theVect;
+
+    private Vector2 lastMovePosition;
+
     [SerializeField]
     private Vector2 lastMoveDir;
-    public Vector2 theVectRaw;
+
     [SerializeField]
     Vector2 movePosition;
+    public bool isMoving;
 
     public float dodge;
     private float startDodgeTime;
@@ -37,8 +38,6 @@ public class Player : AliveBeeing
 
     public bool canWalk;
 
-    private float horMovement;
-    private float verMovement;
     private bool isTryingToDie;   
 
     private float currTimeToFall;
@@ -51,6 +50,7 @@ public class Player : AliveBeeing
     // Start is called before the first frame update
     void Start()
     {
+        thePlayerInput = GetComponent<PlayerCharacterInput>();
         currState = PlayerStates.moving;
         movePosition = transform.position;
         lastMovePosition = new Vector2(0, 0);
@@ -79,16 +79,34 @@ public class Player : AliveBeeing
         thePlayerAnim = GetComponent<Animator>();
     }
 
-    void Update()
+
+    public void Move(float horMovement, float verMovement)
     {
-        CheckMovement();
+        theVectRaw = new Vector2(horMovement, verMovement).normalized;
+        theVect = new Vector2(horMovement, verMovement).normalized;
+        if (Mathf.Abs(theVectRaw.x) > 0.1f || Mathf.Abs(theVectRaw.y) > 0.1f)
+        {
+            isMoving = true;
+            lastMoveDir = theVectRaw;
+        }
+        else
+        {
+            isMoving = false;
+        }
+        speed = Mathf.Lerp(speed, normSpeed * slowModif, .1f);
+        thePlayer.velocity = theVect * speed;
     }
 
-    public void ClearAllInter()
+    public void ToDash()
     {
-        OnInteracting = null;
+        currState = PlayerStates.dashing;    
     }
 
+    public void ToAttack()
+    {
+        currState = PlayerStates.attacking;
+    }
+    
     void FixedUpdate()
     {
         switch (currState)
@@ -107,13 +125,13 @@ public class Player : AliveBeeing
                 else
                 {                    
                     thePlayerAnim.SetBool("isMoving", false);
-                }
-                forMovement();
+                }                
                 break;
             case PlayerStates.dashing:
-                toDodge();
+                Dash();
                 break;
-            case PlayerStates.stunned:
+            case PlayerStates.stunned:                
+                isMoving = false;
                 thePlayerAnim.SetBool("isMoving", false);
                 //Debug.Log("Is Stunned");
                 break;
@@ -123,53 +141,9 @@ public class Player : AliveBeeing
             case PlayerStates.isDead:
                 break;
         }
-    }
-
-    private void CheckMovement()
-    {
-        horMovement = Input.GetAxisRaw("Horizontal");
-        verMovement = Input.GetAxisRaw("Vertical");
-        theVectRaw = new Vector2(horMovement, verMovement).normalized;
-        theVect = new Vector2(horMovement, verMovement).normalized;
-        if (Mathf.Abs(theVectRaw.x) > 0.1f || Mathf.Abs(theVectRaw.y) > 0.1f)
-        {
-            isMoving = true;
-            lastMoveDir = theVectRaw;
-        }
-        else
-        {
-            isMoving = false;
-        }
-        speed = Mathf.Lerp(speed, normSpeed * slowModif, .1f);
-        if (currState != PlayerStates.stunned)
-        {
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                currState = PlayerStates.dashing;
-            }
-
-            if (Input.GetKeyDown(KeyCode.G))
-            {
-                currState = PlayerStates.attacking;
-            }
-        }
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            Debug.Log("F is Pressed!");
-            if (OnInteracting != null)
-            {
-                OnInteracting();
-            }
-        }
-
     }    
 
-    private void forMovement()
-    {
-        thePlayer.velocity = theVect * speed;
-    }
-
-    private void toDodge()
+    private void Dash()
     {
         //movePosition = thePlayer.position + lastMoveDir * speedDodge;
         
@@ -222,9 +196,6 @@ public class Player : AliveBeeing
 
     private void OnDrawGizmos()
     {
-        //Gizmos.color = new Color(1, 0, 0);
-        //Gizmos.DrawLine(transform.position, transform.position + new Vector3(theVectRaw.x * 0.5f, theVectRaw.y * 0.5f, 0f));
-        //Gizmos.DrawLine(transform.position, movePosition);
     }
 
 

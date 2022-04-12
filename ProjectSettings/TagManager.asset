@@ -20,6 +20,7 @@ TagManager:
   - Lock
   - Fade
   - EndOfLevel
+  - Dialogue
   layers:
   - Default
   - TransparentFX

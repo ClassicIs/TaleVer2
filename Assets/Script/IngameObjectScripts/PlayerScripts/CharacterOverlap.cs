@@ -17,7 +17,12 @@ public class CharacterOverlap : MonoBehaviour
     public event Action<string, string> OnNearLetter;
     public event EventHandler OnFarLetter;
     public event EventHandler OnEndOfLevel;
-    
+
+    private PlayerCharacterInput PlayerInput;
+
+    public event Action<DialogueLine[]> OnDialogueEnter;
+    public event Action OnDialogueExit;
+
     public event Action<GameObject> OnNearLock;
     public event Action OnFarLock;
 
@@ -83,6 +88,7 @@ public class CharacterOverlap : MonoBehaviour
     
     private void Start()
     {
+        PlayerInput = GetComponent<PlayerCharacterInput>();
         //timeToRes = ResetTheGame();
         theLastCheckpoint = firstCheckPoint.position;
 
@@ -101,22 +107,18 @@ public class CharacterOverlap : MonoBehaviour
         strTimeToDeath = .45f;
         timeToDeath = strTimeToDeath;      
         
-        StartCoroutine(findSafePlace());
+        StartCoroutine(FindSafePlace());
     }
 
     private void Update()
     {
         if (thePlayerController.currState != Player.PlayerStates.isDead && thePlayerController.currState != Player.PlayerStates.stunned)
         {
-            checkForDeath();
-        }
-        if (Input.GetKeyDown(KeyCode.U))
-        {
-            tmpObj.position = lastHitObject;
-        }
+            CheckForDeath();
+        }        
     }
 
-    IEnumerator findSafePlace()
+    IEnumerator FindSafePlace()
     {
         while(thePlayerController.currState != Player.PlayerStates.isDead)
         {
@@ -141,7 +143,7 @@ public class CharacterOverlap : MonoBehaviour
         }
     }
 
-    private void checkForDeath()
+    private void CheckForDeath()
     {
         RaycastHit2D goingIntoWall = Physics2D.Raycast(transform.position, thePlayerController.theVectRaw, radOfWallDetect, theWallLayer);
         if(goingIntoWall.collider != null)
@@ -280,6 +282,16 @@ public class CharacterOverlap : MonoBehaviour
                     OnEndOfLevel(this, EventArgs.Empty);
                 }
             }
+
+            if (collision.CompareTag("Dialogue"))
+            {
+                Debug.Log("Entered Dialogue");
+                //Debug.Log(collision.GetComponent<OneDialogue>().theLines[0].theLine);
+                if(OnDialogueEnter != null)
+                {                    
+                    OnDialogueEnter(collision.GetComponent<OneDialogue>().theLines);
+                }
+            }
         }
     }
 
@@ -320,8 +332,7 @@ public class CharacterOverlap : MonoBehaviour
                 if (OnEscapingInk != null)
                 {
                     OnEscapingInk(this, EventArgs.Empty);
-                }
-                //thePlayerFX.endTrail = true;
+                }               
             }
 
             if (collision.CompareTag("Letter"))
@@ -345,6 +356,16 @@ public class CharacterOverlap : MonoBehaviour
                 Debug.Log("Not on the moving plat");
                 thePlayerController.isSliding = false;
             }
+
+            if (collision.CompareTag("Dialogue"))
+            {
+                Debug.Log("Exited Dialogue");
+                if (OnDialogueExit != null)
+                {
+                    OnDialogueExit();
+                }
+            }
+
         }
     }  
     
@@ -387,11 +408,13 @@ public class CharacterOverlap : MonoBehaviour
 
     public void Stunned()
     {
+        PlayerInput.enabled = false;
         thePlayer.velocity = new Vector2(0, 0);
         thePlayerController.currState = Player.PlayerStates.stunned;
     }
     public void Unstunned()
     {
+        PlayerInput.enabled = true;
         thePlayerController.currState = Player.PlayerStates.moving;
     }
 

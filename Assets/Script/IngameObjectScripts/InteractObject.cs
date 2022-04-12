@@ -5,11 +5,11 @@ using UnityEngine;
 public class InteractObject : MonoBehaviour
 {
     [SerializeField]
-    Player thePlayer;
+    PlayerOtherInput PlayerInput;
 
     protected virtual void Start()
     {
-        thePlayer = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+        PlayerInput = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerOtherInput>();
     }
 
     protected virtual void InterAction()
@@ -21,7 +21,7 @@ public class InteractObject : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            thePlayer.OnInteracting += InterAction;
+            PlayerInput.OnInteracting += InterAction;
         }
     }
 
@@ -29,7 +29,7 @@ public class InteractObject : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            thePlayer.OnInteracting -= InterAction;
+            PlayerInput.OnInteracting -= InterAction;
         }
     }
 

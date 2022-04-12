@@ -8,6 +8,8 @@ public class Lever : InteractObject
 {
     public GameObject Door;
     Animator DoorAnim;
+    [SerializeField]
+    bool PlayerStay;
 
     [SerializeField]
     isQtePassed qte;
@@ -20,11 +22,12 @@ public class Lever : InteractObject
     // Start is called before the first frame update
     protected override void Start()
     {
+        PlayerStay = false;
         base.Start();
         DoorAnim = Door.GetComponent<Animator>();
     }
 
-    /*void OnTriggerEnter2D(Collider2D collision) 
+    void OnTriggerEnter2D(Collider2D collision) 
     {
         if (collision.tag == "Player")
         {
@@ -39,22 +42,23 @@ public class Lever : InteractObject
             PlayerStay = false;
         }
     }
-    */
+    
     // Update is called once per frame
-    /*void Update()
+    void Update()
     {
         if (PlayerStay == true)
         {
-            if (Input.GetKeyDown("e"))
+            if (Input.GetKeyDown("f"))
             {
                 qte.EventPassed += Subscribe;
                 Debug.Log("E is pressed");
-                qte.qteActive = true;
-                qte.QTESuccess();
+                qte.Activate();
+                /*qte.qteActive = true;
+                qte.QTESuccess();*/
             }
         }
-    }*/
-
+    }
+    /*
     protected override void InterAction()
     {
         base.InterAction();
@@ -63,7 +67,7 @@ public class Lever : InteractObject
         qte.qteActive = true;
         qte.QTESuccess();
     }
-
+    */
     private void OpenDoor()
     {
         DoorAnim.SetBool("DoorIsOpen", true);

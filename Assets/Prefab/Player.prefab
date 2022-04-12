@@ -335,6 +335,8 @@ GameObject:
   - component: {fileID: 2770220322474851739}
   - component: {fileID: 2770220322474851809}
   - component: {fileID: 2770220322474851743}
+  - component: {fileID: 2331718582921051430}
+  - component: {fileID: 4724069688601351872}
   m_Layer: 10
   m_Name: Player
   m_TagString: Player
@@ -505,16 +507,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f1a22631d69a0b4ebbb38ef7a87af1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currState: 0
   theWallLayer:
     serializedVersion: 2
     m_Bits: 12288
   tmpGameObj: {fileID: 0}
-  isMoving: 0
-  lastMoveDir: {x: 0, y: 0}
   theVectRaw: {x: 0, y: 0}
+  lastMoveDir: {x: 0, y: 0}
   movePosition: {x: 0, y: 0}
+  isMoving: 0
   dodge: 0.2
-  isDodging: 0
   speedDodge: 500
   speed: 0
   slowModif: 0
@@ -596,3 +598,27 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   endTrail: 0
   makeTheGhost: 0
+--- !u!114 &2331718582921051430
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2770220322474851733}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82079f539d4f9df49a3ada62e8a5f286, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &4724069688601351872
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2770220322474851733}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7201a4a4463e98d44a501d4d8685667d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
