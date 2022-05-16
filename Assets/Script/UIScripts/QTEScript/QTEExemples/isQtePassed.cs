@@ -11,66 +11,62 @@ public class isQtePassed : QTEObject
     public bool qteSuccess = false;
     public bool qteActive = false;
 
-    Image QTECircle;
     Image UnderCircle;
+    Image QTECircle;
     Image RButton;
 
     [SerializeField]
-    GameObject QTEUnderCircle;
-
+    GameObject QTEUnderCircleObj;
     [SerializeField]
-    GameObject R_Button;
-
-    //[SerializeField]
-    //Lever lev;
-
-    //[SerializeField]
-    //BearTrap trap;
-
+    GameObject R_ButtonObj;
     [SerializeField]
-    float countDown = 1f;
-    [SerializeField]
+    GameObject QTECircleObj;
+
+    float countDown;    
     float strCountDown = 1f;
-
-    public event EventHandler EventPassed;
-    public event EventHandler EventNotPassed;
-
-    // Start is called before the first frame update
+   
     void Start()
     {
-        QTECircle = GetComponent<Image>();
-        UnderCircle = QTEUnderCircle.GetComponent<Image>();
-        RButton = R_Button.GetComponent<Image>();
+        UnderCircle = GetComponentsInChildren<Image>()[0];
+        QTECircle = GetComponentsInChildren<Image>()[1];
+        RButton = GetComponentsInChildren<Image>()[2];
 
-        QTEUnderCircle.SetActive(false);
-        R_Button.SetActive(false);
-        countDown = 1;
+        QTEUnderCircleObj = transform.GetChild(0).gameObject;
+        QTECircleObj = transform.GetChild(1).gameObject;
+        R_ButtonObj = transform.GetChild(2).gameObject;
+
+        QTEOff();
     }
 
-    
-
-    // Update is called once per frame
-    /*void Update()
+    public override void Activate(HardVariety Hardness)
     {
-        if (qteActive == true)
-        {
-            QTESuccess();
-        }
-    }*/
-
-    public void Activate()
-    {
+        QTECircleObj.SetActive(true);
+        QTEUnderCircleObj.SetActive(true);
+        R_ButtonObj.SetActive(true);
         StartCoroutine(QTESuccess());
     }
+
+    protected override void QTEEnd()
+    {
+        QTEOff();
+        NullActions();
+    }
+    
+    private void QTEOff()
+    {
+        QTECircleObj.SetActive(false);
+        QTEUnderCircleObj.SetActive(false);
+        R_ButtonObj.SetActive(false);
+        fillImage = 0;
+        countDown = strCountDown;
+    }
+
 
     public IEnumerator QTESuccess()
     {
         bool hasEnded = false;
         while (!hasEnded)
-        {
-            gameObject.SetActive(true);
-            QTEUnderCircle.SetActive(true);
-            R_Button.SetActive(true);
+        {           
 
             if (Input.GetKeyDown(KeyCode.R))
             {
@@ -83,57 +79,30 @@ public class isQtePassed : QTEObject
             if (timePassed > .05)
             {
                 timePassed = 0;
-                fillImage -= .02f;
-                Debug.Log("AFK");
+                fillImage -= .02f;                
             }
 
             QTECircle.fillAmount = fillImage;
-
-            if (fillImage < 0 && countDown <= 0)
-            {
-                fillImage = 0;
-
-                countDown = 1;
-
-                qteSuccess = false;
-
-                qteActive = false;
-
-                gameObject.SetActive(false);
-                QTEUnderCircle.SetActive(false);
-                R_Button.SetActive(false);
-                Debug.Log("not passed");
-                if (EventNotPassed != null)
-                {
-                    EventNotPassed(this, EventArgs.Empty);
-                }
-            }
 
             if (countDown > 0)
             {
                 countDown -= .5f * Time.deltaTime;
             }
 
+
+            if (fillImage < 0 && countDown <= 0)
+            {
+                hasEnded = true;
+                Failed();
+            }            
+
             if (fillImage >= 1)
             {
-                if (EventPassed != null)
-                {
-                    EventPassed(this, EventArgs.Empty);
-                }
-
-                qteSuccess = true;
-                //lev.OpenDoor();
-
-                qteActive = false;
-
-                gameObject.SetActive(false);
-                QTEUnderCircle.SetActive(false);
-                R_Button.SetActive(false);
-                Debug.Log("passed");
-                fillImage = 0;
-                countDown = strCountDown;
+                hasEnded = true;
+                Success();                           
             }
-            yield return null;
+            yield return null;            
         }
+        QTEEnd();
     }
 }

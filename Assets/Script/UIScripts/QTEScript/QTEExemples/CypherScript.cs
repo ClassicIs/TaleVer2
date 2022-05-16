@@ -21,9 +21,21 @@ public class CypherScript : QTEObject
     [SerializeField]
     Text theOutText;
     bool buttonsActive;
-    // Start is called before the first frame update
-    public void Activate(string cypherComb = "123")
+
+
+    public override void Activate(HardVariety Hardness)
     {
+        Debug.LogWarning("You cannot use Cyphers like this. You need to write a Cypher first!");
+    }
+
+    // Start is called before the first frame update
+    public void Activate(string cypherComb)
+    {
+        if(cypherComb == "")
+        {
+            Debug.LogWarning("You need to write a Cypher first!");
+            return;
+        }
         QTEHolder.SetActive(true);
         ButtonInstantiate();
         OutputText("");
@@ -85,7 +97,7 @@ public class CypherScript : QTEObject
             if(yourComb == cypherComb)
             {
                 Success();
-                Close();
+                QTEEnd();
             }
             else
             {
@@ -96,7 +108,7 @@ public class CypherScript : QTEObject
         }
     }
 
-    public void Close()
+    protected override void QTEEnd()
     {
         int currSize = theButton.Length;
         for (int i = 0; i < currSize; i++)

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-public class QTEObject : MonoBehaviour
+public abstract class QTEObject : MonoBehaviour
 {
     public event Action OnSuccess;
     public event Action OnFail;
@@ -13,6 +13,7 @@ public class QTEObject : MonoBehaviour
         {
             OnFail();
         }
+        QTEEnd();
     }
     protected virtual void Success()
     {
@@ -21,6 +22,23 @@ public class QTEObject : MonoBehaviour
         {
             OnSuccess();
         }
+        QTEEnd();
     }
 
+    protected virtual void NullActions()
+    {
+        OnSuccess = null;
+        OnFail = null;
+    }
+
+    public enum HardVariety
+    {
+        easy,
+        normal,
+        hard
+    }
+
+    public abstract void Activate(HardVariety Hardness);
+
+    protected abstract void QTEEnd();
 }

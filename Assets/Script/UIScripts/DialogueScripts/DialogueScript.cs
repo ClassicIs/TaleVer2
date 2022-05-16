@@ -28,12 +28,29 @@ public class DialogueScript : MonoBehaviour
         DialogueToOutput = new List<DialogueLine>();
         theSign = GetComponentsInChildren<Text>()[0];
         theMessage = GetComponentsInChildren<Text>()[1];
+        DialogOff();
+        
+    }
+    // Service functions
+    void DialogOn()
+    {
+        theSign.enabled = true;
+        theMessage.enabled = true;
     }
 
-
-    public void ToStartDialogue(List <DialogueLine> theLines)
+    void DialogOff()
     {
-        DialogueToOutput.Clear();
+        theSign.enabled = false;
+        theMessage.enabled = false;
+        if (DialogueToOutput != null)
+        {
+            DialogueToOutput.Clear();
+        }
+    }
+
+    public void ToStartDialogue(DialogueLine[] theLines)
+    {
+        DialogOn();
         foreach (DialogueLine line in theLines)
         {
             DialogueToOutput.Add(line);
@@ -68,6 +85,7 @@ public class DialogueScript : MonoBehaviour
             }
             else
             {
+                DialogOff();
                 if (OnDialogueEnd != null)
                 {
                     OnDialogueEnd();

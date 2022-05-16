@@ -30,7 +30,7 @@ public class Enemy : MonoBehaviour
 
     protected virtual void Attack()
     {
-        thePlayerMG.ToChangeHealth(-attackStrength);
+        thePlayerMG.AddHealth(-attackStrength);
     }
 
     protected virtual void followPlayer()

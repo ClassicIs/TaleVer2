@@ -37,6 +37,7 @@ public class Player : AliveBeeing
     public float slowModif;
 
     public bool canWalk;
+    public bool isSlowDown;
 
     private bool isTryingToDie;   
 
@@ -69,7 +70,9 @@ public class Player : AliveBeeing
         //For dodge
         speedDodge = 500f; //Speed of dodge
         startDodgeTime = 1f;
-        dodge = 0;             
+        dodge = 0;
+
+        isSlowDown = false;
     }
 
     private void Awake()
@@ -79,6 +82,16 @@ public class Player : AliveBeeing
         thePlayerAnim = GetComponent<Animator>();
     }
 
+    public void SlowEffectOn(float SlowModifier)
+    {
+        isSlowDown = true;
+        slowModif = SlowModifier;
+    }
+    public void SlowEffectOff()
+    {
+        isSlowDown = false;
+        slowModif = 1f;
+    }
 
     public void Move(float horMovement, float verMovement)
     {
@@ -192,11 +205,6 @@ public class Player : AliveBeeing
         currState = PlayerStates.moving;
         theFXScript.MakeTheGhosts(false);
         Debug.Log("Dodge is made!");
-    }
-
-    private void OnDrawGizmos()
-    {
-    }
-
+    }  
 
 }

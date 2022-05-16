@@ -1,15 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class QTEHolder : MonoBehaviour
 {
-    private LockCanvasScript theLock;
-    private QTESliderScript theSlider;
-    private CypherScript the—ypher;
-    private isQtePassed theSimpleQTE;
-
-
+    [SerializeField] private LockCanvasScript theLock;
+    [SerializeField] private QTESliderScript theSlider;
+    [SerializeField] private CypherScript the—ypher;
+    [SerializeField] private isQtePassed theSimpleQTE;
+    
     public enum TypesOfQTE
     {
         Lock,
@@ -19,37 +19,37 @@ public class QTEHolder : MonoBehaviour
 
     } 
 
-
-    public void ActivateQTE(TypesOfQTE theQTE)
+    public QTEObject ActivateQTE(TypesOfQTE theQTE)
     {
+        QTEObject NewQTE;
+
         switch (theQTE)
         {
             case TypesOfQTE.Lock:
-                theLock.Activate();
+                NewQTE = theLock;
                 break;
             case TypesOfQTE.Slider:
-                theSlider.Activate();
-                break;
-            case TypesOfQTE.Cypher:
-                the—ypher.Activate();
+                NewQTE = theSlider;                
                 break;
             case TypesOfQTE.Simple:
-                theSimpleQTE.Activate();
+                NewQTE = theSimpleQTE;
                 break;
-
+            case TypesOfQTE.Cypher:
+                NewQTE = the—ypher;
+                break;
+            default:
+                NewQTE = null;
+                break;
         }
+        return NewQTE;      
+    }   
 
-    }
-
-    // Start is called before the first frame update
     void Start()
     {
-        
-    }
+        //ActivateQTE(TypesOfQTE.Slider).Activate(QTEObject.HardVariety.easy);
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        /*
+        CypherScript ThisCypher = (CypherScript)ActivateQTE(TypesOfQTE.Cypher);
+        ThisCypher.Activate("1234");*/
     }
 }

@@ -1,18 +1,19 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
+//using UnityEngine.UI;
 using System;
 
 public class GameManagerScript : MonoBehaviour
 {
-    [SerializeField]
-    private DialogueScript DialogueHolder;
-    private List <DialogueLine> theCurrLines;
+    private SaveManager SaveManagement;
+    
     private Player thePlayerScr;
-
-
+    private PlayerManager PlayerManager;
     private PlayerOtherInput AllOtherInput;
+
+    InteractObject ObjToInteract = null;
+    DangerObject ObjectDanger = null;
 
     public static GameManagerScript gmInstance;
     private event Action nullAction;
@@ -29,37 +30,15 @@ public class GameManagerScript : MonoBehaviour
     private GameObject[] allHealth;
 
     [SerializeField] 
-    private GameObject[] allGameObj;
-    [SerializeField]
-    private Slider inkSlider;
-    [SerializeField]
-    private Text moneyCount;
-    [SerializeField]
-    private GameObject theLetterUI;
-    private ScriptForLetter theLetterScript;
-    private Text[] theLetterText;
+    private GameObject[] allGameObj; 
 
     [SerializeField]
     private GameObject thePlayerObj;
     
-    
+    /*[SerializeField]
+    private GameObject theMenu;*/
     [SerializeField]
-    private GameObject theMenu;
-
-    private menuScr theMenuScript;
-
-    private int playerHealth;
-    private int tmpHealth;
-    private int maxPlayerHealth;
-    private int minPlayerHealth;
-    
-    private int playerMoney;
-    private int tmpMoney;
-
-    [SerializeField]
-    private int inkLevel;
-    private int tmpInkLevel;
-    private int maxInklevel;
+    private MenuScript MenuScript;    
 
     private FadeInScript theFadeInScr;
 
@@ -73,8 +52,7 @@ public class GameManagerScript : MonoBehaviour
     [SerializeField]
     float timeToDecreaseInk;
     bool isInInk = false;
-    bool nearLetter = false;
-    bool nearFountain = false;
+    
     bool nearDanger = false;
     bool notEndOfLevel = true;
 
@@ -100,67 +78,54 @@ public class GameManagerScript : MonoBehaviour
 
     void Awake()
     {
-        theCurrLines = new List<DialogueLine>();        
-
-        theLetterUI = GameObject.FindGameObjectWithTag("LetterUI");
-        theLetterScript = theLetterUI.GetComponent<ScriptForLetter>();
-        theLetterText = theLetterUI.GetComponentsInChildren<Text>();
-
-        theFadeInScr = GameObject.FindGameObjectWithTag("Fade").GetComponent<FadeInScript>();
-        
-
-        thePlayerOver = thePlayerObj.GetComponent<CharacterOverlap>();       
-
-        destroyedObj = new List<SpawnObjects>();
-        thePlayerScr = thePlayerObj.GetComponent<Player>();
-        AllOtherInput = thePlayerObj.GetComponent<PlayerOtherInput>();
+        AssigningValues();
         inkCoroutine = InkStay();
         
         EnterAllActions();
         Normalize();
     }
 
-    private void Start()
+    private void AssigningValues()
     {
-        DialogueHolder.OnDialogueEnd += IfEndDialogue;
+        SaveManagement = GetComponent<SaveManager>();
+        theFadeInScr = GameObject.FindGameObjectWithTag("Fade").GetComponent<FadeInScript>();
+        PlayerManager = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>();
+        thePlayerOver = thePlayerObj.GetComponent<CharacterOverlap>();
+        destroyedObj = new List<SpawnObjects>();
+        thePlayerScr = thePlayerObj.GetComponent<Player>();
+        AllOtherInput = thePlayerObj.GetComponent<PlayerOtherInput>();
     }
 
     private void EnterAllActions()
     {
-        thePlayerOver.OnNearLetter += IfLetterClose;
-        thePlayerOver.OnFarLetter += IfLetterFar;
+        AllOtherInput.OnEscape += IfMenu;
+        AllOtherInput.OnInteracting += IfInteracted;
 
+
+        //Change        
+        //thePlayerOver.OnNearLock += IfNearLock;
+        //thePlayerOver.OnFarLock += IfFarLock;
+        
+        // Leave
         thePlayerOver.OnFalling += changeHealthWhenFalling;
-
-        thePlayerOver.OnEnteringInk += IfEnteredInk;
-        thePlayerOver.OnEscapingInk += IfEscapedInk;
-
+        
         thePlayerOver.OnSaving += IfSave;
         thePlayerOver.OnTakingCoin += IfTookCoin;
 
-        thePlayerOver.OnDangerCollision += IfEnteredDanger;
-
-        thePlayerOver.OnFountainIn += IfEnteredFountain;
-        thePlayerOver.OnFountainOut += IfExitedFountain;
-
-        thePlayerOver.OnNearLock += IfNearLock;
-        thePlayerOver.OnFarLock += IfFarLock;
-
-        thePlayerOver.OnDialogueEnter += IfEnteredDialogue;
-        thePlayerOver.OnDialogueExit += IfExitedDialogue;
-
-        thePlayerOver.OnEndOfLevel += IfEndOfLevel;
+        thePlayerOver.OnDangerousObject += IfEnteredDanger;
+        thePlayerOver.OnNearInterObject += IfInteractedNear;
+        thePlayerOver.OnFarInterObject += IfInteractedAway;
+        //thePlayerOver.OnEndOfLevel += IfEndOfLevel;
     }
 
     private void Normalize()
     {
-
         menuActive = false;
         startPos = thePlayerObj.transform.position;
         isItAfterFall = false;
         currDeath = DeathTypes.none;
 
-        maxInklevel = 100;
+        /*maxInklevel = 100;
         inkLevel = maxInklevel;
         tmpInkLevel = inkLevel;
         ChangeInkLevel(0);
@@ -177,44 +142,17 @@ public class GameManagerScript : MonoBehaviour
 
         tmpMoney = 0;
         playerMoney = tmpMoney;
-        ChangeMoney(0);
+        ChangeMoney(0);*/
     }
 
     void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.H))
-        {
-            ChangeHealth(-1);
-        }
-        else if (Input.GetKeyDown(KeyCode.J))
-        {
-            ChangeHealth(1);
-        }
+    {        
         if (notEndOfLevel)
         {
-            MenuFunc();
-        }                
-    }
-
-    private void LetterFunc()
-    {
-        if (!isReading)
-        {
-            Debug.Log("Letter is opening");
-            isReading = true;
-            theLetterScript.enabled = true;
-            thePlayerOver.Stunned();
-
-        }
-        else
-        {
-            Debug.Log("Letter is closing");
-            isReading = false;
-            theLetterScript.enabled = false;
-            thePlayerOver.Unstunned();
+            //MenuFunc();
         }        
-    }    
-
+    }
+    
     private void LockFunc()
     {
         thePlayerOver.Stunned();/*
@@ -222,7 +160,7 @@ public class GameManagerScript : MonoBehaviour
         theLockScript.OnSuccess += OpenTheLock;
         theLockScript.Activate();*/
     }
-
+    /*
     private void OpenTheLock()
     {
         BoxScript theBoxScript = theLockObject.GetComponent<BoxScript>();
@@ -238,6 +176,9 @@ public class GameManagerScript : MonoBehaviour
         }
         thePlayerOver.Unstunned();
     }
+    */
+
+
 
     private void NotOpenTheLock()
     {
@@ -245,39 +186,29 @@ public class GameManagerScript : MonoBehaviour
         Debug.Log("Box not openned!");
     }
 
-    public void FountainFunc()
-    {
-        if (tmpInkLevel != maxInklevel)
-        {
-            tmpInkLevel = maxInklevel;
-            ChangeInkLevel(0);
-        }
-        else
-        {
-            Debug.Log("You already have maxed out!");
-        }
-    }    
+    // TODO Move to Restart Manager
 
-    private void changeHealthWhenFalling(object sender, EventArgs e)
+    private void changeHealthWhenFalling()
     {
         currDeath = DeathTypes.afterFall;
-        ChangeHealth(-1);        
+        //ChangeHealth(-1);        
     }
 
+    
     private void RestartTheGame()
     {
         Debug.Log("Restarting!");        
         SetAllObjectsBack();
-       
+       /*
         tmpMoney = playerMoney;
-        ChangeMoney(0);
+        //ChangeMoney(0);
         tmpHealth = playerHealth;
 
         Debug.Log("Tmp health is " + tmpHealth);
-        ChangeHealth(0);
+        //ChangeHealth(0);
         tmpInkLevel = inkLevel;
-        ChangeInkLevel(0);
-
+        //ChangeInkLevel(0);
+       */
         switch (currDeath)
         {
             case DeathTypes.afterFall:
@@ -323,93 +254,11 @@ public class GameManagerScript : MonoBehaviour
         destroyedObj.Clear();
     }
 
-    private void MenuFunc()
+    private void IfMenu()
     {
-        if (Input.GetKeyDown(KeyCode.Escape) && !menuActive)
-        {
-            MenuOn(true);
-        }
-        else if (Input.GetKeyDown(KeyCode.Escape) && menuActive)
-        {
-            MenuOn(false);
-        }
+        MenuScript.MenuOn();
     }
-
-    public void MenuOn(bool onOrOff, string theString = "")
-    {        
-        if (onOrOff)
-        {
-            if(theString != "")
-            {
-                theMenu.GetComponentInChildren<Text>().text = theString;
-                theMenu.GetComponentInChildren<Image>().enabled = false;
-            }
-            thePlayerScr.enabled = false;
-            thePlayerOver.Stunned();
-            //Time.timeScale = 0f;
-            menuActive = true;
-            theMenu.SetActive(true);
-        }
-        else
-        {
-            thePlayerOver.Unstunned();
-            thePlayerScr.enabled = true;
-            //Time.timeScale = 1f;
-            menuActive = false;
-            theMenu.SetActive(false);
-        }
-    }
-
-    public void ChangeHealth(int addOrDelHealth)
-    {
-        int changedHealth = tmpHealth + addOrDelHealth;
-
-        if (changedHealth > minPlayerHealth && changedHealth <= maxPlayerHealth)
-        {
-            tmpHealth = changedHealth;
-            if (theHealthHolder.transform.childCount - 1 < tmpHealth)
-            {
-                int heartsToAdd = (changedHealth - theHealthHolder.transform.childCount);
-
-                for (int j = 0; j < heartsToAdd; j++)
-                {                    
-                    Instantiate(healthIcon, theHealthHolder.transform);
-                }
-            }
-            else if (theHealthHolder.transform.childCount > tmpHealth)
-            {
-                
-                int heartsToDestroy = theHealthHolder.transform.childCount - (theHealthHolder.transform.childCount - tmpHealth);
-                int currHeartsCount = theHealthHolder.transform.childCount;
-                for (int i = currHeartsCount - 1; i >= heartsToDestroy; i--)
-                {
-                    Destroy(theHealthHolder.transform.GetChild(i).gameObject);
-                }
-
-                if (currDeath == DeathTypes.afterFall)
-                {
-                    DeathChooser();
-                }
-            }
-            else
-            {
-                Debug.Log("Health is already of that value " + changedHealth);
-            }
-        }
-        else if (changedHealth == minPlayerHealth)
-        {            
-            currDeath = DeathTypes.afterHealthLoss;
-            tmpHealth = changedHealth;
-            Destroy(theHealthHolder.transform.GetChild(0).gameObject);
-            Debug.Log("Instantiate theDeath");
-            DeathChooser();                        
-        }
-        else
-        {
-            Debug.Log("Health is out of boundaries");
-        }
-    }
-
+    
     private void DeathChooser()
     {
         switch(currDeath)
@@ -435,165 +284,142 @@ public class GameManagerScript : MonoBehaviour
     {
         yield return new WaitForSeconds(5);        
         RestartTheGame();
+    }   
+
+    // Interaction
+    
+    private void IfInteractedNear(InteractObject InteractObject)
+    {
+        InteractObject.IFPlayerNear();
     }
 
-    public void ChangeInkLevel(int deltaInkLevel)
+    private void IfInteractedAway(InteractObject InteractObject)
     {
-        int tmpInk = tmpInkLevel - deltaInkLevel;
-        if (tmpInk > 0)
+        InteractObject.IFPlayerIsAway();
+    }
+
+    private void IfInteracted()
+    {
+        ObjToInteract = thePlayerOver.theNearestObject();
+        if (ObjToInteract != null)
         {
-            tmpInkLevel -= deltaInkLevel;            
+            ObjToInteract.InterAction();
+            if(ObjToInteract.LongInteraction)
+            {
+                thePlayerOver.Stunned();
+
+                AllOtherInput.OnInteracting += ObjToInteract.FutherAction;
+                AllOtherInput.OnInteracting -= IfInteracted;
+                
+                ObjToInteract.OnEndOfInteraction += InteractionEnded;
+            }
         }
         else
         {
-            tmpInkLevel = 0;
-            Debug.LogWarning("Ink level is out of bounds!");
-        }
-        inkSlider.value = tmpInkLevel;
-        if (tmpInkLevel == 0)
-        {
-            currDeath = DeathTypes.afterInk;
-            DeathChooser();
+            Debug.LogWarning("Oops! Looks like there's realy nothing to interact with!");
         }
     }
 
-    public void ChangeMoney(int addMoney, Vector2 posOftheCollidedObj)
+    void InteractionEnded()
     {
-        if (addMoney > 0)
+        if (ObjToInteract != null)
         {
-            tmpMoney = tmpMoney + addMoney; 
-            moneyCount.text = tmpMoney.ToString();
-            AddNewDestroyedObj("Coin", posOftheCollidedObj);
+            Debug.Log("Null the Actions!");
+            AllOtherInput.OnInteracting -= ObjToInteract.FutherAction;
+            ObjToInteract.OnEndOfInteraction -= InteractionEnded;
+            AllOtherInput.OnInteracting += IfInteracted;
+            ObjToInteract = null;
         }
+
+        thePlayerOver.Unstunned();
+        Debug.Log("Interation has ended!");
     }
-    public void ChangeMoney(int justMoney)
+
+    private void IfEnteredDanger(DangerObject ObjectThatDanger)
     {
-        if (justMoney > 0)
+        Debug.Log("Entered danger");
+        ObjectDanger = ObjectThatDanger;        
+    }
+
+    private void DangerAway()
+    {
+        Debug.Log("Danger is away!");
+        if (ObjectDanger.LongAction)
         {
-            tmpMoney = justMoney;
-            moneyCount.text = tmpMoney.ToString();
-        }
+            
+        }       
+    }
+
+    private void OnPressingEscape()
+    {
+
     }
 
     //To make actions
-    private void IfEnteredFountain(object sender, EventArgs e)
-    {
-        Debug.Log("We are here");
-        AllOtherInput.OnInteracting += FountainFunc;
-    }
-
-    private void IfExitedFountain(object sender, EventArgs e)
-    {
-        AllOtherInput.OnInteracting -= FountainFunc;
-    }
-
+    /*
     private void IfNearLock(GameObject theObj)
     {
         AllOtherInput.ClearAllInter();
         AllOtherInput.OnInteracting += LockFunc;
         theLockObject = theObj;
     }
-
+    
     private void IfFarLock()
     {
         theLockObject = null;
         AllOtherInput.OnInteracting -= LockFunc;
     }
-    private void IfEnteredDanger(object sender, EventArgs e)
-    {
-        Debug.Log("Entered danger");
-        ChangeHealth(-1);
-    }
+    */
 
-    private void IfLetterClose(string sign, string contain)
-    {
-        theLetterText[0].text = sign;
-        theLetterText[1].text = contain;
-        AllOtherInput.OnInteracting += LetterFunc;
-        Debug.Log("thePlayerScr.OnInteracting plus");
-        nearLetter = true;
-    }
 
-    private void IfLetterFar(object sender, EventArgs e)
+    private void IfSave()
     {
-        for (int i = 0; i < theLetterText.Length; i++)
-        {
-            theLetterText[i].text = "";
-        }
-        nearLetter = false;
-        Debug.Log("thePlayerScr.OnInteracting minus");
-        AllOtherInput.OnInteracting -= LetterFunc;
-    }
-
-    private void IfSave(object sender, EventArgs e)
-    {
-        playerHealth = tmpHealth;
+        SaveManagement.MakeASave(true);
+        /*playerHealth = tmpHealth;
         playerMoney = tmpMoney;
         inkLevel = tmpInkLevel;
-        destroyedObj.Clear();
+        destroyedObj.Clear();*/
     }
 
-    private void IfEndOfLevel(object sender, EventArgs e)
+    private void IfEndOfLevel()
     {
-        IfSave(sender, e);
+        SaveManagement.MakeASave(true);
+        //IfSave();
         StartCoroutine(theFadeInScr.toFadeInCoroutine(false));
-        MenuOn(true, "To be continued...");
+        //MenuOn(true, "To be continued...");
 
     }
 
+    // TODO Change
     private void IfTookCoin(int money, Vector2 pos)
     {
-        ChangeMoney(money, pos);
+        //ChangeMoney(money, pos);
     }
 
-    private void IfEnteredInk(object sender, EventArgs e)
+
+    //TODO To InkDrop
+
+    private void IfEnteredInk()
     {
         StartCoroutine(inkCoroutine);
     }
 
-    void IfEscapedInk(object sender, EventArgs e)
+    void IfEscapedInk()
     {
         StopCoroutine(inkCoroutine);
     }
 
+
+    // TODO Change
     private IEnumerator InkStay()
     {
         while (true)
         {
             Debug.Log("Ink level loss is " + inkLevelLoss);
-            ChangeInkLevel(inkLevelLoss);
+            //ChangeInkLevel(inkLevelLoss);
+            PlayerManager.AddInkLevel(-inkLevelLoss);
             yield return new WaitForSeconds(timeToDecreaseInk);
         }
     }
-
-    private void IfEnteredDialogue(DialogueLine[] theLines)
-    {
-        foreach (DialogueLine line in theLines)
-        {
-            theCurrLines.Add(line);
-        }        
-        AllOtherInput.OnInteracting += ThrowDialogue;
-    }
-
-    private void ThrowDialogue()
-    {
-        AllOtherInput.OnInteracting -= ThrowDialogue;
-        thePlayerOver.Stunned();
-        Debug.Log("Throwing the Dialogue!");
-        
-        DialogueHolder.ToStartDialogue(theCurrLines);
-        AllOtherInput.OnInteracting += DialogueHolder.NextLine;
-    }
-
-    private void IfEndDialogue()
-    {
-        AllOtherInput.OnInteracting += ThrowDialogue;
-        thePlayerOver.Unstunned();
-    }
-
-    private void IfExitedDialogue()
-    {
-        AllOtherInput.OnInteracting -= ThrowDialogue;
-        theCurrLines.Clear();
-    }    
+    
 }

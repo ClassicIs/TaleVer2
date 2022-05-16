@@ -1,47 +1,69 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class InkDrop : MonoBehaviour
+public class InkDrop : MonoBehaviour, DangerObject
 {
     public Transform transformInk;
     public float toBig;
+    public bool MaximumSize;
+    public IEnumerator ToStartBig;
+
+    public event Action OnBeingFree;
+
+    public int HealthDamage { get; set; }
+    public int InkGain { get; set; }
+    public float SlowModifier { get; set; }
+    public float TimeForDebuf { get; set; }
+    public bool MakeStun { get; set; }
+    public bool LongAction { get; set; }
+
+    event Action<int, int, float, float> DangerObject.OnBeingFree
+    {
+        add
+        {
+            throw new NotImplementedException();
+        }
+
+        remove
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+
+
     // Start is called before the first frame update
     void Start()
     {
-        transformInk = GetComponent<Transform>();
-        toBig = 0f;
-    }
-    private void OnTriggerStay2D(Collider2D collision)
-    {
-        if (collision.tag == "Player")
-        {
-            toBig = .0005f;
-        }
-    }
-    /*private void OnTriggerEnter2D(Collider2D collision)
-    {
-        
-    }*/
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.tag == "Player")
-        {
-            toBig = 0f;
-        }
+        HealthDamage = 0;
+        InkGain = 1;
+        SlowModifier = 0.3f;
+        TimeForDebuf = 0f;
+        MakeStun = false;
+        LongAction = true;
     }
 
-    private void FixedUpdate()
+    public void Freedom(int HealthDamage, int InkGain, float SlowModifier, float TimeForDebuf)
     {
-        if ((transformInk.localScale.x < 4) && (transformInk.localScale.y < 4))
-        {
-            transformInk.localScale = new Vector3(transformInk.localScale.x + toBig, transformInk.localScale.y + toBig, transformInk.localScale.z);
-        }       
+        throw new NotImplementedException();
     }
+    /*
+public void ImpactStarted(out int HealthDamage, out int InkGain, out float SlowModifier, out float TimeForDebuf)
+{
+   HealthDamage = this.HealthDamage;
+   InkGain = this.InkGain;
+   SlowModifier = this.SlowModifier;
+   TimeForDebuf = this.TimeForDebuf;
+}
 
-    // Update is called once per frame
-    void Update()
-    {
-         
-    }
+public void ImpactEnded()
+{
+   if(OnBeingFree != null)
+   {
+       OnBeingFree();
+   }
+   OnBeingFree = null;
+}*/
 }

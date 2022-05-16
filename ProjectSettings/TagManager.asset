@@ -21,6 +21,7 @@ TagManager:
   - Fade
   - EndOfLevel
   - Dialogue
+  - DialogHolder
   layers:
   - Default
   - TransparentFX

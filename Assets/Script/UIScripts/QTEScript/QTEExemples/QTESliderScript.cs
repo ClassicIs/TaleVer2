@@ -28,9 +28,25 @@ public class QTESliderScript : QTEObject
         theSlider.interactable = false;
     }
 
-    public void Activate(int needCount = 3)
+    public override void Activate(HardVariety Hardness)
     {
-        Debug.Log("We are activating");
+        int needCount;
+        switch(Hardness)
+        {
+            case HardVariety.easy:
+                needCount = 3;
+                break;
+            case HardVariety.normal:
+                needCount = 4;
+                break;
+            case HardVariety.hard:
+                needCount = 5;
+                break;
+            default:
+                needCount = 2;
+                break;
+        }
+        
         QTESliderHolder.SetActive(true);
         valOfSlide = 0f;
         maxCount = needCount;
@@ -99,11 +115,11 @@ public class QTESliderScript : QTEObject
 
             yield return null;
         }
-        Close();
+        QTEEnd();
 
     }
 
-    private void Close()
+    protected override void QTEEnd()
     {
         QTESliderHolder.SetActive(false);
     }

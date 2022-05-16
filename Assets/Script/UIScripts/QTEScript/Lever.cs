@@ -12,67 +12,68 @@ public class Lever : InteractObject
     bool PlayerStay;
 
     [SerializeField]
-    isQtePassed qte;
+    QTEHolder QTEHolder;
+    QTEObject CurrQTE;
 
-    void Subscribe(object sender, EventArgs e)
+    private void Start()
     {
-        OpenDoor();
-    }
-
-    // Start is called before the first frame update
-    protected override void Start()
-    {
-        PlayerStay = false;
-        base.Start();
+        PlayerStay = false;       
         DoorAnim = Door.GetComponent<Animator>();
     }
 
-    void OnTriggerEnter2D(Collider2D collision) 
+    public override void InterAction()
+    {        
+        Debug.Log("E is pressed");
+        CurrQTE = QTEHolder.ActivateQTE(QTEHolder.TypesOfQTE.Simple);
+        CurrQTE.Activate(QTEObject.HardVariety.easy);
+        
+        Subscribe();
+    }
+
+    public override void FutherAction()
     {
-        if (collision.tag == "Player")
+        throw new System.NotImplementedException();
+    }
+
+    void UsedLever()
+    {
+        EndInteraction();
+        Debug.Log("Lever was used!");
+        OpenDoor();
+    }
+
+
+    void NotUsedLever()
+    {
+        EndInteraction();
+        Debug.Log("Lever was failed!");
+
+    }
+
+    void Subscribe()
+    {
+        if (CurrQTE != null)
         {
-            PlayerStay = true;
+            CurrQTE.OnSuccess += UsedLever;
+            CurrQTE.OnFail += NotUsedLever;
         }
     }
 
-    void OnTriggerExit2D(Collider2D collision)
+    public override void EndInteraction()
     {
-        if (collision.tag == "Player")
+        if (CurrQTE != null)
         {
-            PlayerStay = false;
+            CurrQTE.OnSuccess -= UsedLever;
+            CurrQTE.OnFail -= NotUsedLever;
         }
-    }
-    
-    // Update is called once per frame
-    void Update()
-    {
-        if (PlayerStay == true)
-        {
-            if (Input.GetKeyDown("f"))
-            {
-                qte.EventPassed += Subscribe;
-                Debug.Log("E is pressed");
-                qte.Activate();
-                /*qte.qteActive = true;
-                qte.QTESuccess();*/
-            }
-        }
-    }
-    /*
-    protected override void InterAction()
-    {
-        base.InterAction();
-        qte.EventPassed += Subscribe;
-        Debug.Log("E is pressed");
-        qte.qteActive = true;
-        qte.QTESuccess();
-    }
-    */
+        base.EndInteraction();
+
+    }    
+
     private void OpenDoor()
     {
         DoorAnim.SetBool("DoorIsOpen", true);
-        GetComponent<Animator>().SetBool("QTEisPassed", true);
-        qte.EventPassed -= Subscribe;
+        GetComponent<Animator>().SetBool("QTEisPassed", true);        
         GetComponent<Lever>().enabled = false;        
     }
 }

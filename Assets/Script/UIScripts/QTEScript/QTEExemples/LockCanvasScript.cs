@@ -19,12 +19,14 @@ public class LockCanvasScript : QTEObject
     [SerializeField]
     int countToFail;
 
-    int posOfPl;
+    float posOfPl;
     int dirOfRot;
+    
     bool hasEnd;
 
     [SerializeField]
     int tail;
+    float SpeedOfCircle;
 
     void Start()
     {
@@ -33,10 +35,32 @@ public class LockCanvasScript : QTEObject
         TurnSprites(false);
     }
 
-    public void Activate(int theCountToWin = 3, int theCountToFail = 5)
+    public override void Activate(HardVariety Hardness)
     {
-        countToWin = theCountToWin;
-        countToFail = theCountToFail;
+        switch (Hardness)
+        {
+            case HardVariety.easy:
+                countToWin = 3;
+                tail = 3;
+                SpeedOfCircle = 0.5f;
+                countToFail = 5;
+                break;
+            case HardVariety.normal:
+                countToWin = 4;
+                tail = 2;
+                SpeedOfCircle = 0.8f;
+                countToFail = 4;
+                break;
+            case HardVariety.hard:
+                tail = 0;
+                countToWin = 5;
+                SpeedOfCircle = 1.0f;
+                countToFail = 3;
+                break;
+            default:
+                Debug.LogError("Something wrong with your hardness");
+                break;
+        }
 
         theRotation = new Vector3(0f, 0f, 0f);
         posOfPl = 0;
@@ -47,7 +71,7 @@ public class LockCanvasScript : QTEObject
         StartCoroutine(TheCapsule());
     }
 
-    private void Close()
+    protected override void QTEEnd()
     {
         thePlayerTransform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
         thePointTransform.rotation = Quaternion.Euler(new Vector3(0, 0, 0));
@@ -71,22 +95,19 @@ public class LockCanvasScript : QTEObject
             {
                 posOfPl = 0;
             }
-            else
-            {
-                posOfPl += 1 * dirOfRot;
-            }
+            posOfPl += SpeedOfCircle * dirOfRot;
+
             thePlayerTransform.rotation = Quaternion.Euler(0, 0, posOfPl);
             if (Input.GetKeyDown(KeyCode.K))
             {
                 int currPlayerRot = Mathf.RoundToInt(Mathf.Rad2Deg * thePlayerTransform.rotation.z);
-
-                Debug.Log("currPlayerRot" + currPlayerRot);
+                
                 int currCapsuleRot = Mathf.RoundToInt(Mathf.Rad2Deg * thePointTransform.rotation.z);
                 if ((Mathf.Abs(currPlayerRot) <= (currCapsuleRot + tail)) && (Mathf.Abs(currPlayerRot) >= (currCapsuleRot - tail)))
                 {
-                    Debug.Log(("(Mathf.Abs(currPlayerRot):" + Mathf.Abs(currPlayerRot) + "\n" + "currCapsuleRot +  tail" + (currCapsuleRot + tail) + "\n(currCapsuleRot - tail): " + (currCapsuleRot - tail)));
+                    Debug.Log("Lock Success!");
                     countToWin--;
-                    Debug.Log("Success!");
+                    
                     if (countToWin == 0)
                     {
                         Success();
@@ -95,15 +116,15 @@ public class LockCanvasScript : QTEObject
                 }
                 else
                 {
-                    countToFail--;
-                    Debug.Log("Not success...");
+                    Debug.Log("Lock Fail!");
+                    countToFail--;                    
                     if (countToFail == 0)
                     {
-                        Failed();
-                        Debug.Log("You failed");
+                        Failed();                        
                         hasEnd = true;
                     }
                 }
+
                 if (!hasEnd)
                 {
                     theRotation.z = Random.Range(0, 361);
@@ -114,7 +135,7 @@ public class LockCanvasScript : QTEObject
             }
             yield return null;
         }
-        Close ();
+        QTEEnd();
     }
     protected override void Failed()
     {

@@ -9,16 +9,19 @@ public class HandScript : InteractObject
 
     [SerializeField]
     Animator theDoorAnim;
-    protected override void Start()
+    private void Start()
     {
-        base.Start();
         theHandAnim = GetComponent<Animator>();
     }
 
-    protected override void InterAction()
+    public override void InterAction()
     {
-        base.InterAction();
         OpenTheDoor();
+    }
+
+    public override void FutherAction()
+    {
+        throw new System.NotImplementedException();
     }
 
     private void OpenTheDoor()

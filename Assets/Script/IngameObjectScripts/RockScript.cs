@@ -8,11 +8,16 @@ public class RockScript : InteractObject
     [SerializeField]
     HandScript theHand;
 
-    protected override void InterAction()
+    public override void InterAction()
     {
-        base.InterAction();
         theHand.isRockHere = true;
         
         gameObject.SetActive(false);
+        EndInteraction();
+    }
+
+    public override void FutherAction()
+    {
+        Debug.Log("There is nothing to do here!");
     }
 }
