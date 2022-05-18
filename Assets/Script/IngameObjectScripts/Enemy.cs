@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+
+    
     [SerializeField]
     protected int attackStrength;
     
@@ -13,6 +15,10 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     GameObject thePlayer;
     PlayerManager thePlayerMG;
+    
+
+
+
 
     private void Start()
     {
@@ -38,5 +44,4 @@ public class Enemy : MonoBehaviour
         Vector2 distFromPlayer = thePlayer.gameObject.transform.position - transform.position;
         //transform.position = Vector2.Lerp(new Vector2(transform.position.x, transform.position.y), new Vector2(thePlayer.gameObject.transform.position.x, thePlayer.gameObject.transform.position.y), speedOfMon * Time.deltaTime);
     }
-
 }
