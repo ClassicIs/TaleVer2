@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class horrorEnemyScript : Enemy
 {
+    
     Animator theAnimOfEnemy;
 
     // Start is called before the first frame update
@@ -19,4 +20,5 @@ public class horrorEnemyScript : Enemy
         base.followPlayer();
         theAnimOfEnemy.SetBool("isSeingPlayer", true);
     }
+    
 }
