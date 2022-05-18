@@ -6,6 +6,7 @@ using System;
 
 public class UIManager : MonoBehaviour
 {
+    [SerializeField]
     private PlayerManager PlayerManager;
     
     [SerializeField]
@@ -23,17 +24,18 @@ public class UIManager : MonoBehaviour
     private float InkChangeSpeed;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         InkChangeSpeed = 0.02f;
         PlayerManager = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>();
         PlayerManager.OnHealthChange += ChangeHealth;
         PlayerManager.OnInkLevelChange += ChangeInkLevelUI;
-        PlayerManager.OnCoinChange += ChangeCoinCountUI;
+        PlayerManager.OnCoinChange += ChangeCoinCountUI;        
     }
 
     private void ChangeHealth(int Health)
     {
+        Debug.Log("Changing health " + Health);
         int HealthNow = HealthObject.transform.childCount;
         int HealthChange = Health - HealthNow;
         if(HealthChange > 0)
@@ -58,6 +60,7 @@ public class UIManager : MonoBehaviour
 
     private void ChangeInkLevelUI(int InkLevel)
     {
+        Debug.Log("Changing int level " + InkLevel);
         //InkLevelDisplay.value = InkLevel;
         InkLevelDisplay.value = Mathf.Lerp(InkLevelDisplay.value, InkLevel, InkChangeSpeed);       
     }

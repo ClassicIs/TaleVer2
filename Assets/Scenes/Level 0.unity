@@ -6186,7 +6186,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 693.83997, y: 415.156}
+  m_AnchoredPosition: {x: -216.16, y: -74.843}
   m_SizeDelta: {x: 432.33, y: 149.69}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &336383579
@@ -20069,6 +20069,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd6993de73cbf0047b6cc1279e41140a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LongAction: 0
   qte: {fileID: 0}
 --- !u!95 &497791521
 Animator:
@@ -92069,7 +92070,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 893072712}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.109922, y: -2.51, z: -10}
+  m_LocalPosition: {x: 8.030078, y: -3.28, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -96172,6 +96173,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a80341873d22d14cb55c94ee03ee542, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PlayerManager: {fileID: 0}
   HealthObject: {fileID: 1898709065400216054, guid: a054621ebdd7c2e468d78cf23a1968ee,
     type: 3}
   HealthUI: {fileID: 308892684}
@@ -104617,7 +104619,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1700822033}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.109922, y: -2.51, z: -10}
+  m_LocalPosition: {x: 8.030078, y: -3.28, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1347839282}
@@ -108085,12 +108087,12 @@ PrefabInstance:
     - target: {fileID: 2770220322474851738, guid: 1f8dc2452d3883e478a03012b45bc284,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -4.12
+      value: 8.02
       objectReference: {fileID: 0}
     - target: {fileID: 2770220322474851738, guid: 1f8dc2452d3883e478a03012b45bc284,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.51
+      value: -3.28
       objectReference: {fileID: 0}
     - target: {fileID: 2770220322474851738, guid: 1f8dc2452d3883e478a03012b45bc284,
         type: 3}

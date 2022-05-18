@@ -35,90 +35,81 @@ public class PlayerManager : MonoBehaviour
     public event Action OnDeath;
 
     private IEnumerator Debuf;
+    private IEnumerator LongActionDebuf;
 
     // Start is called before the first frame update
     void Start()
     {
         thePlayerScript = GetComponent<Player>();
-        SetValues(4, 100, 0);
-
         AsignValues();
+        SetValues(5, 100, 10001);
     }
     
-    private void DangerInTheWay(DangerObject DangerObject)
+    private void DangerInTheWay(DangerObject DangerObject, bool LongAction)
     {
-        if(DangerObject.LongAction)
+        if(LongAction)
         {
-            Debuf = TakeDamageInTime(DangerObject.HealthDamage, DangerObject.InkGain, DangerObject.SlowModifier);
-            StartCoroutine(Debuf);
+            LongActionDebuf = TakeDamageInTime(DangerObject.StartDamage);
+            StartCoroutine(LongActionDebuf);
             DangerObject.OnBeingFree += DangerAway;
-        }
-        if (DangerObject.MakeStun)
-        {
-            charCollisionScript.Stunned();
-            DangerObject.OnBeingFree += DangerAway;
-        }
-       
-    }
-
-    private void DangerAway(int HealthDamage, int InkGain, float SlowModifier, float TimeForDebuf)
-    {
-        if (Debuf != null)
-        {
-            StopCoroutine(Debuf);
-            Debuf = null;
-        }
-
-        if (charCollisionScript.isStunned)
-        {
-            charCollisionScript.Unstunned();
-        }
-        if (SlowModifier == 0)
-        {
-            if (!thePlayerScript.isSlowDown)
-            {
-                thePlayerScript.SlowEffectOff();
-            }
         }
         else
         {
-            TakeDamageInTime(HealthDamage, InkGain, SlowModifier, TimeForDebuf);
-        }
+            TakeDamage(DangerObject.StartDamage);
+        }       
     }
 
-    public void TakeDamage(int HealthDamage, int InkGain, float SlowModifier)
+    private void DangerAway(Damage DangerObject)
     {
-        int TheHealthDamage = HealthDamage;
-        int TheInkGain = InkGain;
-        float TheSlowModifier = SlowModifier;
-        
-        if (HealthDamage != 0)
+        if (LongActionDebuf != null)
         {
-            AddHealth(HealthDamage);
+            StopCoroutine(LongActionDebuf);
+            LongActionDebuf = null;
         }
-        if (InkGain != 0)
+        TakeDamage(DangerObject);
+    }
+
+    private void TakeDamage(Damage DangerObject)
+    {
+        int TheHealthDamage;
+        int TheInkGain;
+        float TheSlowModifier;
+        bool MakeStun;
+        float TimeForDebuf;
+
+        DangerObject.GiveDamage(out TheHealthDamage, out TheInkGain, out TheSlowModifier, out MakeStun, out TimeForDebuf);
+
+        if (TimeForDebuf > 0f)
         {
-            AddInkLevel(InkGain);
-        }
-        if (SlowModifier != 0)
-        {
-            if (!thePlayerScript.isSlowDown)
+            
+            if (TheHealthDamage != 0)
             {
-                thePlayerScript.SlowEffectOn(SlowModifier);
+                AddHealth(TheHealthDamage);
+            }
+            if (TheInkGain != 0)
+            {
+                AddInkLevel(TheInkGain);
+            }
+            if (TheSlowModifier != 0)
+            {
+                if (!thePlayerScript.isSlowDown)
+                {
+                    thePlayerScript.SlowEffectOn(TheSlowModifier);
+                }
             }
         }
     }
 
-    private IEnumerator TakeDamageInTime(int HealthDamage, int InkGain, float SlowModifier)
-    {
+    private IEnumerator TakeDamageInTime(Damage DangerObject)
+    {        
         while (true)
         {
-            TakeDamage(HealthDamage, InkGain, SlowModifier);
+            TakeDamage(DangerObject);
             yield return new WaitForSeconds(1);
         }
     }
-
-    private IEnumerator TakeDamageInTime(int HealthDamage, int InkGain, float SlowModifier, float TimeForDebuf)
+    /*
+    private IEnumerator TakeDamageInTime(Damage DangerObject)
     {
         float TheTimeForDebuf = TimeForDebuf;
         while (TheTimeForDebuf <= 0)
@@ -128,20 +119,21 @@ public class PlayerManager : MonoBehaviour
             yield return new WaitForSeconds(1);
         }
         DangerAway(0, 0, 0, 0);
-    }
+    }*/
 
 
     // Start functions
     public void SetValues(int Health, int InkLevel, int Coins, int MaxHealth = 4, int MaxInkLevel = 100)
     {
+        Debug.Log("Setting values");
         this.MaxHealth = MaxHealth;
         this.MaxInkLevel = MaxInkLevel;
 
-        this.Health = Health;
-        CoinCount = Coins;
-        this.InkLevel = InkLevel;
+        AddHealth(Health);
+        AddCoins(Coins);
+        AddInkLevel(InkLevel);
 
-        if (OnCoinChange != null)
+        /*if (OnCoinChange != null)
         {
             OnCoinChange(CoinCount);
         }
@@ -152,7 +144,7 @@ public class PlayerManager : MonoBehaviour
         if (OnInkLevelChange != null)
         {
             OnInkLevelChange(InkLevel);
-        }
+        }*/
 }
 
     public void SetValues(SavePoint PointToLoad)

@@ -3,46 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class BearTrap : MonoBehaviour, DangerObject
+public class BearTrap : DangerObject
 {
-    bool PlayerStay;    
+    bool PlayerStay;
 
     [SerializeField]
-    isQtePassed qte;    
-    PlayerManager PlayerManagerScript;
+    isQtePassed qte;
 
-    public int HealthDamage => throw new NotImplementedException();
-
-    public int InkGain => throw new NotImplementedException();
-
-    public float SlowModifier => throw new NotImplementedException();
-
-    public float TimeForDebuf => throw new NotImplementedException();
-
-    public bool MakeStun => throw new NotImplementedException();
-
-    public bool LongAction => throw new NotImplementedException();
-
-    //public DamageUnit ThisDamage { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
-    public event Action OnBeingFree;
-
-    event Action<int, int, float, float> DangerObject.OnBeingFree
+    protected override void Freedom()
     {
-        add
-        {
-            throw new NotImplementedException();
-        }
-
-        remove
-        {
-            throw new NotImplementedException();
-        }
-    }
-
-    public void Freedom(int HealthDamage, int InkGain, float SlowModifier, float TimeForDebuf)
-    {
-        throw new NotImplementedException();
+        base.Freedom();
     }
     /*
 

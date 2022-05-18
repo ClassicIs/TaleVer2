@@ -12,13 +12,26 @@ public class SaveManager : MonoBehaviour
 
     // Start is called before the first frame update
     void Start()
-    {        
+    {
+        
         PlayerObject = GameObject.FindGameObjectWithTag("Player");
         PlayerManagerScript = PlayerObject.GetComponent<PlayerManager>();
         TheGameManagerScript = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManagerScript>();
     }
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.T))
+        {
+            MakeASave();
+        }
 
-    public void MakeASave(bool CheckPoint = false)
+        if (Input.GetKeyDown(KeyCode.Y))
+        {
+            LoadSave(); 
+        }
+    }
+
+    public void MakeASave()
     {
         Vector2 PlayerCurrentPosition = PlayerObject.transform.position;
         int PlayerHealth, InkLevel, CointCount;
@@ -27,7 +40,14 @@ public class SaveManager : MonoBehaviour
         //TODO: Implement saving information list of collected items
 
         PlayerManagerScript.GetAllValues(out PlayerHealth, out InkLevel, out CointCount);
-        LastCheckPoint.SetCheckPoint(PlayerHealth, InkLevel, CointCount, PlayerCurrentPosition, CurrentInventory);
+        if (LastCheckPoint)
+        {
+            LastCheckPoint.SetCheckPoint(PlayerHealth, InkLevel, CointCount, PlayerCurrentPosition, CurrentInventory);
+        }
+        else
+        {
+            LastCheckPoint = new SavePoint(PlayerHealth, InkLevel, CointCount, PlayerCurrentPosition, CurrentInventory);
+        }
         
     }
 

@@ -374,7 +374,7 @@ public class GameManagerScript : MonoBehaviour
 
     private void IfSave()
     {
-        SaveManagement.MakeASave(true);
+        SaveManagement.MakeASave();
         /*playerHealth = tmpHealth;
         playerMoney = tmpMoney;
         inkLevel = tmpInkLevel;
@@ -383,8 +383,8 @@ public class GameManagerScript : MonoBehaviour
 
     private void IfEndOfLevel()
     {
-        SaveManagement.MakeASave(true);
-        //IfSave();
+        SaveManagement.MakeASave();
+        
         StartCoroutine(theFadeInScr.toFadeInCoroutine(false));
         //MenuOn(true, "To be continued...");
 

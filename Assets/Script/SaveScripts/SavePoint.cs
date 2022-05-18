@@ -10,9 +10,10 @@ public class SavePoint : MonoBehaviour
     Vector2 PositionOfPlayer;
     List<string> CurrentInventory;
 
-    SavePoint(int TheHealth, int TheInkLevel, Vector2 ThePositionOfPlayer, List<string> CurrentInventory)
+    public SavePoint(int TheHealth, int TheInkLevel, int coinCount, Vector2 ThePositionOfPlayer, List<string> CurrentInventory)
     {
         CurrHealth = TheHealth;
+        CoinCount = coinCount;
         CurrInkLevel = TheInkLevel;
         PositionOfPlayer = ThePositionOfPlayer;
         this.CurrentInventory = CurrentInventory;
