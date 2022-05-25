@@ -15,7 +15,7 @@ public class CharacterOverlap : MonoBehaviour
     public event Action<DangerObject> OnDangerousObject;
     public event Action<InteractObject> OnNearInterObject;
     public event Action<InteractObject> OnFarInterObject;
-
+    public event Action<PickableObject> OnPickableObject;
 
     private PlayerCharacterInput PlayerInput;
 
@@ -268,7 +268,14 @@ public class CharacterOverlap : MonoBehaviour
                         AllObjectsAround.Add(collision.GetComponent<Transform>());
                         Debug.Log("New interactable object is " + collision.name);
                     }                    
-                }                
+                }
+                if (collision.GetComponent<PickableObject>())
+                {
+                    if (OnPickableObject != null)
+                    {
+                        OnPickableObject(collision.GetComponent<PickableObject>());
+                    }
+                }
             }
             
             if (collision.CompareTag("Checkpoint"))

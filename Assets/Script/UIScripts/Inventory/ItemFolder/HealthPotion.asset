@@ -12,8 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a78f88c8a49b4524d9f65cd90a678152, type: 3}
   m_Name: HealthPotion
   m_EditorClassIdentifier: 
-  ItemName: 
-  ItemDescription: 
-  ItemSprite: {fileID: 0}
-  ItemObject: {fileID: 0}
-  ItemCost: 500
+  itemName: Health Potion
+  itemDescription: It's a weird mixture of different chemicals. Smells very bad but
+    you feel you need to drink it!
+  typeOfTheItem: 0
+  itemLevel: 1
+  itemSprite: {fileID: 21300000, guid: 5d5227cc0b0de0448aaf6f53c9ee913b, type: 3}
+  itemObject: {fileID: 2606630754875196853, guid: 3e7c8d0bc0a6d10448a7efc872362cf8,
+    type: 3}
+  itemCost: 100

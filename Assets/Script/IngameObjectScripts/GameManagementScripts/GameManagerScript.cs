@@ -6,28 +6,22 @@ using System;
 
 public class GameManagerScript : MonoBehaviour
 {
-    private SaveManager SaveManagement;
-    
-    private Player thePlayerScr;
+    private SaveManager SaveManagement;    
     private PlayerManager PlayerManager;
+    [SerializeField]
+    private InventoryScript PlayerInventory;
+    [SerializeField]
+    private UIInventoryScript UIInventory;
+
     private PlayerOtherInput AllOtherInput;
 
     InteractObject ObjToInteract = null;
     DangerObject ObjectDanger = null;
 
-    public static GameManagerScript gmInstance;
-    private event Action nullAction;
-    private GameObject theLockObject;
-        
-    private List<string> theInventory = new List<string>();
+    public static GameManagerScript gmInstance;    
 
     public List<SpawnObjects> destroyedObj;
 
-    [SerializeField]
-    private GameObject theHealthHolder;
-    [SerializeField]
-    private GameObject healthIcon;
-    private GameObject[] allHealth;
 
     [SerializeField] 
     private GameObject[] allGameObj; 
@@ -35,8 +29,6 @@ public class GameManagerScript : MonoBehaviour
     [SerializeField]
     private GameObject thePlayerObj;
     
-    /*[SerializeField]
-    private GameObject theMenu;*/
     [SerializeField]
     private MenuScript MenuScript;    
 
@@ -44,7 +36,6 @@ public class GameManagerScript : MonoBehaviour
 
     private Vector2 startPos;
 
-    private bool menuActive;
 
     [SerializeField]
     [Range(0, 100)]
@@ -63,7 +54,7 @@ public class GameManagerScript : MonoBehaviour
     private CharacterOverlap thePlayerOver;
 
     public event Action<int> OnHealthChange;
-    //public event Action<int> On
+
 
     private IEnumerator inkCoroutine;
 
@@ -85,14 +76,20 @@ public class GameManagerScript : MonoBehaviour
         Normalize();
     }
 
+    private void Start()
+    {        
+        PlayerInventory = PlayerManager.Inventory;
+        UIInventory.SetInventory(PlayerManager.Inventory);
+    }
+
     private void AssigningValues()
     {
         SaveManagement = GetComponent<SaveManager>();
         theFadeInScr = GameObject.FindGameObjectWithTag("Fade").GetComponent<FadeInScript>();
         PlayerManager = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>();
+        
         thePlayerOver = thePlayerObj.GetComponent<CharacterOverlap>();
         destroyedObj = new List<SpawnObjects>();
-        thePlayerScr = thePlayerObj.GetComponent<Player>();
         AllOtherInput = thePlayerObj.GetComponent<PlayerOtherInput>();
     }
 
@@ -115,12 +112,12 @@ public class GameManagerScript : MonoBehaviour
         thePlayerOver.OnDangerousObject += IfEnteredDanger;
         thePlayerOver.OnNearInterObject += IfInteractedNear;
         thePlayerOver.OnFarInterObject += IfInteractedAway;
+        thePlayerOver.OnPickableObject += IfPickableNear;
         //thePlayerOver.OnEndOfLevel += IfEndOfLevel;
     }
 
     private void Normalize()
-    {
-        menuActive = false;
+    {        
         startPos = thePlayerObj.transform.position;
         isItAfterFall = false;
         currDeath = DeathTypes.none;
@@ -147,6 +144,10 @@ public class GameManagerScript : MonoBehaviour
 
     void Update()
     {        
+        if(Input.GetKeyDown(KeyCode.I))
+        {
+            UIInventory.ShowInventoryUI();
+        }
         if (notEndOfLevel)
         {
             //MenuFunc();
@@ -317,6 +318,15 @@ public class GameManagerScript : MonoBehaviour
         else
         {
             Debug.LogWarning("Oops! Looks like there's realy nothing to interact with!");
+        }
+    }
+    
+    private void IfPickableNear(PickableObject PickableObject)
+    {
+        PickableObject.thisItem.PrintItem();
+        if (PlayerInventory.AddItem(PickableObject.thisItem))
+        {
+            PickableObject.OnPlayerCollision();
         }
     }
 

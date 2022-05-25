@@ -37,9 +37,28 @@ public class PlayerManager : MonoBehaviour
     private IEnumerator Debuf;
     private IEnumerator LongActionDebuf;
 
+    public InventoryScript Inventory;
+    [SerializeField]
+    ItemScript theItem;
+    [SerializeField]
+    List <ItemScript> theItems;
+
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
+        Inventory = new InventoryScript(10);
+        
+        for (int i = 0; i < 12; i++)
+        {
+            theItems.Add(theItem);
+        }
+        theItems = Inventory.AddItems(theItems);
+        for (int i = 0; i < theItems.Count; i++)
+        {
+            Debug.Log(i + "Item is " + theItems[i].itemName);
+
+        }
+        
         thePlayerScript = GetComponent<Player>();
         AsignValues();
         SetValues(5, 100, 10001);
@@ -161,12 +180,9 @@ public class PlayerManager : MonoBehaviour
     private void AsignValues()
     {
         theBoxCol = GetComponent<BoxCollider2D>();
-        theCircleTriggerCol = GetComponent<CircleCollider2D>();
-        //thePlayerBody = GetComponent<Rigidbody2D>();
-        //GMScript = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManagerScript>();
+        theCircleTriggerCol = GetComponent<CircleCollider2D>();        
         charCollisionScript = GetComponent<CharacterOverlap>();
         thePlayerScript = GetComponent<Player>();
-        //playerAnimator = GetComponent<Animator>();
     }
 
     public void NormalizeAll()
@@ -238,7 +254,10 @@ public class PlayerManager : MonoBehaviour
     public void AddCoins(int AddCoins)
     {
         StateOfValue CoinsValue = CheckInRange(out CoinCount, CoinCount, AddCoins, 0, MaxCoins);
-        OnCoinChange(CoinCount);
+        if (OnCoinChange != null)
+        {
+            OnCoinChange(CoinCount);
+        }
         if (CoinsValue == StateOfValue.Less)
         {
             Debug.Log("Coins cannot go less than zero. They are already null.");

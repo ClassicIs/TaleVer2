@@ -4,15 +4,9 @@ using UnityEngine;
 
 public class PickableObject : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public ItemScript thisItem;
+    public void OnPlayerCollision()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        transform.gameObject.SetActive(false);
     }
 }

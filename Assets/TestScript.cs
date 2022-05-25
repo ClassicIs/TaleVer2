@@ -4,31 +4,29 @@ using UnityEngine;
 
 public class TestScript : MonoBehaviour
 {
-
-    private SpriteRenderer InterObjSpriteRend;
+    [SerializeField] private LayerMask need;
+    RaycastHit2D theCollider;
     // Start is called before the first frame update
     void Start()
     {
-        InterObjSpriteRend = GetComponent<SpriteRenderer>();
-        StartCoroutine(ChangeAlpha());
+        
     }
 
-    IEnumerator ChangeAlpha()
+    private void Update()
     {
-        float ChangeCol = -1;
-        while (true)
+        RaycastHit2D tmpColider = theCollider;
+        
+        theCollider = Physics2D.BoxCast(transform.position, new Vector2(1, 1), 0f, Vector2.zero, 1f, need);
+        
+        if(tmpColider != theCollider)
         {
-            if (InterObjSpriteRend.color.b == 1)
+            if(theCollider)
+                Debug.Log("Is colliding with ground...");
+            else
             {
-                ChangeCol = -1;
+                Debug.Log("Is not colliding with the ground!");
             }
-            else if (InterObjSpriteRend.color.b <= 0)
-            {
-                ChangeCol = 1;
-            }
-
-            InterObjSpriteRend.color = new Color(InterObjSpriteRend.color.r, InterObjSpriteRend.color.g, InterObjSpriteRend.color.b + 0.05f * ChangeCol);
-            yield return null;
         }
+        
     }
 }
