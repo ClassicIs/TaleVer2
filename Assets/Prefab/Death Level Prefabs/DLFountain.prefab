@@ -10,7 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 8667803305282515124}
   - component: {fileID: 3374503833847959284}
-  - component: {fileID: 871816125937944194}
+  - component: {fileID: 3432405364341381675}
+  - component: {fileID: 842182674955125682}
   m_Layer: 0
   m_Name: DLFountain
   m_TagString: Untagged
@@ -51,7 +52,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -72,25 +73,26 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 8457847057224440368, guid: b73dd19aa7bec314bb0d3c9c4dcfe1df,
+    type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 3.625, y: 4.0625}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 0
+  m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!61 &871816125937944194
-BoxCollider2D:
+--- !u!60 &3432405364341381675
+PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1428761682871155383}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
   m_IsTrigger: 0
@@ -99,13 +101,44 @@ BoxCollider2D:
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 3.625, y: 4.0625}
+    newSize: {x: 3.625, y: 4.0625}
+    adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  serializedVersion: 2
-  m_Size: {x: 0.0001, y: 0.0001}
-  m_EdgeRadius: 0
+  m_Points:
+    m_Paths:
+    - - {x: 0.039849102, y: -1.8553641}
+      - {x: 1.0367528, y: -1.6248362}
+      - {x: 1.6770251, y: -1.0679699}
+      - {x: 1.7366171, y: -0.22138143}
+      - {x: 1.4808435, y: 0.28974658}
+      - {x: 0.9925312, y: 0.6453266}
+      - {x: 0.4043511, y: 0.77479744}
+      - {x: -0.98066103, y: 0.6423539}
+      - {x: -1.3976288, y: 0.37017837}
+      - {x: -1.7096573, y: -0.10958278}
+      - {x: -1.7329972, y: -0.93250483}
+      - {x: -1.4359173, y: -1.3929915}
+      - {x: -1.0443528, y: -1.6476676}
+--- !u!95 &842182674955125682
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1428761682871155383}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: a9e1a2f7281ad8c4b916c2ee7d3bd42c, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

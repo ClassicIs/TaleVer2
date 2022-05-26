@@ -6,7 +6,7 @@ using UnityEngine;
 // Проемы
 public class Openings : MonoBehaviour
 {
-    // Класса проема
+    // Класс проема
     [System.Serializable]
     public class Opening
     {

@@ -1,16 +1,20 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class BattleSystem : MonoBehaviour
 {
+
+    public event EventHandler OnBattleStarted;
+    public event EventHandler OnBattleOver;
+
     private enum State
     {
         Idle,
         Active,
         BattleOver,
     }
-
 
     [SerializeField]
     private ColliderTrigger colliderTrigger;
@@ -45,6 +49,7 @@ public class BattleSystem : MonoBehaviour
     {
         Debug.Log("Battle starts");
         state = State.Active;
+        OnBattleStarted?.Invoke(this, EventArgs.Empty);
     }
 
 
@@ -73,6 +78,7 @@ public class BattleSystem : MonoBehaviour
                 // ивент закончился
                 state = State.BattleOver;
                 Debug.Log("Battle is Over");
+                OnBattleOver?.Invoke(this, EventArgs.Empty);
             }
         }
     }

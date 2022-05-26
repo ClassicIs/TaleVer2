@@ -8,12 +8,15 @@ public class RoomsGenerator : MonoBehaviour
     private Room roomPrefab;
 
     private int roomCount = 8;
-    //private bool trapsGenerationEnabled = true;
+
+
     [SerializeField]
     private int countOfTrapEvents = 0;
 
     [SerializeField]
     private int maxCountOfTrapEvents = 3;
+
+
 
     private IEnumerator Generate()
     {
@@ -42,6 +45,7 @@ public class RoomsGenerator : MonoBehaviour
                 if (chanceToSpawnTrapEvent >= 3 && skipEvent == false)
                 {
                     room.ActivateTrapEvent();
+                    
                     countOfTrapEvents += 1;
 
                     skipEvent = true;
