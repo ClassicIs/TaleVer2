@@ -12,8 +12,10 @@ GameObject:
   - component: {fileID: 8541715061403140063}
   - component: {fileID: 2849524899411350023}
   - component: {fileID: 8581548421512189510}
-  m_Layer: 0
-  m_Name: New Prefab 12
+  - component: {fileID: -8949924000372690768}
+  - component: {fileID: 8740098530545124816}
+  m_Layer: 13
+  m_Name: CrateOpening
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -70,9 +72,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingLayerID: 1061477367
+  m_SortingLayer: 1
+  m_SortingOrder: 1
   m_Sprite: {fileID: -3247038555130677251, guid: 7718b73bf997f3043be9ffde12b78b3b,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -110,7 +112,7 @@ MonoBehaviour:
   - {x: -0.269857, y: -0.44084346, z: 0}
   m_ShapePathHash: -1045145043
   m_Mesh: {fileID: 0}
-  m_InstanceId: 58376
+  m_InstanceId: 174306
 --- !u!60 &8581548421512189510
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -142,3 +144,47 @@ PolygonCollider2D:
       - {x: 0.125, y: -0.45371693}
       - {x: 0.38552052, y: -0.2294575}
       - {x: 0.28156155, y: 0.69802046}
+--- !u!114 &-8949924000372690768
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6972570137140080981}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40255f616a737df4f8fdf872693b8f6f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 3
+  destructablePrefab: {fileID: 8221162105033494685, guid: ce6972df191961542b7555d3c8515b7b,
+    type: 3}
+--- !u!60 &8740098530545124816
+PolygonCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6972570137140080981}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.875, y: 1.5}
+    newSize: {x: 0.875, y: 1.5}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Points:
+    m_Paths:
+    - - {x: 0.34286696, y: 0.75}
+      - {x: -0.38532457, y: 0.059076548}
+      - {x: -0.16916925, y: -0.77981454}
+      - {x: 0.44550616, y: -0.23569953}

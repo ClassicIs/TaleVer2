@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4752523600746320835}
   - component: {fileID: 3217938263687144677}
   - component: {fileID: 1293327678591863465}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Candelabrum2
   m_TagString: Untagged
   m_Icon: {fileID: 0}

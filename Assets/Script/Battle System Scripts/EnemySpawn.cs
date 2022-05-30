@@ -5,7 +5,7 @@ using UnityEngine;
 public class EnemySpawn : MonoBehaviour
 {
     [SerializeField]
-    private int health = 100;
+    private int health = 100;       // надо поменять
 
     private void Awake()
     {
