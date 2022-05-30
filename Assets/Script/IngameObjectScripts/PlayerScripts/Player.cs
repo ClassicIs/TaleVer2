@@ -8,17 +8,15 @@ public class Player : AliveBeeing
     private Rigidbody2D thePlayer;
     private Animator thePlayerAnim;
     private PlayerEffectsScript theFXScript;
-    private AudioManagerScript theAudioManager;
-    private PlayerCharacterInput thePlayerInput;
-    private List <string> theInventory;
 
+    public event Action OnDashStart;
+    public event Action OnDashEnd;
+
+    private AudioManagerScript theAudioManager;
     public LayerMask theWallLayer;
-    
     public Transform tmpGameObj;
     public Vector2 theVectRaw;
     private Vector2 theVect;
-
-    private Vector2 lastMovePosition;
 
     [SerializeField]
     private Vector2 lastMoveDir;
@@ -36,25 +34,15 @@ public class Player : AliveBeeing
     private float normSpeed;
     public float slowModif;
 
-    public bool canWalk;
     public bool isSlowDown;
 
-    private bool isTryingToDie;   
-
-    private float currTimeToFall;
-    [SerializeField] 
-    private float strTimeToFall;
-    
-    public bool isGrounded;
-    public bool isSliding;
 
     // Start is called before the first frame update
     void Start()
     {
-        thePlayerInput = GetComponent<PlayerCharacterInput>();
         currState = PlayerStates.moving;
         movePosition = transform.position;
-        lastMovePosition = new Vector2(0, 0);
+        
         //To check for last movement vector
         lastMoveDir = new Vector2(0, 0);
 
@@ -68,7 +56,7 @@ public class Player : AliveBeeing
         slowModif = 1f; //Modifikator for going in ink        
 
         //For dodge
-        speedDodge = 500f; //Speed of dodge
+        speedDodge = 5f; //Speed of dodge
         startDodgeTime = 1f;
         dodge = 0;
 
@@ -95,6 +83,8 @@ public class Player : AliveBeeing
 
     public void Move(float horMovement, float verMovement)
     {
+        currState = PlayerStates.moving;
+
         theVectRaw = new Vector2(horMovement, verMovement).normalized;
         theVect = new Vector2(horMovement, verMovement).normalized;
         if (Mathf.Abs(theVectRaw.x) > 0.1f || Mathf.Abs(theVectRaw.y) > 0.1f)
@@ -119,6 +109,8 @@ public class Player : AliveBeeing
     {
         currState = PlayerStates.attacking;
     }
+
+
     
     void FixedUpdate()
     {
@@ -158,45 +150,41 @@ public class Player : AliveBeeing
 
     private void Dash()
     {
-        //movePosition = thePlayer.position + lastMoveDir * speedDodge;
-        
-        if (currState != PlayerStates.dashing)
+        movePosition = new Vector2(transform.position.x, transform.position.y) + lastMoveDir * speedDodge;
+       
+        theFXScript.MakeTheGhosts(true);            
+        thePlayer.velocity = Vector2.zero;
+        thePlayerAnim.SetTrigger("Dodge");
+
+        Vector3 lastMovePosition = movePosition;
+
+        RaycastHit2D theCheckForObjs = Physics2D.Raycast(transform.position, lastMoveDir, (lastMoveDir * speedDodge).magnitude, theWallLayer);
+        Instantiate(tmpGameObj, theCheckForObjs.point, Quaternion.identity);
+        Debug.DrawLine(transform.position, movePosition.normalized * movePosition.magnitude, Color.red, 1000f);
+        if (theCheckForObjs.collider != null)
         {
-            currState = PlayerStates.dashing;
-            theFXScript.MakeTheGhosts(true);            
-            thePlayer.velocity = Vector2.zero;
-            thePlayerAnim.SetTrigger("Dodge");
+            lastMovePosition = theCheckForObjs.point;
+        }
+        thePlayer.MovePosition(lastMovePosition);
 
-            //lastMovePosition = movePosition;
+        Debug.Log("Dodge has started!");
 
-            ////!TODO
-            //RaycastHit2D theCheckForObjs = Physics2D.Raycast(transform.position, movePosition.normalized, movePosition.magnitude, theWallLayer);
-
-            //if(theCheckForObjs.collider != null)
-            //{
-            //    Debug.Log("The collider " + theCheckForObjs.collider.tag);
-            //    tmpGameObj.position = theCheckForObjs.point;
-            //    lastMovePosition = theCheckForObjs.point;
-            //    Debug.Log("New Move Position is " + lastMovePosition);                
-            //}
-            ////thePlayer.MovePosition(lastMovePosition);
-            
-            thePlayer.AddForce(lastMoveDir * 1000 * speedDodge * Time.fixedDeltaTime);
-            Debug.Log("Dodge has started!");
-            
+        if (theAudioManager != null)
+        {
             if (!theAudioManager.isPlaying("DodgeWoosh"))
             {
                 theAudioManager.Play("DodgeWoosh");
             }
-            StartCoroutine(HasDodged());     
         }
+        StartCoroutine(HasDodged(lastMovePosition));     
+        
     }
 
-    private IEnumerator HasDodged()
+    private IEnumerator HasDodged(Vector3 needPos)
     {
         int count = 0;
-        print("thePlayer.velocity" + thePlayer.velocity);
-        while (thePlayer.velocity.x > 0f && thePlayer.velocity.y > 0f)
+
+        while ((transform.position - needPos).sqrMagnitude <= 0.2f)
         {
             count++;
             print("Dodge in proccess" + count);

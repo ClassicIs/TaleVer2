@@ -7,11 +7,8 @@ public class InventoryScript
 {
     private List<ItemScript> Items;
     private int maxSize;
-    
-    [SerializeField]
-    private PlayerManager PlayerManager;
-    public event Action <Sprite, int> OnItemAdd;
-    public event Action <int> OnItemDelete;
+
+    public event Action OnInventoryUpdate;
 
     public InventoryScript (int sizeOfInventory)
     {        
@@ -35,7 +32,10 @@ public class InventoryScript
         if (Items.Count < maxSize)
         {            
             Items.Add(Item);
-            Debug.Log("Item named " + Item.itemName + " was added to the Inventory.");
+            if (OnInventoryUpdate != null)
+            {
+                OnInventoryUpdate();
+            }
             Item.PrintItem();
             return true;
         }
@@ -77,6 +77,11 @@ public class InventoryScript
             }
         }
         
+        if(OnInventoryUpdate != null)
+        {
+            OnInventoryUpdate();
+        }
+
         return tmpItems;
     }
 
@@ -155,8 +160,15 @@ public class InventoryScript
         if(itemIndex <= Items.Count)
         {
             Items.RemoveAt(itemIndex);
+
+            if (OnInventoryUpdate != null)
+            {
+                OnInventoryUpdate();
+            }
+
             return true;
         }
+
         return false;
     }
 }

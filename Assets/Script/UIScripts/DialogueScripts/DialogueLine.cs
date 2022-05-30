@@ -6,7 +6,14 @@ using System;
 [Serializable]
 public class DialogueLine
 {
-    public Character theSpeaker;
+    public enum Cast
+    {
+        char1,
+        char2,
+        char3
+    }
+
+    public Cast curCharacter;
     [TextArea]
     public string theLine;
 }

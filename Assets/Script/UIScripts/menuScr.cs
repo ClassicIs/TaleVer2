@@ -11,12 +11,8 @@ public class menuScr : MonoBehaviour
     private GameObject opMenu;
 
     bool coroutineEnd = false;
+    [SerializeField]
     FadeInScript theFadeInScr;    
-
-    private void Start()
-    {
-        theFadeInScr = GameObject.FindGameObjectWithTag("Fade").GetComponent<FadeInScript>();
-    }
 
     public void ContinueB()
     {

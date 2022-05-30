@@ -65,6 +65,15 @@ TagManager:
   - name: Foreground
     uniqueID: 391407823
     locked: 0
+  - name: Objects
+    uniqueID: 202603031
+    locked: 0
+  - name: PickableObjects
+    uniqueID: 4236381839
+    locked: 0
+  - name: Characters
+    uniqueID: 2323572959
+    locked: 0
   - name: Particles
     uniqueID: 2581161117
     locked: 0

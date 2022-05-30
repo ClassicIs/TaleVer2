@@ -36,7 +36,12 @@ PrefabInstance:
     - target: {fileID: 104436211546533520, guid: 2662935b1bf95ac44b5949d5f9beeccc,
         type: 3}
       propertyPath: m_Name
-      value: Stolb-Stand Variant
+      value: Stolb-Stand Variant (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 104436211546533520, guid: 2662935b1bf95ac44b5949d5f9beeccc,
+        type: 3}
+      propertyPath: m_Layer
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 104436211546533523, guid: 2662935b1bf95ac44b5949d5f9beeccc,
         type: 3}
@@ -45,18 +50,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 104436211546533523, guid: 2662935b1bf95ac44b5949d5f9beeccc,
         type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.8332405
+      objectReference: {fileID: 0}
+    - target: {fileID: 104436211546533523, guid: 2662935b1bf95ac44b5949d5f9beeccc,
+        type: 3}
       propertyPath: m_LocalPosition.x
-      value: 30.36
+      value: 11.950776
       objectReference: {fileID: 0}
     - target: {fileID: 104436211546533523, guid: 2662935b1bf95ac44b5949d5f9beeccc,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -23.75
+      value: -4.0371685
       objectReference: {fileID: 0}
     - target: {fileID: 104436211546533523, guid: 2662935b1bf95ac44b5949d5f9beeccc,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 0.42336375
       objectReference: {fileID: 0}
     - target: {fileID: 104436211546533523, guid: 2662935b1bf95ac44b5949d5f9beeccc,
         type: 3}

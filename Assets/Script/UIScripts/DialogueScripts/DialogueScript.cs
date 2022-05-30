@@ -3,14 +3,34 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
+using TMPro;
+
+public struct DialogueComplete
+{
+    public Character curCharacter;
+    public string charLine;
+}
 
 public class DialogueScript : MonoBehaviour
 {
+    [Header("References")]
     [SerializeField]
-    Text theSign;
+    TextMeshProUGUI theSign;
+    [SerializeField]
+    Image signBG;
     [SerializeField]
     Text theMessage;
-    List<DialogueLine> DialogueToOutput;
+    [SerializeField]
+    Image messageBG;
+    [SerializeField]
+    Image characterImage;
+    [Header("Padding")]
+    [SerializeField]   
+    float paddingVert;
+    [SerializeField]
+    float paddingHor;
+    List<DialogueComplete> DialogueToOutput;    
+
     IEnumerator theMesCoroutine;
     IEnumerator mesOutput;
 
@@ -25,38 +45,66 @@ public class DialogueScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        DialogueToOutput = new List<DialogueLine>();
-        theSign = GetComponentsInChildren<Text>()[0];
-        theMessage = GetComponentsInChildren<Text>()[1];
-        DialogOff();
+        paddingHor = 15f;
+        paddingVert = 8f;
+        DialogueToOutput = new List<DialogueComplete>();
+
+        DialogOn(false);
         
     }
     // Service functions
-    void DialogOn()
+    void DialogOn(bool turnOn)
     {
-        theSign.enabled = true;
-        theMessage.enabled = true;
-    }
+        theSign.enabled = turnOn;
+        theMessage.enabled = turnOn;
+        signBG.enabled = turnOn;
+        messageBG.enabled = turnOn;
+        characterImage.enabled = turnOn;
 
-    void DialogOff()
-    {
-        theSign.enabled = false;
-        theMessage.enabled = false;
-        if (DialogueToOutput != null)
+        if (!turnOn)
         {
-            DialogueToOutput.Clear();
+            theSign.text = "";
+            theMessage.text = "";
+            theSign.color = Color.white;
+
+            characterImage.sprite = null;
+            curLet = 0;
+            if (DialogueToOutput != null)
+            {
+                DialogueToOutput.Clear();
+            }
         }
     }
 
-    public void ToStartDialogue(DialogueLine[] theLines)
+    public void ToStartDialogue(DialogueLine[] theLines, Character[] characterPool)
     {
-        DialogOn();
+        DialogOn(true);
         foreach (DialogueLine line in theLines)
         {
-            DialogueToOutput.Add(line);
+            Character charTMP = new Character();
+            switch(line.curCharacter)
+            {
+                case DialogueLine.Cast.char1:
+                    charTMP = characterPool[0];
+                    break;
+                case DialogueLine.Cast.char2:
+                    charTMP = characterPool[1];
+                    break;
+                case DialogueLine.Cast.char3:
+                    charTMP = characterPool[2];
+                    break;
+                default:
+                    Debug.LogWarning("There is no character 4+.");
+                    break;
+            }
+            DialogueComplete tmpDialogue;
+            tmpDialogue.charLine = line.theLine;
+            tmpDialogue.curCharacter = charTMP;
+
+            DialogueToOutput.Add(tmpDialogue);
         }
         curLet = 0;        
-        ChangeLine(theLines[curLet].theSpeaker.charName, theLines[curLet].theLine);        
+        ChangeLine(DialogueToOutput[curLet]);        
     }
     
     public void NextLine()
@@ -71,7 +119,7 @@ public class DialogueScript : MonoBehaviour
             Debug.Log("Line progress is stopped!");
             StopCoroutine(mesOutput);
             lineInProgress = false;
-            theMessage.text = DialogueToOutput[curLet].theLine;            
+            theMessage.text = DialogueToOutput[curLet].charLine;            
         }
         else
         {
@@ -81,11 +129,11 @@ public class DialogueScript : MonoBehaviour
 
             if (curLet < DialogueToOutput.Count)
             {
-                ChangeLine(DialogueToOutput[curLet].theSpeaker.charName, DialogueToOutput[curLet].theLine);
+                ChangeLine(DialogueToOutput[curLet]);
             }
             else
             {
-                DialogOff();
+                DialogOn(false);
                 if (OnDialogueEnd != null)
                 {
                     OnDialogueEnd();
@@ -143,11 +191,17 @@ public class DialogueScript : MonoBehaviour
         Debug.Log("lineInProgress = false!");
     }
 
-    void ChangeLine(string name, string message)
+    void ChangeLine(DialogueComplete Dialogue)
     {
-        theSign.text = name;
+        Character currentCharacter = Dialogue.curCharacter;
+        theSign.text = currentCharacter.charName;
+        theSign.color = currentCharacter.charColor;
+        characterImage.sprite = currentCharacter.theCharSpr;
+        theSign.ForceMeshUpdate();
+        Vector2 preferedSize = theSign.GetRenderedValues(false);
+        signBG.GetComponent<RectTransform>().sizeDelta = new Vector2(preferedSize.x + paddingHor * 2, preferedSize.y + paddingVert * 2);
         theMessage.text = "";
-        mesOutput = PrintByLetter(message);
+        mesOutput = PrintByLetter(Dialogue.charLine);
         StartCoroutine(mesOutput);        
     }
 }
