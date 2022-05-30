@@ -29,6 +29,7 @@ public class PlayerManager : MonoBehaviour
     public event Action<int> OnCoinChange;
     public event Action<int> OnHealthChange;
     public event Action<int> OnInkLevelChange;
+    public event Action<int, float, int> OnSettingValues;
 
     // Death Actions
     public event Action OnInkDeath;
@@ -47,23 +48,30 @@ public class PlayerManager : MonoBehaviour
     void Awake()
     {
         Inventory = new InventoryScript(10);
-        
-        for (int i = 0; i < 12; i++)
-        {
-            theItems.Add(theItem);
-        }
-        theItems = Inventory.AddItems(theItems);
-        for (int i = 0; i < theItems.Count; i++)
-        {
-            Debug.Log(i + "Item is " + theItems[i].itemName);
-
-        }
-        
-        thePlayerScript = GetComponent<Player>();
         AsignValues();
-        SetValues(5, 100, 10001);
     }
-    
+
+    private void Start()
+    {
+        SetValues(1, 50, 10001);
+    }
+
+    private void AsignValues()
+    {
+        thePlayerScript = GetComponent<Player>();
+        theBoxCol = GetComponent<BoxCollider2D>();
+        theCircleTriggerCol = GetComponent<CircleCollider2D>();
+        charCollisionScript = GetComponent<CharacterOverlap>();
+    }
+
+    public void NormalizeAll()
+    {
+        theBoxCol.enabled = true;
+        theCircleTriggerCol.enabled = true;
+        thePlayerScript.enabled = true;
+        charCollisionScript.enabled = true;
+    }
+
     private void DangerInTheWay(DangerObject DangerObject, bool LongAction)
     {
         if(LongAction)
@@ -144,27 +152,18 @@ public class PlayerManager : MonoBehaviour
     // Start functions
     public void SetValues(int Health, int InkLevel, int Coins, int MaxHealth = 4, int MaxInkLevel = 100)
     {
-        Debug.Log("Setting values");
         this.MaxHealth = MaxHealth;
         this.MaxInkLevel = MaxInkLevel;
 
-        AddHealth(Health);
-        AddCoins(Coins);
-        AddInkLevel(InkLevel);
+        this.Health = Health;
+        this.InkLevel = InkLevel;
+        this.CoinCount = Coins;
 
-        /*if (OnCoinChange != null)
+        if(OnSettingValues != null)
         {
-            OnCoinChange(CoinCount);
+            OnSettingValues(Health, InkLevel, CoinCount);
         }
-        if (OnHealthChange != null)
-        {
-            OnHealthChange(Health);
-        }
-        if (OnInkLevelChange != null)
-        {
-            OnInkLevelChange(InkLevel);
-        }*/
-}
+    }
 
     public void SetValues(SavePoint PointToLoad)
     {
@@ -172,26 +171,12 @@ public class PlayerManager : MonoBehaviour
         this.MaxInkLevel = MaxInkLevel;
         */
         Vector2 PlayerPosition = new Vector2();
-        List<String> Inventory;
+        
         PointToLoad.ReturnPoint(out Health, out InkLevel, out CoinCount, out PlayerPosition, out Inventory);
         transform.position = PlayerPosition;
     }
 
-    private void AsignValues()
-    {
-        theBoxCol = GetComponent<BoxCollider2D>();
-        theCircleTriggerCol = GetComponent<CircleCollider2D>();        
-        charCollisionScript = GetComponent<CharacterOverlap>();
-        thePlayerScript = GetComponent<Player>();
-    }
-
-    public void NormalizeAll()
-    {
-        theBoxCol.enabled = true;
-        theCircleTriggerCol.enabled = true;
-        thePlayerScript.enabled = true;
-        charCollisionScript.enabled = true;
-    }
+    
 
     // To Set Values
     public void AddHealth(int AddHealth)
@@ -329,11 +314,13 @@ public class PlayerManager : MonoBehaviour
         return InkLevel;
     }
 
-    public void GetAllValues(out int Health, out int InkLevel, out int CoinCount)
+    public void GetAllValues(out int Health, out int InkLevel, out int CoinCount, out InventoryScript PlayerInventory)
     {
         Health = this.Health;        
         InkLevel = this.InkLevel;
         CoinCount = this.CoinCount;
+        PlayerInventory = Inventory;
+
     }
     
     /*

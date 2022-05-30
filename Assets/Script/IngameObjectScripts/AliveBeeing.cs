@@ -7,6 +7,7 @@ public class AliveBeeing : MonoBehaviour
     public enum PlayerStates
     {
         moving,
+        stalking,
         dashing,
         attacking,
         stunned,

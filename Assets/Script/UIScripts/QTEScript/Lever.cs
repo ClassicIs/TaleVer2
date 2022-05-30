@@ -15,7 +15,7 @@ public class Lever : InteractObject
     QTEHolder QTEHolder;
     QTEObject CurrQTE;
 
-    private void Start()
+    protected override void Start()
     {
         PlayerStay = false;       
         DoorAnim = Door.GetComponent<Animator>();
@@ -23,8 +23,7 @@ public class Lever : InteractObject
 
     public override void InterAction()
     {        
-        Debug.Log("E is pressed");
-        CurrQTE = QTEHolder.ActivateQTE(QTEHolder.TypesOfQTE.Simple);
+        CurrQTE = QTEHolder.ActivateQTE(QTEHolder.TypesOfQTE.Cypher);
         CurrQTE.Activate(QTEObject.HardVariety.easy);
         
         Subscribe();

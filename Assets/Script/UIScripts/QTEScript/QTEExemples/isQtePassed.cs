@@ -11,8 +11,12 @@ public class isQtePassed : QTEObject
     public bool qteSuccess = false;
     public bool qteActive = false;
 
+    [Header("References")]
+    [SerializeField]
     Image UnderCircle;
+    [SerializeField]
     Image QTECircle;
+    [SerializeField]
     Image RButton;
 
     [SerializeField]
@@ -27,14 +31,6 @@ public class isQtePassed : QTEObject
    
     void Start()
     {
-        UnderCircle = GetComponentsInChildren<Image>()[0];
-        QTECircle = GetComponentsInChildren<Image>()[1];
-        RButton = GetComponentsInChildren<Image>()[2];
-
-        QTEUnderCircleObj = transform.GetChild(0).gameObject;
-        QTECircleObj = transform.GetChild(1).gameObject;
-        R_ButtonObj = transform.GetChild(2).gameObject;
-
         QTEOff();
     }
 

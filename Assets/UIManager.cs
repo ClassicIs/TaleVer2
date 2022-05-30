@@ -28,17 +28,31 @@ public class UIManager : MonoBehaviour
     {
         InkChangeSpeed = 0.02f;
         PlayerManager = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>();
+        InteractionSignUI(false);
         PlayerManager.OnHealthChange += ChangeHealth;
         PlayerManager.OnInkLevelChange += ChangeInkLevelUI;
-        PlayerManager.OnCoinChange += ChangeCoinCountUI;        
+        PlayerManager.OnCoinChange += ChangeCoinCountUI;
+        PlayerManager.OnSettingValues += SettingUI;
+    }
+    private void Start()
+    {
+        
     }
 
+    private void SettingUI(int health, float inkLevel, int coinCount)
+    {
+        ChangeHealth(health);
+        InkLevelDisplay.value = inkLevel;
+        MoneyCount.text = coinCount.ToString();
+    }
     private void ChangeHealth(int Health)
     {
-        Debug.Log("Changing health " + Health);
-        int HealthNow = HealthObject.transform.childCount;
+        int HealthNow = HealthUI.transform.childCount;
         int HealthChange = Health - HealthNow;
-        if(HealthChange > 0)
+
+        Debug.Log("Changing health " + Health + "\nCurrent health is " + HealthNow);
+
+        if (HealthChange > 0)
         {
             for(int i = 0; i < HealthChange; i++)
             {
@@ -47,9 +61,10 @@ public class UIManager : MonoBehaviour
         }
         else if (HealthChange < 0)
         {
-            for(int i = HealthNow; i > HealthChange; i--)
+            for(int i = HealthNow; i > Health; i--)
             {
-                Destroy(HealthUI.transform.GetChild(i));
+                Debug.Log("Destroying heart " + i);
+                Destroy(HealthUI.transform.GetChild(i - 1).gameObject);
             }
         }
         else
@@ -58,26 +73,50 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    private void ChangeInkLevelUI(int InkLevel)
+    private void ChangeInkLevelUI(int inkLevel)
     {
-        Debug.Log("Changing int level " + InkLevel);
-        //InkLevelDisplay.value = InkLevel;
-        InkLevelDisplay.value = Mathf.Lerp(InkLevelDisplay.value, InkLevel, InkChangeSpeed);       
+        Debug.Log("Changing int level " + inkLevel);
+        StartCoroutine(ChangeInkLevelUIInTime(InkLevelDisplay.value, inkLevel));
     }
 
-    private void ChangeCoinCountUI(int CoinCount)
+    private IEnumerator ChangeInkLevelUIInTime(float currentInkLevel, float neededInkLevel)
     {
-        MoneyCount.text = CoinCount.ToString();
+        while(currentInkLevel != neededInkLevel)
+        {
+            currentInkLevel = Mathf.Lerp(currentInkLevel, neededInkLevel, InkChangeSpeed);
+            InkLevelDisplay.value = currentInkLevel;
+            yield return null;
+        }
+
+        Debug.Log("Changed ink level.");
+    }
+
+    private void ChangeCoinCountUI(int coinCount)
+    {
+        StartCoroutine(ChangeCoinCountInTime(int.Parse(MoneyCount.text), coinCount));
+    }
+
+    private IEnumerator ChangeCoinCountInTime(int curCoinCount, int needCoinCount)
+    {
+        while(curCoinCount != needCoinCount)
+        {
+            if (curCoinCount < needCoinCount)
+            {
+                curCoinCount += 1;
+            }
+            else
+            {
+                curCoinCount -= 1;
+            }
+            MoneyCount.text = curCoinCount.ToString();
+            yield return new WaitForSeconds(0.2f);
+        }
     }
 
     // TODO Implement a Sign
-    private void InteractionSignUI()
+    private void InteractionSignUI(bool canInteract)
     {
-        CanInteract.SetActive(true);
-    }
-    private void NoInteractionSignUI()
-    {
-        CanInteract.SetActive(false);
+        CanInteract.SetActive(canInteract);
     }
 
 

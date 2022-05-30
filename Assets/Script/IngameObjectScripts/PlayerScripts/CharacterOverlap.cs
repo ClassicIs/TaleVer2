@@ -193,10 +193,7 @@ public class CharacterOverlap : MonoBehaviour
             lastHitObject = goingIntoWall.point;
             thePlayerController.currState = Player.PlayerStates.stopped;
         }
-        else
-        {
-            thePlayerController.currState = Player.PlayerStates.moving;
-        }
+        
         RaycastHit2D goingToDeath = Physics2D.Raycast(new Vector2(playerLegPos.position.x, playerLegPos.position.y), thePlayerController.theVectRaw, radOfDropDetect, theDeathLayer);
         if (goingToDeath.collider != null)
         {
@@ -206,16 +203,11 @@ public class CharacterOverlap : MonoBehaviour
                 thePlayer.velocity = new Vector2(0, 0);
                 thePlayerController.currState = Player.PlayerStates.stopped;
                 timeToDeath -= 0.5f * Time.deltaTime;
-            }
-            else
-            {
-                thePlayerController.currState = Player.PlayerStates.moving;
-            }            
+            }                      
         }
         else
         {
-            timeToDeath = strTimeToDeath;
-            thePlayerController.currState = Player.PlayerStates.moving;
+            timeToDeath = strTimeToDeath;            
         }
 
         if (!isOnGround)
@@ -324,22 +316,6 @@ public class CharacterOverlap : MonoBehaviour
                     Debug.Log("Removed interactable object is " + collision.name);
                 }
             }
-        }
-
-        if (thePlayerController.currState != Player.PlayerStates.isDead)
-        {            
-            if (collision.CompareTag("Floor"))
-            {
-                isOnGround = false;
-                thePlayerController.isGrounded = false;
-            }
-
-            if (collision.CompareTag("MovingPlatform"))
-            {
-                Debug.Log("Not on the moving plat");
-                thePlayerController.isSliding = false;
-            }
-
         }
     }
 

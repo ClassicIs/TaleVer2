@@ -4,17 +4,13 @@ using UnityEngine;
 
 public class BoxScript : InteractObject
 {
-    Animator theBoxAnim;
     public string [] contentOfBox;
     private CircleCollider2D theColliderBox;
-    private GameManagerScript GMScript;
 
-    private void Start()
+    protected override void Start()
     {
         LongInteraction = false;
-        GMScript = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManagerScript>();        
         theColliderBox = GetComponent<CircleCollider2D>();
-        theBoxAnim = GetComponent<Animator>();
     }
 
     public override void InterAction()

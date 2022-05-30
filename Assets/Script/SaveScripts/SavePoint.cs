@@ -8,9 +8,9 @@ public class SavePoint : MonoBehaviour
     int CurrInkLevel;
     int CoinCount;
     Vector2 PositionOfPlayer;
-    List<string> CurrentInventory;
+    InventoryScript CurrentInventory;
 
-    public SavePoint(int TheHealth, int TheInkLevel, int coinCount, Vector2 ThePositionOfPlayer, List<string> CurrentInventory)
+    public SavePoint(int TheHealth, int TheInkLevel, int coinCount, Vector2 ThePositionOfPlayer, InventoryScript CurrentInventory)
     {
         CurrHealth = TheHealth;
         CoinCount = coinCount;
@@ -19,7 +19,7 @@ public class SavePoint : MonoBehaviour
         this.CurrentInventory = CurrentInventory;
     }
 
-    public void SetCheckPoint(int CurrHealth, int CurrInkLevel, int CoinCount, Vector2 PositionOfPlayer, List<string> CurrentInventory)
+    public void SetCheckPoint(int CurrHealth, int CurrInkLevel, int CoinCount, Vector2 PositionOfPlayer, InventoryScript CurrentInventory)
     {
         this.CurrHealth = CurrHealth;
         this.CurrInkLevel = CurrInkLevel;
@@ -27,7 +27,7 @@ public class SavePoint : MonoBehaviour
         this.CurrentInventory = CurrentInventory;
     }
 
-    public void ReturnPoint(out int CurrHealth, out int CurrInkLevel, out int CoinCount, out Vector2 PositionOfPlayer, out List <string> CurrentInventory)
+    public void ReturnPoint(out int CurrHealth, out int CurrInkLevel, out int CoinCount, out Vector2 PositionOfPlayer, out InventoryScript CurrentInventory)
     {
         CurrHealth = this.CurrHealth;
         CurrInkLevel = this.CurrInkLevel;

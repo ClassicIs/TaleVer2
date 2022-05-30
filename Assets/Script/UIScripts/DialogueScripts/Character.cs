@@ -7,5 +7,6 @@ using System;
 public class Character
 {
     public string charName;
+    public Color charColor;
     public Sprite theCharSpr;
 }

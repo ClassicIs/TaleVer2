@@ -18,6 +18,8 @@ public class UIInventoryScript : MonoBehaviour
     GameObject PlayerObject;
     [SerializeField]
     GameObject inventoryContainer;
+    [SerializeField]
+    Text descriptionText;
 
     RectTransform positionOfInventory;
     float speedOfInventory;
@@ -30,7 +32,6 @@ public class UIInventoryScript : MonoBehaviour
     InventoryScript Inventory;
     IEnumerator ToDropItem;
 
-
     // Test
     [SerializeField]
     GameObject TestObject;
@@ -40,17 +41,13 @@ public class UIInventoryScript : MonoBehaviour
         positionOfInventory = GetComponent<RectTransform>();
         uiInventoryIsShown = false;
         InventorySlots = new List<GameObject>();
+        
     }
 
     public void SetInventory(InventoryScript theInventory)
     {
         Inventory = theInventory;
-        for (int i = 0; i < theInventory.ReturnSize(); i++)
-        {
-            /*GameObject TheInventorySlot = Instantiate(InventorySlot, inventoryContainer.transform);
-            InventorySlots.Add(TheInventorySlot);*/
-            //Instantiate(Panels, inventoryContainer.transform);
-        }
+        theInventory.OnInventoryUpdate += UpdateInventory;
         UpdateInventory();
     }
     
@@ -64,16 +61,18 @@ public class UIInventoryScript : MonoBehaviour
             GameObject theInventorySlot = Instantiate(InventorySlot, inventoryContainer.transform);
             InventorySlots.Add(theInventorySlot);
             UIInventorySlot thisSlot = theInventorySlot.GetComponent<UIInventorySlot>();
+            thisSlot.SetButton(itemsFromInventories[i], tmpI);
+            thisSlot.OnDropItem += DropItem;
+            thisSlot.OnUseItem += UseItem;
+            thisSlot.OnPointerHover += ShowDescription;
+            thisSlot.OnPointerExit += HideDescription;
+            /*
             thisSlot.PutSprite(itemsFromInventories[i].itemSprite);
 
             thisSlot.cancelButton.onClick.AddListener(delegate {
                 
                 Debug.Log("Item index is " + tmpI);
-                DropItem(itemsFromInventories[tmpI], PlayerObject.transform.position);                                    
-                Inventory.RemoveItemAt(tmpI);
-                UpdateInventory();
-                
-            
+                DropItem(itemsFromInventories[tmpI], tmpI, PlayerObject.transform.position);                                 
             } );
             thisSlot.itemButton.onClick.AddListener(delegate {
                 ItemScript itemToUse;
@@ -93,10 +92,27 @@ public class UIInventoryScript : MonoBehaviour
                         Debug.Log("Cannot use quest Items");
                     }
                 }
-            });
+            });*/
         }
     }
-    
+
+    private void ShowDescription(string discription = "")
+    {
+        descriptionText.text = discription;
+    }
+    private void HideDescription()
+    {
+        descriptionText.text = "";
+    }
+
+    private void UseItem(ItemScript itemToDrop, int itemIndex)
+    {
+        if (UseItem(itemToDrop))
+        {
+            Inventory.RemoveItemAt(itemIndex);
+        }
+    }
+
     private bool UseItem(ItemScript ItemToUse)
     {
         int healthAdd = 2;
@@ -138,8 +154,8 @@ public class UIInventoryScript : MonoBehaviour
             {
                 Destroy(InventorySlots[i]);
             }
+            HideDescription();
             InventorySlots.Clear();
-
         }        
     }
     
@@ -165,22 +181,34 @@ public class UIInventoryScript : MonoBehaviour
     IEnumerator toShowInventory(bool showOrNot)
     {
         Vector3 desiredPosition;
+        bool isOnTheX;
+        bool isOnTheY;
+
+        float tail = 0.1f;
+
         if (showOrNot)
         {
-            desiredPosition = new Vector3(-461, 0, 0);
+            desiredPosition = new Vector3(-460, 0, 0);
+            isOnTheX = Mathf.Approximately(Mathf.Floor(positionOfInventory.anchoredPosition.x), Mathf.Floor(desiredPosition.x));
+            isOnTheY = (positionOfInventory.anchoredPosition.y <= desiredPosition.y + tail);            
         }
         else
         {
             ActivateInventory(false);
             desiredPosition = new Vector3(450, 0, 0);
-        }
 
-        while (!positionOfInventory.anchoredPosition.Equals(desiredPosition))
-        {
-            positionOfInventory.anchoredPosition = Vector3.Lerp(positionOfInventory.anchoredPosition, desiredPosition, speedOfInventory);
-            yield return null;
+            isOnTheX = Mathf.Approximately(Mathf.Floor(positionOfInventory.anchoredPosition.x), Mathf.Floor(desiredPosition.x));
+            isOnTheY = (positionOfInventory.anchoredPosition.y >= desiredPosition.y - tail);
         }
         
+        while ((positionOfInventory.anchoredPosition.x - desiredPosition.x) > 0.2f)
+        {
+            positionOfInventory.anchoredPosition = Vector3.Lerp(positionOfInventory.anchoredPosition, desiredPosition, speedOfInventory);
+            
+            yield return null;
+        }
+
+        positionOfInventory.anchoredPosition = desiredPosition;
 
         if (showOrNot)
         {
@@ -195,27 +223,40 @@ public class UIInventoryScript : MonoBehaviour
 
     private void ActivateInventory(bool activate)
     {
+        if(activate)
+        {
+            Debug.Log("Inventory Buttons activated");
+        }
+        else
+        {
+            Debug.Log("Inventory Buttons deactivated");
+        }
         for (int i = 0; i < InventorySlots.Count; i++)
         {
-            InventorySlots[i].GetComponent<UIInventorySlot>().cancelButton.enabled = activate;
-            InventorySlots[i].GetComponent<UIInventorySlot>().itemButton.enabled = activate;
+            InventorySlots[i].GetComponent<UIInventorySlot>().ActivateButton(activate);
         }
     }
 
-    public void DropItem(ItemScript theItemToDrop, Vector3 playerPosition)
+    public void DropItem(ItemScript itemToDrop, int tmpI)
     {
-        ToDropItem = FindItemPosition(theItemToDrop, playerPosition);
+        DropItem(itemToDrop, tmpI, PlayerObject.transform.position);
+    }
+
+    public void DropItem(ItemScript theItemToDrop, int tmpI, Vector3 playerPosition)
+    {
+        ToDropItem = FindItemPosition(theItemToDrop, tmpI, playerPosition);
         StartCoroutine(ToDropItem);
     }
 
-    IEnumerator FindItemPosition(ItemScript theItemToDrop, Vector3 playerPosition)
+    IEnumerator FindItemPosition(ItemScript theItemToDrop, int tmpI, Vector3 playerPosition)
     {
         Vector3 randomAddition;
         Vector3 finalItemPosition;
         RaycastHit2D notToDrop;
-        RaycastHit2D toDrop;        
+        RaycastHit2D toDrop;
 
-        //int numberOfTries = 20;
+        bool canBeSent = true;
+        int numberOfTries = 20;
         int currNumOfTries = 0;
         do
         {
@@ -225,23 +266,26 @@ public class UIInventoryScript : MonoBehaviour
             toDrop = Physics2D.BoxCast(finalItemPosition, new Vector2(1, 1), 0f, Vector2.zero, 1f, LayerToDrop);
             Instantiate(TestObject, finalItemPosition, Quaternion.identity);
 
-            Debug.Log("Atempt to drop # " + currNumOfTries);
             currNumOfTries++;
-
-            if (toDrop)            
-                Debug.Log("To drop equals true");            
-            else
-                Debug.Log("To drop equals false");
-
-            if (notToDrop)
-                Debug.Log("Not to drop equals true");
-            else
-                Debug.Log("Not to drop equals false");
+            if(currNumOfTries >= numberOfTries)
+            {
+                canBeSent = false;
+                break;
+            }
             yield return null;
         }
         while (!toDrop || notToDrop);
 
-        Instantiate(theItemToDrop.itemObject, finalItemPosition, Quaternion.identity);
+        if (canBeSent)
+        {
+            Instantiate(theItemToDrop.itemObject, finalItemPosition, Quaternion.identity);
+            Inventory.RemoveItemAt(tmpI);
+            UpdateInventory();
+        }
+        else
+        {
+            Debug.Log("Was not able to throw the object.");
+        }
     }
 
     /*

@@ -15,9 +15,9 @@ public class horrorEnemyScript : Enemy
         theAnimOfEnemy = GetComponent<Animator>();
 
     }
-    protected override void followPlayer()
+    protected override void Follow(GameObject Target)
     {
-        base.followPlayer();
+        base.Follow(Target);
         theAnimOfEnemy.SetBool("isSeingPlayer", true);
     }
     
