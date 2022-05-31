@@ -46,32 +46,29 @@ public class InventoryScript
         }
     }
     
-    public List<ItemScript> AddItems(List <ItemScript> Items)
+    public ItemScript[] AddItems(ItemScript [] Items)
     {
         int freeSpace = maxSize - this.Items.Count;
-        int spaceToUse = freeSpace - Items.Count;       
-        
-        for (int i = 0; i < freeSpace; i++)
-        {
-            if (Items[i])
-            {
-                this.Items.Add(Items[i]);
-            }
-            else
-            {
-                break;
-            }
-        }
+        int spaceToUse = freeSpace - Items.Length;
+        Debug.LogFormat("Free Space is {0}", freeSpace);
         List<ItemScript> tmpItems = new List<ItemScript>();
+
         if (spaceToUse >= 0)
         {
+            foreach (ItemScript theItem in Items)
+            {
+                this.Items.Add(theItem);                
+            }
             Debug.Log("All items were placed in Inventory");
         }
         else
         {
-            
+            for (int i = 0; i < freeSpace; i++)
+            {
+                this.Items.Add(Items[i]);
+            }
 
-            for (int i = freeSpace; i < Items.Count; i++)
+            for (int i = freeSpace; i < Items.Length; i++)
             {
                 tmpItems.Add(Items[i]);
             }
@@ -82,7 +79,7 @@ public class InventoryScript
             OnInventoryUpdate();
         }
 
-        return tmpItems;
+        return tmpItems.ToArray();
     }
 
     public InventoryScript ReturnInventory()

@@ -51,7 +51,7 @@ public class CharacterOverlap : MonoBehaviour
     
     [SerializeField]
     private bool isOnGround;
-    public bool isAlive;
+
     Vector2 lastHitObject;
     [SerializeField]
     private int timeToCheck;
@@ -100,7 +100,6 @@ public class CharacterOverlap : MonoBehaviour
         theLastCheckpoint = firstCheckPoint.position;
         theLastAlivePosition = transform.position;
         
-        isAlive = true;
         isOnGround = true;    
         
         timeToInstaTime = 3f;
@@ -124,7 +123,7 @@ public class CharacterOverlap : MonoBehaviour
 
     private void Update()
     {        
-        if (thePlayerController.currState != Player.PlayerStates.isDead && thePlayerController.currState != Player.PlayerStates.stunned)
+        if (thePlayerController.isAlive)
         {
             CheckForDeath();
         }
@@ -160,7 +159,7 @@ public class CharacterOverlap : MonoBehaviour
     // To Find Last Save Space where Was Player
     IEnumerator FindSafePlace()
     {
-        while(thePlayerController.currState != Player.PlayerStates.isDead)
+        while(thePlayerController.isAlive)
         {
             bool isItSafe = false;
             foreach(Transform transf1 in checkForGround)
@@ -191,7 +190,6 @@ public class CharacterOverlap : MonoBehaviour
         {            
             //Debug.Log("Is hitting into a wall");
             lastHitObject = goingIntoWall.point;
-            thePlayerController.currState = Player.PlayerStates.stopped;
         }
         
         RaycastHit2D goingToDeath = Physics2D.Raycast(new Vector2(playerLegPos.position.x, playerLegPos.position.y), thePlayerController.theVectRaw, radOfDropDetect, theDeathLayer);
@@ -201,19 +199,20 @@ public class CharacterOverlap : MonoBehaviour
             {
                 //Debug.Log("Raycast is " + goingToDeath.collider.tag);
                 thePlayer.velocity = new Vector2(0, 0);
-                thePlayerController.currState = Player.PlayerStates.stopped;
+                thePlayerController.ToStun(true);
                 timeToDeath -= 0.5f * Time.deltaTime;
             }                      
         }
         else
         {
+            thePlayerController.ToStun(false);
             timeToDeath = strTimeToDeath;            
         }
 
         if (!isOnGround)
         {
             Debug.Log("Death is near!");
-            if (thePlayerController.currState != Player.PlayerStates.dashing)
+            if (thePlayerController.isDashing)
             {
                 if (InstadeathTime > 0f)
                 {
@@ -238,7 +237,7 @@ public class CharacterOverlap : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (thePlayerController.currState != Player.PlayerStates.isDead)
+        if (thePlayerController.isAlive)
         {
             if(collision.CompareTag("Spikes"))
             {
@@ -288,17 +287,25 @@ public class CharacterOverlap : MonoBehaviour
                     OnTakingCoin(1, collision.gameObject.transform.position);
                 }
                 Destroy(collision.gameObject);
-            }            
+            }
+
+            if (collision.CompareTag("Floor"))
+            {
+                isOnGround = true;
+                thePlayerController.isGrounded = true;
+            }
+
         }
     }
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (thePlayerController.currState != Player.PlayerStates.isDead && thePlayerController.currState != Player.PlayerStates.stunned)
+        if (thePlayerController.isAlive)
         {
             if (collision.CompareTag("Floor"))
             {
                 isOnGround = true;
+                thePlayerController.isGrounded = true;
             }
         }
     }
@@ -316,7 +323,15 @@ public class CharacterOverlap : MonoBehaviour
                     Debug.Log("Removed interactable object is " + collision.name);
                 }
             }
+
+            if (collision.CompareTag("Floor"))
+            {
+                isOnGround = false;
+                thePlayerController.isGrounded = false;
+            }
         }
+
+
     }
 
     // To Find the Nearest Interactable object
@@ -398,13 +413,13 @@ public class CharacterOverlap : MonoBehaviour
     {
         if (isOrNot)
         {
-            thePlayerController.currState = Player.PlayerStates.moving;            
+            thePlayerController.isAlive = true;            
 
         }
         else
         {
             thePlayer.velocity = Vector2.zero;
-            thePlayerController.currState = Player.PlayerStates.isDead;            
+            thePlayerController.ChangeState(Player.PlayerStates.isDead);            
         }
     }
 
@@ -415,13 +430,14 @@ public class CharacterOverlap : MonoBehaviour
         isStunned = true;
         PlayerInput.enabled = false;
         thePlayer.velocity = new Vector2(0, 0);
-        thePlayerController.currState = Player.PlayerStates.stunned;
+        thePlayerController.ToStun(true);
     }
     public void Unstunned()
     {
         isStunned = false;
         PlayerInput.enabled = true;
-        thePlayerController.currState = Player.PlayerStates.moving;
+
+        thePlayerController.ToStun(false);
     }
 
     private void OnDrawGizmos()

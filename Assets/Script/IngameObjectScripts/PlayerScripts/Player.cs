@@ -8,9 +8,15 @@ public class Player : AliveBeeing
     private Rigidbody2D thePlayer;
     private Animator thePlayerAnim;
     private PlayerEffectsScript theFXScript;
+    public float horMovement;
+    public float vertMovement;
 
     public event Action OnDashStart;
     public event Action OnDashEnd;
+
+    public bool isGrounded;
+    public bool isAlive;
+    public bool isDashing;
 
     private AudioManagerScript theAudioManager;
     public LayerMask theWallLayer;
@@ -40,6 +46,10 @@ public class Player : AliveBeeing
     // Start is called before the first frame update
     void Start()
     {
+        isGrounded = true;
+        isAlive = true;
+        isDashing = false;
+
         currState = PlayerStates.moving;
         movePosition = transform.position;
         
@@ -70,21 +80,22 @@ public class Player : AliveBeeing
         thePlayerAnim = GetComponent<Animator>();
     }
 
-    public void SlowEffectOn(float SlowModifier)
+    public void SlowEffectOn(bool on, float SlowModifier = 0.4f)
     {
-        isSlowDown = true;
-        slowModif = SlowModifier;
-    }
-    public void SlowEffectOff()
-    {
-        isSlowDown = false;
-        slowModif = 1f;
+        isSlowDown = on;
+        if (on)
+        {
+            slowModif = SlowModifier;
+        }
+        else
+        {
+            slowModif = 1f;
+
+        }
     }
 
     public void Move(float horMovement, float verMovement)
     {
-        currState = PlayerStates.moving;
-
         theVectRaw = new Vector2(horMovement, verMovement).normalized;
         theVect = new Vector2(horMovement, verMovement).normalized;
         if (Mathf.Abs(theVectRaw.x) > 0.1f || Mathf.Abs(theVectRaw.y) > 0.1f)
@@ -99,24 +110,13 @@ public class Player : AliveBeeing
         speed = Mathf.Lerp(speed, normSpeed * slowModif, .1f);
         thePlayer.velocity = theVect * speed;
     }
-
-    public void ToDash()
-    {
-        currState = PlayerStates.dashing;    
-    }
-
-    public void ToAttack()
-    {
-        currState = PlayerStates.attacking;
-    }
-
-
     
     void FixedUpdate()
     {
         switch (currState)
         {
             case PlayerStates.moving:
+                Move(horMovement, vertMovement);
                 if ((Mathf.Abs(theVect.x) > 0f) || (Mathf.Abs(theVect.y) > 0f))
                 {
                     if (!theAudioManager.isPlaying("WalkTile 1"))
@@ -133,7 +133,14 @@ public class Player : AliveBeeing
                 }                
                 break;
             case PlayerStates.dashing:
-                Dash();
+                Debug.Log("Dashing AAAAAAAAAAAAAAAA!");
+
+                if (!isDashing)
+                {
+                    Debug.Log("Dashing!");
+
+                    Dash();
+                }
                 break;
             case PlayerStates.stunned:                
                 isMoving = false;
@@ -148,8 +155,60 @@ public class Player : AliveBeeing
         }
     }    
 
+
+    public void ChangeState(PlayerStates theState)
+    {
+        if (theState != currState)
+        {
+            if (theState != PlayerStates.stunned && isGrounded && isAlive)
+            {
+                Debug.Log("Changing state to " + theState.ToString());
+                if (theState == PlayerStates.moving)
+                {
+                    if (isGrounded && currState != PlayerStates.dashing)
+                    {
+                        currState = theState;
+                    }
+                }
+                else if (theState == PlayerStates.dashing)
+                {
+
+                    currState = theState;
+                }
+                else if (theState == PlayerStates.attacking && currState != PlayerStates.dashing)
+                {
+                    if (currState != PlayerStates.dashing)
+                    {
+
+                        currState = theState;
+                    }
+                }
+            }
+        }
+    }
+
+    public void ToStun(bool stun)
+    {
+        if (stun)
+        {
+            if (currState != PlayerStates.stunned)
+            {
+                currState = PlayerStates.stunned;
+            }
+        }
+        else
+        {
+            if (currState == PlayerStates.stunned)
+            {
+                currState = PlayerStates.moving;
+            }
+        }
+    }
+
     private void Dash()
     {
+        Debug.Log("Dodge has started!");
+        isDashing = true;
         movePosition = new Vector2(transform.position.x, transform.position.y) + lastMoveDir * speedDodge;
        
         theFXScript.MakeTheGhosts(true);            
@@ -166,8 +225,6 @@ public class Player : AliveBeeing
             lastMovePosition = theCheckForObjs.point;
         }
         thePlayer.MovePosition(lastMovePosition);
-
-        Debug.Log("Dodge has started!");
 
         if (theAudioManager != null)
         {
@@ -188,10 +245,16 @@ public class Player : AliveBeeing
         {
             count++;
             print("Dodge in proccess" + count);
+            if(count > 100)
+            {
+                break;
+            }
             yield return null;
-        }        
+        }
+        transform.position = needPos;
         currState = PlayerStates.moving;
         theFXScript.MakeTheGhosts(false);
+        isDashing = false;
         Debug.Log("Dodge is made!");
     }  
 

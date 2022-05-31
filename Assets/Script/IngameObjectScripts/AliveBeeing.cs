@@ -14,5 +14,5 @@ public class AliveBeeing : MonoBehaviour
         stopped,
         isDead
     }
-    public PlayerStates currState;
+    protected PlayerStates currState;
 }

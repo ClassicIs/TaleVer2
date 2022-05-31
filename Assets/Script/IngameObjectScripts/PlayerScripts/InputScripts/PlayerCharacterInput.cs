@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class PlayerCharacterInput : MonoBehaviour
 {
-    private float horMovement;
-    private float verMovement;
+    public float horMovement;
+    public float verMovement;
     Player thePlayer;
     Player.PlayerStates theStatesToChoose;
 
@@ -22,16 +22,20 @@ public class PlayerCharacterInput : MonoBehaviour
     {
         horMovement = Input.GetAxisRaw("Horizontal");
         verMovement = Input.GetAxisRaw("Vertical");
-        thePlayer.Move(horMovement, verMovement);
-        
+        thePlayer.horMovement = this.horMovement;
+        thePlayer.vertMovement = verMovement;
+
+        //thePlayer.Move(horMovement, verMovement);
+        thePlayer.ChangeState(Player.PlayerStates.moving);
+
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            thePlayer.ToDash();
+            thePlayer.ChangeState(Player.PlayerStates.dashing);
         }
 
         if (Input.GetKeyDown(KeyCode.G))
         {
-            thePlayer.ToAttack();
+            thePlayer.ChangeState(Player.PlayerStates.attacking);
         }
 
     }

@@ -108,7 +108,7 @@ public class PlayerManager : MonoBehaviour
 
         if (TimeForDebuf > 0f)
         {
-            
+            TimeForDebuf -= Time.deltaTime;
             if (TheHealthDamage != 0)
             {
                 AddHealth(TheHealthDamage);
@@ -121,9 +121,17 @@ public class PlayerManager : MonoBehaviour
             {
                 if (!thePlayerScript.isSlowDown)
                 {
-                    thePlayerScript.SlowEffectOn(TheSlowModifier);
+                    thePlayerScript.SlowEffectOn(true, TheSlowModifier);
                 }
             }
+        }
+        else
+        {
+            if (thePlayerScript.isSlowDown)
+            {
+                thePlayerScript.SlowEffectOn(false);
+            }
+
         }
     }
 
@@ -174,6 +182,11 @@ public class PlayerManager : MonoBehaviour
         
         PointToLoad.ReturnPoint(out Health, out InkLevel, out CoinCount, out PlayerPosition, out Inventory);
         transform.position = PlayerPosition;
+        if(OnSettingValues != null)
+        {
+            OnSettingValues(this.Health, this.InkLevel, this.CoinCount);
+        }
+
     }
 
     
@@ -232,7 +245,7 @@ public class PlayerManager : MonoBehaviour
 
     public void MinimumInkLevel()
     {
-        InkLevel = MaxInkLevel;
+        //InkLevel = MaxInkLevel;
         Debug.Log("Ink Level is " + InkLevel + ".");        
     }
 

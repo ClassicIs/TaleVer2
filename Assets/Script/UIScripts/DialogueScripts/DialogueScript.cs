@@ -19,7 +19,7 @@ public class DialogueScript : MonoBehaviour
     [SerializeField]
     Image signBG;
     [SerializeField]
-    Text theMessage;
+    TextMeshProUGUI theMessage;
     [SerializeField]
     Image messageBG;
     [SerializeField]

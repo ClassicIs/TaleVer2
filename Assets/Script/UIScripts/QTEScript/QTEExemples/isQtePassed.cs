@@ -20,41 +20,43 @@ public class isQtePassed : QTEObject
     Image RButton;
 
     [SerializeField]
+    GameObject QTECircleObj;
+    [SerializeField]
     GameObject QTEUnderCircleObj;
     [SerializeField]
     GameObject R_ButtonObj;
-    [SerializeField]
-    GameObject QTECircleObj;
-
+    
     float countDown;    
     float strCountDown = 1f;
    
     void Start()
     {
-        QTEOff();
+        QTEOn(false);
     }
 
     public override void Activate(HardVariety Hardness)
     {
-        QTECircleObj.SetActive(true);
-        QTEUnderCircleObj.SetActive(true);
-        R_ButtonObj.SetActive(true);
+        QTEOn(true);
         StartCoroutine(QTESuccess());
     }
 
     protected override void QTEEnd()
     {
-        QTEOff();
+        QTEOn(false);
         NullActions();
     }
     
-    private void QTEOff()
+    private void QTEOn(bool thisQTE)
     {
-        QTECircleObj.SetActive(false);
-        QTEUnderCircleObj.SetActive(false);
-        R_ButtonObj.SetActive(false);
-        fillImage = 0;
+        QTECircleObj.SetActive(thisQTE);
+        QTEUnderCircleObj.SetActive(thisQTE);
+        R_ButtonObj.SetActive(thisQTE);        
         countDown = strCountDown;
+        if (!thisQTE)
+        {
+            fillImage = 0;
+        }
+        QTECircle.fillAmount = fillImage;
     }
 
 

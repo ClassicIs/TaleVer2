@@ -16,7 +16,7 @@ public class FountainScript : InteractObject
     public override void InterAction()
     {
         Debug.Log("Drink out of Fountain!");
-        PlayerManagement.MinimumInkLevel();
+        PlayerManagement.AddInkLevel(100);
         //EndInteraction();
     }
 

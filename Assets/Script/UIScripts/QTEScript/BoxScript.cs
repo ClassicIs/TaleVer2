@@ -4,19 +4,39 @@ using UnityEngine;
 
 public class BoxScript : InteractObject
 {
-    public string [] contentOfBox;
-    private CircleCollider2D theColliderBox;
-
+    [SerializeField]
+    PlayerManager playerManager;
+    [Header("Items of the Box")]
+    public ItemScript [] contentOfBox;
+    [SerializeField]
+    private Animator boxAnimator;
+    
     protected override void Start()
     {
+        boxAnimator = GetComponent<Animator>();
         LongInteraction = false;
-        theColliderBox = GetComponent<CircleCollider2D>();
     }
 
     public override void InterAction()
     {
-        theColliderBox.enabled = false;
-        Debug.Log("The box is openned!");
+        if (contentOfBox.Length > 0)
+        {
+            ItemScript[] leftovers = playerManager.Inventory.AddItems(contentOfBox);
+            contentOfBox = leftovers;
+            
+            boxAnimator.SetBool("BoxOpen", true);
+            
+            Debug.Log("The box was openned!");
+            
+            if (contentOfBox.Length > 0)
+            {
+                boxAnimator.SetBool("BoxOpen", false);
+            }
+        }
+        else
+        {
+            Debug.Log("The box is EMPTY!");
+        }
     }
 
     public override void FutherAction()

@@ -23,7 +23,7 @@ public class Lever : InteractObject
 
     public override void InterAction()
     {        
-        CurrQTE = QTEHolder.ActivateQTE(QTEHolder.TypesOfQTE.Cypher);
+        CurrQTE = QTEHolder.ActivateQTE(QTEHolder.TypesOfQTE.Simple);
         CurrQTE.Activate(QTEObject.HardVariety.easy);
         
         Subscribe();
