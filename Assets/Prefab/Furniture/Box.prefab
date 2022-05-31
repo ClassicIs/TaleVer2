@@ -12,7 +12,9 @@ GameObject:
   - component: {fileID: -3112948389780460956}
   - component: {fileID: 3442671818978187038}
   - component: {fileID: 3227380243598872703}
-  m_Layer: 0
+  - component: {fileID: -2076113805586514177}
+  - component: {fileID: 2342953488449939492}
+  m_Layer: 13
   m_Name: Box
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -136,4 +138,35 @@ MonoBehaviour:
   - {x: -0.31519112, y: -0.17920691, z: 0}
   m_ShapePathHash: -478628378
   m_Mesh: {fileID: 0}
-  m_InstanceId: -176260
+  m_InstanceId: 169704
+--- !u!114 &-2076113805586514177
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2595675882521057073}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40255f616a737df4f8fdf872693b8f6f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 3
+  destructablePrefab: {fileID: 2364252198674629188, guid: 1b535441ffda4594889c33e8d14268f1,
+    type: 3}
+--- !u!58 &2342953488449939492
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2595675882521057073}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.000000059604645, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.41149116

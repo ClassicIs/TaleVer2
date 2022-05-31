@@ -12,7 +12,9 @@ GameObject:
   - component: {fileID: 2740882519680852105}
   - component: {fileID: 5172327540232652317}
   - component: {fileID: 5159587048790990997}
-  m_Layer: 0
+  - component: {fileID: 6913174766513347674}
+  - component: {fileID: 2447181162578416070}
+  m_Layer: 13
   m_Name: Crate3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -143,4 +145,35 @@ MonoBehaviour:
   - {x: -0.81937283, y: 0.36460483, z: 0}
   m_ShapePathHash: -922917335
   m_Mesh: {fileID: 0}
-  m_InstanceId: 154306
+  m_InstanceId: 171702
+--- !u!114 &6913174766513347674
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6251949668946335750}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40255f616a737df4f8fdf872693b8f6f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 3
+  destructablePrefab: {fileID: 1148893674721921109, guid: 3ca8c576b4aa4f24abdee3974b62270a,
+    type: 3}
+--- !u!58 &2447181162578416070
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6251949668946335750}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: -0.013805628, y: 0}
+  serializedVersion: 2
+  m_Radius: 0.8922298

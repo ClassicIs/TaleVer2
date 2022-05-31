@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: -128291232022235075}
   - component: {fileID: 3816238064977831952}
   - component: {fileID: 2700450610665249508}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Torch2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -236,7 +236,7 @@ PrefabInstance:
     - target: {fileID: 8937928392760051719, guid: 573649ef12451cf4d83096353cfc6f4b,
         type: 3}
       propertyPath: m_Color.g
-      value: 0.49803922
+      value: 0.27450982
       objectReference: {fileID: 0}
     - target: {fileID: 8937928392760051719, guid: 573649ef12451cf4d83096353cfc6f4b,
         type: 3}
@@ -256,7 +256,7 @@ PrefabInstance:
     - target: {fileID: 8937928392760051719, guid: 573649ef12451cf4d83096353cfc6f4b,
         type: 3}
       propertyPath: m_PointLightInnerRadius
-      value: 0.37
+      value: 0.28
       objectReference: {fileID: 0}
     - target: {fileID: 8937928392760051719, guid: 573649ef12451cf4d83096353cfc6f4b,
         type: 3}
