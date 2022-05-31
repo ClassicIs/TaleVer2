@@ -20,7 +20,7 @@ public class Player : AliveBeeing
 
     private AudioManagerScript theAudioManager;
     public LayerMask theWallLayer;
-    public Transform tmpGameObj;
+    //public Transform tmpGameObj;
     public Vector2 theVectRaw;
     private Vector2 theVect;
 
@@ -228,7 +228,7 @@ public class Player : AliveBeeing
         Vector3 lastMovePosition = movePosition;
 
         RaycastHit2D theCheckForObjs = Physics2D.Raycast(transform.position, lastMoveDir, (lastMoveDir * speedDodge).magnitude, theWallLayer);
-        Instantiate(tmpGameObj, theCheckForObjs.point, Quaternion.identity);
+        //Instantiate(tmpGameObj, theCheckForObjs.point, Quaternion.identity);
         Debug.DrawLine(transform.position, movePosition.normalized * movePosition.magnitude, Color.red, 1000f);
         if (theCheckForObjs.collider != null)
         {

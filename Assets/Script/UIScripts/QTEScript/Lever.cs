@@ -6,8 +6,7 @@ using System;
 
 public class Lever : InteractObject 
 {
-    public GameObject Door;
-    Animator DoorAnim;
+    public DoorScript Door;
     [SerializeField]
     bool PlayerStay;
 
@@ -18,7 +17,6 @@ public class Lever : InteractObject
     protected override void Start()
     {
         PlayerStay = false;       
-        DoorAnim = Door.GetComponent<Animator>();
     }
 
     public override void InterAction()
@@ -71,7 +69,7 @@ public class Lever : InteractObject
 
     private void OpenDoor()
     {
-        DoorAnim.SetBool("DoorIsOpen", true);
+        Door.Open();
         GetComponent<Animator>().SetBool("QTEisPassed", true);        
         GetComponent<Lever>().enabled = false;        
     }

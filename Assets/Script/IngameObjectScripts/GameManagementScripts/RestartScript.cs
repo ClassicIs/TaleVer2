@@ -23,7 +23,7 @@ public class RestartScript : MonoBehaviour
     {
         thePlayer = GameObject.FindGameObjectWithTag("Player");
         thePlayerScript = thePlayer.GetComponent<Player>();
-        theGMScript = theGameManager.GetComponent<GameManagerScript>();
+        theGMScript = GetComponent<GameManagerScript>();
     }
 
     public void RestartTheGame()

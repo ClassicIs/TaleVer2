@@ -13,22 +13,26 @@ public class isQtePassed : QTEObject
 
     [Header("References")]
     [SerializeField]
-    Image UnderCircle;
-    [SerializeField]
-    Image QTECircle;
-    [SerializeField]
-    Image RButton;
-
-    [SerializeField]
     GameObject QTECircleObj;
     [SerializeField]
     GameObject QTEUnderCircleObj;
     [SerializeField]
     GameObject R_ButtonObj;
-    
+
+    Image QTECircle;
+    Image UnderCircle;
+    Image RButton;
+
     float countDown;    
     float strCountDown = 1f;
-   
+
+    private void Awake()
+    {
+        QTECircle = QTECircleObj.GetComponent<Image>();
+        UnderCircle = QTEUnderCircleObj.GetComponent<Image>();
+        RButton = R_ButtonObj.GetComponent<Image>();
+    }
+
     void Start()
     {
         QTEOn(false);
@@ -50,7 +54,7 @@ public class isQtePassed : QTEObject
     {
         QTECircleObj.SetActive(thisQTE);
         QTEUnderCircleObj.SetActive(thisQTE);
-        R_ButtonObj.SetActive(thisQTE);        
+        R_ButtonObj.SetActive(thisQTE);
         countDown = strCountDown;
         if (!thisQTE)
         {
