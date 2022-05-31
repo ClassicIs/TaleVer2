@@ -10,6 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3762891616557486733}
   - component: {fileID: 3762891616557486732}
+  - component: {fileID: 1103317493}
+  - component: {fileID: 1103317494}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: GameManager
@@ -43,15 +45,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73cb40395fae0e145b1c8a607e04af45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  theHealthHolder: {fileID: 0}
-  healthIcon: {fileID: 1898709065400216054, guid: a054621ebdd7c2e468d78cf23a1968ee,
-    type: 3}
+  UIInventory: {fileID: 0}
   allGameObj:
   - {fileID: 6179185329695178260, guid: 07c5a4169e2238a48a3c606e48f9ea13, type: 3}
-  inkSlider: {fileID: 0}
-  moneyCount: {fileID: 0}
-  theLetterUI: {fileID: 0}
   thePlayerObj: {fileID: 0}
-  theMenu: {fileID: 0}
-  inkLevelLoss: 0
-  timeToDecreaseInk: 0
+  MenuScript: {fileID: 0}
+  inkLevelLoss: 2
+  timeToDecreaseInk: 0.15
+--- !u!114 &1103317493
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3762891616557486735}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab943171cadd51d43848fd9ea3114900, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1103317494
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3762891616557486735}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 995ab4bf0d904d9408f38595530060de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

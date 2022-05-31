@@ -28,7 +28,7 @@ public class ExplodeObject : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player"))
+        /*if (collision.CompareTag("Player"))
         {
             //if (collision.CompareTag("Weapon"))
             //{
@@ -38,18 +38,18 @@ public class ExplodeObject : MonoBehaviour
                 {
                     ExplodeThisObject();
                 }
-            //}
+            //}*/
 
-            /*if (collision.CompareTag("Dash"))
+            if (collision.CompareTag("DashHitBox"))
             {
-                health--;
+                health = 0;
 
                 if (health <= 0)
                 {
                     ExplodeThisObject();
                 }
-            }*/
-        }
+            }
+        //}
     }
 
     private void ExplodeThisObject()

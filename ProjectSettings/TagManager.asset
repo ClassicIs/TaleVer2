@@ -22,6 +22,7 @@ TagManager:
   - EndOfLevel
   - Dialogue
   - DialogHolder
+  - DashHitBox
   layers:
   - Default
   - TransparentFX
