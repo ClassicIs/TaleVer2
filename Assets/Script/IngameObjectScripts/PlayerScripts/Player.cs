@@ -151,6 +151,10 @@ public class Player : AliveBeeing
                 Debug.Log("Attacking");
                 break;
             case PlayerStates.isDead:
+                if (isAlive)
+                {
+                    isAlive = false;
+                }
                 break;
         }
     }    
@@ -182,6 +186,12 @@ public class Player : AliveBeeing
 
                         currState = theState;
                     }
+                }
+                else if (currState != PlayerStates.isDead)
+                {
+                    currState = PlayerStates.isDead;
+                    Debug.Log("Player is dead!");
+
                 }
             }
         }
