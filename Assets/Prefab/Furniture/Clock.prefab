@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7139110616694079163}
   - component: {fileID: 501290391417290388}
   - component: {fileID: 2107246316536197035}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Clock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -132,8 +132,10 @@ MonoBehaviour:
   m_ShapePath:
   - {x: -0.40625, y: -0.9375, z: 0}
   - {x: 0.40625, y: -0.9375, z: 0}
-  - {x: 0.40625, y: -0.56435835, z: 0}
-  - {x: -0.40126047, y: -0.56435823, z: 0}
-  m_ShapePathHash: -809386130
+  - {x: 0.28835058, y: -0.13021612, z: 0}
+  - {x: 0.38503647, y: 0.8887768, z: 0}
+  - {x: -0.3482263, y: 0.8887768, z: 0}
+  - {x: -0.29502487, y: -0.119609356, z: 0}
+  m_ShapePathHash: 1122806949
   m_Mesh: {fileID: 0}
-  m_InstanceId: -179022
+  m_InstanceId: -203884

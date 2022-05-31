@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4298397885350041252}
   - component: {fileID: 2478778892440793040}
   - component: {fileID: 4379171612987267331}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Torch
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -113,13 +113,28 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 702085296600407238, guid: 573649ef12451cf4d83096353cfc6f4b,
         type: 3}
+      propertyPath: m_Color.b
+      value: 0.12495552
+      objectReference: {fileID: 0}
+    - target: {fileID: 702085296600407238, guid: 573649ef12451cf4d83096353cfc6f4b,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0.34293464
+      objectReference: {fileID: 0}
+    - target: {fileID: 702085296600407238, guid: 573649ef12451cf4d83096353cfc6f4b,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 0.6792453
+      objectReference: {fileID: 0}
+    - target: {fileID: 702085296600407238, guid: 573649ef12451cf4d83096353cfc6f4b,
+        type: 3}
       propertyPath: m_Intensity
-      value: 1.27
+      value: 0.84
       objectReference: {fileID: 0}
     - target: {fileID: 702085296600407238, guid: 573649ef12451cf4d83096353cfc6f4b,
         type: 3}
       propertyPath: m_ShadowIntensity
-      value: 0.813
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 702085296600407238, guid: 573649ef12451cf4d83096353cfc6f4b,
         type: 3}
@@ -154,11 +169,16 @@ PrefabInstance:
     - target: {fileID: 702085296600407238, guid: 573649ef12451cf4d83096353cfc6f4b,
         type: 3}
       propertyPath: m_ApplyToSortingLayers.Array.data[1]
-      value: 1061477367
+      value: -1713806179
       objectReference: {fileID: 0}
     - target: {fileID: 702085296600407238, guid: 573649ef12451cf4d83096353cfc6f4b,
         type: 3}
       propertyPath: m_ApplyToSortingLayers.Array.data[2]
+      value: 1061477367
+      objectReference: {fileID: 0}
+    - target: {fileID: 702085296600407238, guid: 573649ef12451cf4d83096353cfc6f4b,
+        type: 3}
+      propertyPath: m_ApplyToSortingLayers.Array.data[3]
       value: 391407823
       objectReference: {fileID: 0}
     - target: {fileID: 1776317076400176386, guid: 573649ef12451cf4d83096353cfc6f4b,
@@ -248,8 +268,33 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8937928392760051719, guid: 573649ef12451cf4d83096353cfc6f4b,
         type: 3}
+      propertyPath: m_Color.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8937928392760051719, guid: 573649ef12451cf4d83096353cfc6f4b,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0.26750574
+      objectReference: {fileID: 0}
+    - target: {fileID: 8937928392760051719, guid: 573649ef12451cf4d83096353cfc6f4b,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 0.6698113
+      objectReference: {fileID: 0}
+    - target: {fileID: 8937928392760051719, guid: 573649ef12451cf4d83096353cfc6f4b,
+        type: 3}
+      propertyPath: m_Intensity
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8937928392760051719, guid: 573649ef12451cf4d83096353cfc6f4b,
+        type: 3}
       propertyPath: m_ShadowIntensity
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8937928392760051719, guid: 573649ef12451cf4d83096353cfc6f4b,
+        type: 3}
+      propertyPath: m_FalloffIntensity
+      value: 0.488
       objectReference: {fileID: 0}
     - target: {fileID: 8937928392760051719, guid: 573649ef12451cf4d83096353cfc6f4b,
         type: 3}
@@ -264,12 +309,12 @@ PrefabInstance:
     - target: {fileID: 8937928392760051719, guid: 573649ef12451cf4d83096353cfc6f4b,
         type: 3}
       propertyPath: m_PointLightInnerRadius
-      value: 0.42
+      value: 0.49
       objectReference: {fileID: 0}
     - target: {fileID: 9033760424217823216, guid: 573649ef12451cf4d83096353cfc6f4b,
         type: 3}
       propertyPath: maxIntensity
-      value: 2.2
+      value: 1.8
       objectReference: {fileID: 0}
     - target: {fileID: 9033760424217823216, guid: 573649ef12451cf4d83096353cfc6f4b,
         type: 3}

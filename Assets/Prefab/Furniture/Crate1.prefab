@@ -12,7 +12,10 @@ GameObject:
   - component: {fileID: 3449297653548050581}
   - component: {fileID: 8694860901894921085}
   - component: {fileID: 3798231713156469504}
-  m_Layer: 0
+  - component: {fileID: 670719669285518741}
+  - component: {fileID: 8854475634300135320}
+  - component: {fileID: 4138362573402825283}
+  m_Layer: 13
   m_Name: Crate1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -137,4 +140,56 @@ MonoBehaviour:
   - {x: -0.72726315, y: -0.33968467, z: 0}
   m_ShapePathHash: -134731189
   m_Mesh: {fileID: 0}
-  m_InstanceId: 152330
+  m_InstanceId: 120458
+--- !u!50 &670719669285518741
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7784522825705904080}
+  m_BodyType: 2
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1000
+  m_LinearDrag: 0
+  m_AngularDrag: 0
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 0
+--- !u!58 &8854475634300135320
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7784522825705904080}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0.005784273, y: 0.087351084}
+  serializedVersion: 2
+  m_Radius: 1.1095822
+--- !u!114 &4138362573402825283
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7784522825705904080}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40255f616a737df4f8fdf872693b8f6f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 3
+  destructablePrefab: {fileID: 8986993631321060997, guid: 1d63a72245b0a894b98f68193091e5e9,
+    type: 3}

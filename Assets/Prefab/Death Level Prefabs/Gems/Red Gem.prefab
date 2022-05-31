@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2784568057982468561}
   - component: {fileID: 4583689066110990368}
   - component: {fileID: 608106029025274304}
+  - component: {fileID: 8129298442033371492}
   m_Layer: 0
   m_Name: Red Gem
   m_TagString: Untagged
@@ -41,7 +42,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6575770432080062172}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: eed281cdc217fda4cbdc7b22076600cb, type: 3}
   m_Name: 
@@ -86,7 +87,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 2
   m_Sprite: {fileID: 2231101757108035128, guid: de99ecde53b9c9845b39fbfa1462d6b3,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -134,3 +135,16 @@ CircleCollider2D:
   m_Offset: {x: -0.013046861, y: -0.0036678314}
   serializedVersion: 2
   m_Radius: 0.7816154
+--- !u!114 &8129298442033371492
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6575770432080062172}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1046b4bce4e28014bb3a1b214fdf42a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  thisItem: {fileID: 11400000, guid: 6d60e414120a82b409d16b21bddcbf2b, type: 2}

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2371509757738577225}
   - component: {fileID: 8746396890275810026}
   - component: {fileID: 3603408043117466768}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Table with mirror
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -22,6 +22,7 @@ TagManager:
   - EndOfLevel
   - Dialogue
   - DialogHolder
+  - DashHitBox
   layers:
   - Default
   - TransparentFX
@@ -37,7 +38,7 @@ TagManager:
   - Ground
   - Walls
   - Object
-  - 
+  - Destructives
   - 
   - 
   - 
