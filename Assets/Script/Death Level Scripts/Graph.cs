@@ -19,11 +19,9 @@ public class Graph
     }
 
 
-    /// <summary>
-    /// Версия с одним проходом
-    /// </summary>
-    /// <param name="count">Кол-во вершин</param>
-    /// <returns>Словрь с позициями вершин и направлениями связей</returns>
+
+    // Версия с одним проходом
+    // Возвращает словрь с позициями вершин и направлениями связей
     public Dictionary<Vector2Int, HashSet<Vector2Int>> Generate1(int count)
     {
         var n1 = new Vector2Int(0, 0);
@@ -73,11 +71,9 @@ public class Graph
     }
 
 
-    /// <summary>
-    /// Версия с двумя проходами
-    /// </summary>
-    /// <param name="count">Кол-во вершин</param>
-    /// <returns>Информация о нодах</returns>
+    // Версия с двумя проходами
+    // count - Кол-во вершин
+    // Возвращает информацию о нодах
     public List<NodeInfo> Generate2(int count)
     {
         var nodes = CreateGraph(count);

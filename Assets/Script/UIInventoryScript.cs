@@ -32,9 +32,7 @@ public class UIInventoryScript : MonoBehaviour
     InventoryScript Inventory;
     IEnumerator ToDropItem;
 
-    // Test
-    [SerializeField]
-    GameObject TestObject;
+
     private void Awake()
     {
         speedOfInventory = 0.2f;
@@ -264,7 +262,7 @@ public class UIInventoryScript : MonoBehaviour
             finalItemPosition = playerPosition + randomAddition;
             notToDrop = Physics2D.BoxCast(finalItemPosition, new Vector2(1, 1), 0f, Vector2.zero, 1f, LayersNotToDrop);
             toDrop = Physics2D.BoxCast(finalItemPosition, new Vector2(1, 1), 0f, Vector2.zero, 1f, LayerToDrop);
-            Instantiate(TestObject, finalItemPosition, Quaternion.identity);
+            //Instantiate(TestObject, finalItemPosition, Quaternion.identity);
 
             currNumOfTries++;
             if(currNumOfTries >= numberOfTries)
