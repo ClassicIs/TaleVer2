@@ -21,7 +21,6 @@ public class PlayerManager : MonoBehaviour
     
     // References to Collisions
     private CharacterOverlap charCollisionScript;
-    private Player Player;
     private BoxCollider2D theBoxCol;
     private CircleCollider2D theCircleTriggerCol;
     
@@ -57,7 +56,7 @@ public class PlayerManager : MonoBehaviour
 
     private void Start()
     {
-        SetValues(4, 75, 10001);
+        SetValues(4, 85, 10001);
     }
 
     private void AsignValues()
@@ -76,16 +75,18 @@ public class PlayerManager : MonoBehaviour
         charCollisionScript.enabled = true;
     }
 
-    public void DangerInTheWay(DangerObject DangerObject, bool LongAction)
+    public void DangerInTheWay(DangerObject DangerObject)
     {
-        if(LongAction)
+        if(DangerObject.LongAction)
         {
+            Debug.Log("Starting coroutine!");
             LongActionDebuf = TakeDamageInTime(DangerObject.StartDamage);
             StartCoroutine(LongActionDebuf);
             DangerObject.OnBeingFree += DangerAway;
         }
         else
         {
+            Debug.Log("Dealing coroutine!");
             TakeDamage(DangerObject.StartDamage);
         }       
     }
@@ -94,10 +95,16 @@ public class PlayerManager : MonoBehaviour
     {
         if (LongActionDebuf != null)
         {
+            Debug.Log("Stopping coroutine!");
             StopCoroutine(LongActionDebuf);
             LongActionDebuf = null;
         }
         TakeDamage(DangerObject);
+        if (thePlayerScript.isSlowDown)
+        {
+            Debug.Log("Slow off!");
+            thePlayerScript.SlowEffectOn(false);
+        }
     }
 
     public void TakeDamage(Damage DangerObject)
@@ -109,7 +116,25 @@ public class PlayerManager : MonoBehaviour
         float TimeForDebuf;
 
         DangerObject.GiveDamage(out TheHealthDamage, out TheInkGain, out TheSlowModifier, out MakeStun, out TimeForDebuf);
-
+        if (TheHealthDamage != 0)
+        {
+            AddHealth(TheHealthDamage);
+        }
+        if (TheInkGain != 0)
+        {
+            Debug.Log("TheInkGain!");
+            AddInkLevel(-TheInkGain);
+        }
+        if (TheSlowModifier != 0)
+        {
+            if (!thePlayerScript.isSlowDown)
+            {
+                Debug.Log("Slow down!");
+                thePlayerScript.SlowEffectOn(true, TheSlowModifier);
+            }
+        }
+        /*
+        Debug.LogFormat("TheInkGain {0}", TheInkGain);
         if (TimeForDebuf > 0f)
         {
             TimeForDebuf -= Time.deltaTime;
@@ -119,12 +144,14 @@ public class PlayerManager : MonoBehaviour
             }
             if (TheInkGain != 0)
             {
+                Debug.Log("TheInkGain!");
                 AddInkLevel(TheInkGain);
             }
             if (TheSlowModifier != 0)
             {
                 if (!thePlayerScript.isSlowDown)
                 {
+                    Debug.Log("Slow down!");
                     thePlayerScript.SlowEffectOn(true, TheSlowModifier);
                 }
             }
@@ -136,13 +163,15 @@ public class PlayerManager : MonoBehaviour
                 thePlayerScript.SlowEffectOn(false);
             }
 
-        }
+        }*/
     }
 
     private IEnumerator TakeDamageInTime(Damage DangerObject)
     {        
         while (true)
         {
+            //Debug.Log("Coroutine DAMAGE ");
+            DangerObject.PrintDamage();
             TakeDamage(DangerObject);
             yield return new WaitForSeconds(1);
         }
@@ -183,7 +212,7 @@ public class PlayerManager : MonoBehaviour
         /*this.MaxHealth = MaxHealth;
         this.MaxInkLevel = MaxInkLevel;
         */
-        Player.ToStun(true);
+        thePlayerScript.ToStun(true);
         Vector2 PlayerPosition = new Vector2();
         
         PointToLoad.ReturnPoint(out Health, out InkLevel, out CoinCount, out PlayerPosition, out Inventory);
@@ -193,7 +222,7 @@ public class PlayerManager : MonoBehaviour
             OnSettingValues(this.Health, this.InkLevel, this.CoinCount);
         }
         isAlive = true;
-        Player.ToStun(false);
+        thePlayerScript.ToStun(false);
     }
 
 
@@ -210,6 +239,7 @@ public class PlayerManager : MonoBehaviour
         {
             Debug.Log("Health is zero. Player died.");
             isAlive = false;
+
             if(OnHealthNull != null)
             {
                 OnHealthNull();
@@ -232,7 +262,7 @@ public class PlayerManager : MonoBehaviour
         StateOfValue InkValue = CheckInRange(out InkLevel, InkLevel, AddInk, 0, MaxInkLevel);
         if(InkValue == StateOfValue.InRange)
         {
-            Debug.Log("Ink Level changed.");
+            Debug.LogFormat("Ink Level changed {0}.", InkLevel);
         }
         else if(InkValue == StateOfValue.Less)
         {

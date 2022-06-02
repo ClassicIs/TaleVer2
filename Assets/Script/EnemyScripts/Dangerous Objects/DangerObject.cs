@@ -10,7 +10,7 @@ public abstract class DangerObject : MonoBehaviour
     public bool LongAction;
     public event Action <Damage> OnBeingFree;
 
-    protected virtual void Freedom()
+    public virtual void Freedom()
     {
         if (LongAction)
         {

@@ -72,13 +72,20 @@ public class GameManagerScript : MonoBehaviour
         UIInventory.SetInventory(PlayerManager.Inventory);
     }
 
-    private void AssigningValues()
+    public void AssigningValues()
     {
-        SaveManagement = GetComponent<SaveManager>();
-        theFadeInScr = GameObject.FindGameObjectWithTag("Fade").GetComponent<FadeInScript>();
-
         player = GameObject.FindGameObjectWithTag("Player");
         PlayerManager = player.GetComponent<PlayerManager>();
+        PlayerInventory = PlayerManager.Inventory;
+
+        GameObject Canvas = GameObject.FindGameObjectWithTag("AllCanvas");
+        MenuScript = Canvas.GetComponentInChildren<MenuScript>();
+        UIInventory = Canvas.GetComponentInChildren<UIInventoryScript>();
+        
+        SaveManagement = GameObject.FindGameObjectWithTag("SaveManager").GetComponent<SaveManager>();
+        theFadeInScr = GameObject.FindGameObjectWithTag("Fade").GetComponent<FadeInScript>();
+
+        
         Player = player.GetComponent<Player>();
         thePlayerOver = Player.GetComponent<CharacterOverlap>();
         AllOtherInput = Player.GetComponent<PlayerOtherInput>();
@@ -103,6 +110,7 @@ public class GameManagerScript : MonoBehaviour
         thePlayerOver.OnNearInterObject += IfInteractedNear;
         thePlayerOver.OnFarInterObject += IfInteractedAway;
         thePlayerOver.OnPickableObject += IfPickableNear;
+        thePlayerOver.OnEnteredQTE += IfEnteredQTE;
     }
 
     private void Normalize()
@@ -246,6 +254,18 @@ public class GameManagerScript : MonoBehaviour
         }
     }
     
+    private void IfEnteredQTE(AutoQTEScript theScript)
+    {
+        Player.ToStun(true);
+        theScript.StartOfQTE();
+        theScript.OnQTEEnd += IfEndedQTE;
+    }
+
+    private void IfEndedQTE()
+    {
+        Player.ToStun(false);
+    }
+
     private void IfPickableNear(PickableObject PickableObject)
     {
         PickableObject.thisItem.PrintItem();
@@ -274,13 +294,13 @@ public class GameManagerScript : MonoBehaviour
     {
         Debug.Log("Entered danger");
         ObjectDanger = ObjectThatDanger;
-        PlayerManager.DangerInTheWay(ObjectDanger.StartDamage, ObjectThatDanger.LongAction);
+        PlayerManager.DangerInTheWay(ObjectThatDanger);
+        ObjectThatDanger.OnBeingFree += PlayerManager.DangerAway;
     }
 
-    private void IfExitedDanger()
+    private void IfExitedDanger(DangerObject ObjectThatDanger)
     {
-        Debug.Log("Danger is away!");
-        PlayerManager.DangerAway(ObjectDanger.EndDamage);
+        ObjectThatDanger.Freedom();
     }
 
     private void IfSave()

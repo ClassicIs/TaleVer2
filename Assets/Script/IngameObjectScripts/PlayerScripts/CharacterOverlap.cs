@@ -7,24 +7,18 @@ using System;
 public class CharacterOverlap : MonoBehaviour
 {
     public event Action OnFalling;
-    //public event Action OnEnteringInk;
-    //public event Action OnEscapingInk;    
+   
     public event Action OnSaving;
     public event Action <int, Vector2> OnTakingCoin;
     public event Action OnDangerCollision;
     
     public event Action<DangerObject> OnDangerousObject;
-    public event Action OnDangerFar;
+    public event Action<DangerObject> OnDangerFar;
 
     public event Action<InteractObject> OnNearInterObject;
     public event Action<InteractObject> OnFarInterObject;
     public event Action<PickableObject> OnPickableObject;
-
-    private PlayerCharacterInput PlayerInput;
-
-    /*public event Action<GameObject> OnNearLock;
-    public event Action OnFarLock;
-    */
+    public event Action<AutoQTEScript> OnEnteredQTE;
 
     public enum PlayerDeath
     {
@@ -118,7 +112,6 @@ public class CharacterOverlap : MonoBehaviour
     private void AssignValues()
     {
         AllObjectsAround = new List<Transform>();
-        PlayerInput = GetComponent<PlayerCharacterInput>();
         thePlayerAnim = GetComponent<Animator>();
         thePlayer = GetComponent<Rigidbody2D>();
         thePlayerFX = GetComponent<PlayerEffectsScript>();
@@ -261,6 +254,17 @@ public class CharacterOverlap : MonoBehaviour
             // To collect all Interactive objects in one array
             if(collision != null)
             {
+                if(collision.GetComponent<AutoQTEScript>())
+                {
+                    if (!collision.GetComponent<AutoQTEScript>().alreadyUsed)
+                    {
+                        if (OnEnteredQTE != null)
+                        {
+                            OnEnteredQTE(collision.GetComponent<AutoQTEScript>());
+                        }
+                    }
+                }
+
                 if(collision.GetComponent<InteractObject>())
                 {
                     if(!AllObjectsAround.Contains(collision.GetComponent<Transform>()))
@@ -345,7 +349,7 @@ public class CharacterOverlap : MonoBehaviour
             {
                 if(OnDangerFar != null)
                 {
-                    OnDangerFar();
+                    OnDangerFar(collision.GetComponent<DangerObject>());
                 }
             }
 

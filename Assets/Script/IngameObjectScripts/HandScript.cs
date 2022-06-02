@@ -5,11 +5,11 @@ using UnityEngine;
 public class HandScript : InteractObject
 {
     [SerializeField]
-    ItemScript[] neededItem;
+    protected ItemScript[] neededItem;
     [SerializeField]
-    DoorScript doorToOpen;
-    Animator handAnimator;
-    PlayerManager PlayerManager;
+    protected DoorScript doorToOpen;
+    protected Animator handAnimator;
+    protected PlayerManager PlayerManager;
 
     protected override void Start()
     {
@@ -43,7 +43,7 @@ public class HandScript : InteractObject
         if (allIn)
         {
             neededItem = null;
-            handAnimator.SetTrigger("ToGetOut");
+            SuccessfulInteraction();
         }
         else
         {
@@ -56,6 +56,11 @@ public class HandScript : InteractObject
             }
             neededItem = tmpArray;
         }
+    }
+
+    protected virtual void SuccessfulInteraction()
+    {
+        handAnimator.SetTrigger("ToGetOut");
     }
 
     public override void FutherAction()

@@ -15,18 +15,28 @@ public class SaveManager : MonoBehaviour
 
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        
+        AssignValues();
+    }
+
+    void AssignValues()
+    {
         PlayerObject = GameObject.FindGameObjectWithTag("Player");
         PlayerManager = PlayerObject.GetComponent<PlayerManager>();
         CharacterOverlap = PlayerObject.GetComponent<CharacterOverlap>();
         Player = PlayerObject.GetComponent<Player>();
+
+
+        TheGameManagerScript = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManagerScript>();
+    }
+
+    void Start()
+    {
         CharacterOverlap.OnFalling += IfFallen;
         PlayerManager.OnInkDeath += IfInkMax;
         PlayerManager.OnHealthNull += IfHealthNull;
-
-        TheGameManagerScript = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManagerScript>();
+        
     }
 
     private void IfHealthNull()
@@ -47,7 +57,15 @@ public class SaveManager : MonoBehaviour
     {
         Player.ToStun(true);
         SceneManager.LoadScene(2);
+        AssignValues();
+        TheGameManagerScript.AssigningValues();
+    }
 
+    public void IfEndDeath()
+    {
+        Player.ToStun(true);
+        SceneManager.LoadScene(1);
+        AssignValues();
     }
 
     private void Update()
@@ -73,7 +91,7 @@ public class SaveManager : MonoBehaviour
         //TODO: Implement saving information list of collected items
 
         PlayerManager.GetAllValues(out PlayerHealth, out InkLevel, out CointCount, out PlayerInventory);
-        if (LastCheckPoint)
+        if (LastCheckPoint != null)
         {
             LastCheckPoint.SetCheckPoint(PlayerHealth, InkLevel, CointCount, PlayerCurrentPosition, PlayerInventory);
         }

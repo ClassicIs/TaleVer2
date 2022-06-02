@@ -83,8 +83,9 @@ public class Player : AliveBeeing
     public void SlowEffectOn(bool on, float SlowModifier = 0.4f)
     {
         isSlowDown = on;
+        Debug.LogFormat("Slow effect is {0}", isSlowDown);
         if (on)
-        {
+        {            
             slowModif = SlowModifier;
         }
         else
@@ -202,6 +203,7 @@ public class Player : AliveBeeing
         {
             if (currState != PlayerStates.stunned)
             {
+                thePlayer.velocity = new Vector2(0, 0);
                 Debug.Log("Player is Stunned!");
                 currState = PlayerStates.stunned;
             }

@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class BearTrap : QTEInWorldScript
+public class BearTrap : AutoQTEScript
 {
     [SerializeField]
     int damageAmount;
 
     PlayerManager PlayerManager;
-
 
     protected override void Start()
     {
@@ -19,13 +18,14 @@ public class BearTrap : QTEInWorldScript
 
     public override void SuccessfullyUsed()
     {
+        alreadyUsed = true;
         Debug.Log("Player is free!");
     }
 
     public override void UnSuccessfullyUsed()
     {
         PlayerManager.AddHealth(-damageAmount);
-
+        alreadyUsed = true;
     }
 }
 

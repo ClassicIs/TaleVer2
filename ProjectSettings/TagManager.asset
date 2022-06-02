@@ -23,6 +23,9 @@ TagManager:
   - Dialogue
   - DialogHolder
   - DashHitBox
+  - AllCanvas
+  - Weapon
+  - SaveManager
   layers:
   - Default
   - TransparentFX

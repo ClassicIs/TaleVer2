@@ -288,7 +288,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   thisMenu: {fileID: 3382891594583122227}
   startPosition: {fileID: 0}
-  theGameManager: {fileID: 0}
 --- !u!1 &3382891593053283409
 GameObject:
   m_ObjectHideFlags: 0
@@ -2292,7 +2291,7 @@ GameObject:
   - component: {fileID: 3382891593917106998}
   m_Layer: 5
   m_Name: CanvasManager
-  m_TagString: Untagged
+  m_TagString: AllCanvas
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3567,7 +3566,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3382891594410980425
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4935,7 +4934,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 3382891594410980424}
         m_TargetAssemblyTypeName: CypherScript, Assembly-CSharp
-        m_MethodName: Close
+        m_MethodName: EndButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5733,7 +5732,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New Text
+  m_text: New Text New TextNew TextNew TextNew TextNew TextNew Text
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -5767,7 +5766,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
+  m_HorizontalAlignment: 8
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0

@@ -81,13 +81,14 @@ public class UIManager : MonoBehaviour
 
     private IEnumerator ChangeInkLevelUIInTime(float currentInkLevel, float neededInkLevel)
     {
-        while(currentInkLevel != neededInkLevel)
+        while(Mathf.Abs(currentInkLevel - neededInkLevel) > 0.3f)
         {
             currentInkLevel = Mathf.Lerp(currentInkLevel, neededInkLevel, InkChangeSpeed);
             InkLevelDisplay.value = currentInkLevel;
+            Debug.LogFormat("Current Ink Level {0}", currentInkLevel);
             yield return null;
         }
-
+        InkLevelDisplay.value = neededInkLevel;
         Debug.Log("Changed ink level.");
     }
 
