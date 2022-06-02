@@ -12,7 +12,10 @@ public class CharacterOverlap : MonoBehaviour
     public event Action OnSaving;
     public event Action <int, Vector2> OnTakingCoin;
     public event Action OnDangerCollision;
+    
     public event Action<DangerObject> OnDangerousObject;
+    public event Action OnDangerFar;
+
     public event Action<InteractObject> OnNearInterObject;
     public event Action<InteractObject> OnFarInterObject;
     public event Action<PickableObject> OnPickableObject;
@@ -253,6 +256,8 @@ public class CharacterOverlap : MonoBehaviour
                 }
             }
 
+            
+
             // To collect all Interactive objects in one array
             if(collision != null)
             {
@@ -269,6 +274,14 @@ public class CharacterOverlap : MonoBehaviour
                     if (OnPickableObject != null)
                     {
                         OnPickableObject(collision.GetComponent<PickableObject>());
+                    }
+                }
+
+                if (collision.GetComponent<DangerObject>())
+                {
+                    if (OnDangerousObject != null)
+                    {
+                        OnDangerousObject(collision.GetComponent<DangerObject>());
                     }
                 }
             }
@@ -327,6 +340,16 @@ public class CharacterOverlap : MonoBehaviour
                     Debug.Log("Removed interactable object is " + collision.name);
                 }
             }
+
+            if (collision.GetComponent<DangerObject>())
+            {
+                if(OnDangerFar != null)
+                {
+                    OnDangerFar();
+                }
+            }
+
+            
 
             if (collision.CompareTag("Floor"))
             {

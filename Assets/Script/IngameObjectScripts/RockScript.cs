@@ -17,11 +17,6 @@ public class RockScript : InteractObject
         LongInteraction = false;
         PlayerManager = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>();
         PlayerManager.Inventory.AddItem(itemToGive);
-        PlayerManager.Inventory.AddItem(itemToGive);
-        PlayerManager.Inventory.AddItem(itemToGive);
-        PlayerManager.Inventory.AddItem(itemToGive);
-
-
     }
 
 

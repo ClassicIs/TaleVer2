@@ -76,7 +76,7 @@ public class PlayerManager : MonoBehaviour
         charCollisionScript.enabled = true;
     }
 
-    private void DangerInTheWay(DangerObject DangerObject, bool LongAction)
+    public void DangerInTheWay(DangerObject DangerObject, bool LongAction)
     {
         if(LongAction)
         {
@@ -90,7 +90,7 @@ public class PlayerManager : MonoBehaviour
         }       
     }
 
-    private void DangerAway(Damage DangerObject)
+    public void DangerAway(Damage DangerObject)
     {
         if (LongActionDebuf != null)
         {
@@ -100,7 +100,7 @@ public class PlayerManager : MonoBehaviour
         TakeDamage(DangerObject);
     }
 
-    private void TakeDamage(Damage DangerObject)
+    public void TakeDamage(Damage DangerObject)
     {
         int TheHealthDamage;
         int TheInkGain;

@@ -100,7 +100,6 @@ public class CypherScript : QTEObject
             }
             else
             {
-                Failed();
                 ButtonReset();
             }
             
@@ -110,15 +109,18 @@ public class CypherScript : QTEObject
     public void EndButton()
     {
         QTEEnd();
+        Failed();
     }
 
     protected override void QTEEnd()
     {
-        int currSize = theButton.Length;
-        for (int i = 0; i < currSize; i++)
+        for (int i = 0; i < theButton.Length; i++)
         {
             Destroy(theButton[i]);
         }
+
+        cypherComb = null;
+        yourComb = null;
         QTEHolder.SetActive(false);        
     }
 }

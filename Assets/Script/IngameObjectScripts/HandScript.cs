@@ -42,6 +42,7 @@ public class HandScript : InteractObject
 
         if (allIn)
         {
+            neededItem = null;
             handAnimator.SetTrigger("ToGetOut");
         }
         else

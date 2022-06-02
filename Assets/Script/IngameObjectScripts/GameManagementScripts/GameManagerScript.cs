@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-//using UnityEngine.UI;
 using System;
 
 public class GameManagerScript : MonoBehaviour
@@ -39,14 +38,8 @@ public class GameManagerScript : MonoBehaviour
     private int inkLevelLoss;
     [SerializeField]
     float timeToDecreaseInk;
-    bool isInInk = false;
     
-    bool nearDanger = false;
     bool notEndOfLevel = true;
-
-    private bool isItAfterFall;
-
-    bool isReading;
     bool inventoryOpen;
 
     public event Action<int> OnHealthChange;
@@ -98,11 +91,6 @@ public class GameManagerScript : MonoBehaviour
         AllOtherInput.OnEscape += IfMenu;
         AllOtherInput.OnInteracting += IfInteracted;
 
-
-        //Change        
-        //thePlayerOver.OnNearLock += IfNearLock;
-        //thePlayerOver.OnFarLock += IfFarLock;
-        
         // Leave
         thePlayerOver.OnFalling += changeHealthWhenFalling;
         
@@ -110,36 +98,17 @@ public class GameManagerScript : MonoBehaviour
         thePlayerOver.OnTakingCoin += IfTookCoin;
 
         thePlayerOver.OnDangerousObject += IfEnteredDanger;
+        thePlayerOver.OnDangerFar += IfExitedDanger;
+
         thePlayerOver.OnNearInterObject += IfInteractedNear;
         thePlayerOver.OnFarInterObject += IfInteractedAway;
         thePlayerOver.OnPickableObject += IfPickableNear;
-        //thePlayerOver.OnEndOfLevel += IfEndOfLevel;
     }
 
     private void Normalize()
     {        
         startPos = player.transform.position;
-        isItAfterFall = false;
         currDeath = DeathTypes.none;
-
-        /*maxInklevel = 100;
-        inkLevel = maxInklevel;
-        tmpInkLevel = inkLevel;
-        ChangeInkLevel(0);
-
-        maxPlayerHealth = 8;
-        minPlayerHealth = 0;
-
-        tmpHealth = 4;
-        playerHealth = tmpHealth;
-
-        isReading = false;
-
-        ChangeHealth(0);
-
-        tmpMoney = 0;
-        playerMoney = tmpMoney;
-        ChangeMoney(0);*/
     }
 
     void Update()
@@ -151,10 +120,6 @@ public class GameManagerScript : MonoBehaviour
             Player.ToStun(inventoryOpen);
             UIInventory.ShowInventoryUI();
         }
-        if (notEndOfLevel)
-        {
-            //MenuFunc();
-        }        
     } 
 
     // TODO Move to Restart Manager
@@ -169,16 +134,7 @@ public class GameManagerScript : MonoBehaviour
     {
         Debug.Log("Restarting!");        
         SetAllObjectsBack();
-       /*
-        tmpMoney = playerMoney;
-        //ChangeMoney(0);
-        tmpHealth = playerHealth;
-
-        Debug.Log("Tmp health is " + tmpHealth);
-        //ChangeHealth(0);
-        tmpInkLevel = inkLevel;
-        //ChangeInkLevel(0);
-       */
+       
         switch (currDeath)
         {
             case DeathTypes.afterFall:
@@ -317,47 +273,19 @@ public class GameManagerScript : MonoBehaviour
     private void IfEnteredDanger(DangerObject ObjectThatDanger)
     {
         Debug.Log("Entered danger");
-        ObjectDanger = ObjectThatDanger;        
+        ObjectDanger = ObjectThatDanger;
+        PlayerManager.DangerInTheWay(ObjectDanger.StartDamage, ObjectThatDanger.LongAction);
     }
 
-    private void DangerAway()
+    private void IfExitedDanger()
     {
         Debug.Log("Danger is away!");
-        if (ObjectDanger.LongAction)
-        {
-            
-        }       
+        PlayerManager.DangerAway(ObjectDanger.EndDamage);
     }
-
-    private void OnPressingEscape()
-    {
-
-    }
-
-    //To make actions
-    /*
-    private void IfNearLock(GameObject theObj)
-    {
-        AllOtherInput.ClearAllInter();
-        AllOtherInput.OnInteracting += LockFunc;
-        theLockObject = theObj;
-    }
-    
-    private void IfFarLock()
-    {
-        theLockObject = null;
-        AllOtherInput.OnInteracting -= LockFunc;
-    }
-    */
-
 
     private void IfSave()
     {
         SaveManagement.MakeASave();
-        /*playerHealth = tmpHealth;
-        playerMoney = tmpMoney;
-        inkLevel = tmpInkLevel;
-        destroyedObj.Clear();*/
     }
 
     private void IfEndOfLevel()
