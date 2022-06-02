@@ -1,23 +1,55 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SaveManager : MonoBehaviour
 {
     SavePoint LastCheckPoint;
     GameManagerScript TheGameManagerScript;
 
-    GameObject PlayerObject;
-    PlayerManager PlayerManagerScript;
+    private GameObject PlayerObject;
+    private PlayerManager PlayerManager;
+    private CharacterOverlap CharacterOverlap;
+    private Player Player;
+
 
     // Start is called before the first frame update
     void Start()
     {
         
         PlayerObject = GameObject.FindGameObjectWithTag("Player");
-        PlayerManagerScript = PlayerObject.GetComponent<PlayerManager>();
+        PlayerManager = PlayerObject.GetComponent<PlayerManager>();
+        CharacterOverlap = PlayerObject.GetComponent<CharacterOverlap>();
+        Player = PlayerObject.GetComponent<Player>();
+        CharacterOverlap.OnFalling += IfFallen;
+        PlayerManager.OnInkDeath += IfInkMax;
+        PlayerManager.OnHealthNull += IfHealthNull;
+
         TheGameManagerScript = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManagerScript>();
     }
+
+    private void IfHealthNull()
+    {
+        LoadSave(true);
+    }
+
+    private void IfFallen()
+    {
+
+        if (PlayerManager.isAlive)
+        {
+            LoadSave(true);
+        }
+    }
+
+    private void IfInkMax()
+    {
+        Player.ToStun(true);
+        SceneManager.LoadScene(2);
+
+    }
+
     private void Update()
     {
         if(Input.GetKeyDown(KeyCode.T))
@@ -27,7 +59,7 @@ public class SaveManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Y))
         {
-            LoadSave(); 
+            LoadSave(true); 
         }
     }
 
@@ -36,11 +68,11 @@ public class SaveManager : MonoBehaviour
         Vector2 PlayerCurrentPosition = PlayerObject.transform.position;
         int PlayerHealth, InkLevel, CointCount;
         InventoryScript PlayerInventory;
-        
+
         //TODO: Implement inventory
         //TODO: Implement saving information list of collected items
 
-        PlayerManagerScript.GetAllValues(out PlayerHealth, out InkLevel, out CointCount, out PlayerInventory);
+        PlayerManager.GetAllValues(out PlayerHealth, out InkLevel, out CointCount, out PlayerInventory);
         if (LastCheckPoint)
         {
             LastCheckPoint.SetCheckPoint(PlayerHealth, InkLevel, CointCount, PlayerCurrentPosition, PlayerInventory);
@@ -57,10 +89,17 @@ public class SaveManager : MonoBehaviour
         //TODO
     }
 
-    public void LoadSave()
+    public void LoadSave(bool checkpoint)
     {
-        PlayerManagerScript.SetValues(LastCheckPoint);
-        LastCheckPoint.PrintCheckPoint();
-        
+        if (checkpoint)
+        {
+            PlayerManager.SetValues(LastCheckPoint);
+            LastCheckPoint.PrintCheckPoint();
+        }
+        else
+        {
+            PlayerManager.SetValues(LastCheckPoint);
+            LastCheckPoint.PrintCheckPoint();
+        }        
     }
 }

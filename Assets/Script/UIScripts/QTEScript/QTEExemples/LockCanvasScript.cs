@@ -98,7 +98,7 @@ public class LockCanvasScript : QTEObject
             posOfPl += SpeedOfCircle * dirOfRot;
 
             thePlayerTransform.rotation = Quaternion.Euler(0, 0, posOfPl);
-            if (Input.GetKeyDown(KeyCode.K))
+            if (Input.GetKeyDown(KeyCode.F))
             {
                 int currPlayerRot = Mathf.RoundToInt(Mathf.Rad2Deg * thePlayerTransform.rotation.z);
                 

@@ -162,9 +162,9 @@ public class Player : AliveBeeing
 
     public void ChangeState(PlayerStates theState)
     {
-        if (theState != currState)
+        if (currState != theState)
         {
-            if (theState != PlayerStates.stunned && isGrounded && isAlive)
+            if (currState != PlayerStates.stunned && isGrounded && isAlive)
             {
                 Debug.Log("Changing state to " + theState.ToString());
                 if (theState == PlayerStates.moving)
@@ -176,7 +176,6 @@ public class Player : AliveBeeing
                 }
                 else if (theState == PlayerStates.dashing)
                 {
-
                     currState = theState;
                 }
                 else if (theState == PlayerStates.attacking && currState != PlayerStates.dashing)
@@ -203,6 +202,7 @@ public class Player : AliveBeeing
         {
             if (currState != PlayerStates.stunned)
             {
+                Debug.Log("Player is Stunned!");
                 currState = PlayerStates.stunned;
             }
         }
@@ -210,6 +210,7 @@ public class Player : AliveBeeing
         {
             if (currState == PlayerStates.stunned)
             {
+                Debug.Log("Player is UNSTUNNED!");
                 currState = PlayerStates.moving;
             }
         }

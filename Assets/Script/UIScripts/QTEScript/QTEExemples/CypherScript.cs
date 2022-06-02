@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class CypherScript : QTEObject
 {
@@ -14,12 +15,10 @@ public class CypherScript : QTEObject
     [SerializeField]
     Transform QTEButtonHolder;
 
-    [SerializeField]
     string cypherComb;
-    [SerializeField]
     string yourComb;
     [SerializeField]
-    Text theOutText;
+    TextMeshProUGUI theOutText;
     bool buttonsActive;
 
 
@@ -36,6 +35,8 @@ public class CypherScript : QTEObject
             Debug.LogWarning("You need to write a Cypher first!");
             return;
         }
+
+        this.cypherComb = cypherComb;
         QTEHolder.SetActive(true);
         ButtonInstantiate();
         OutputText("");
@@ -48,9 +49,7 @@ public class CypherScript : QTEObject
         {
             int count = i + 1;            
             theButton[i] = Instantiate(strButton, QTEButtonHolder);
-            
             theButton[i].GetComponent<Button>().onClick.AddListener(() => OnButtonClick(count));
-
             theButton[i].GetComponentInChildren<Text>().text = count.ToString();
         }
     }
@@ -67,7 +66,7 @@ public class CypherScript : QTEObject
     void OnButtonClick(int numOfButton)
     {
         string tmpComb = yourComb + numOfButton;
-        if(tmpComb.Length <= cypherComb.Length)
+        if (tmpComb.Length <= cypherComb.Length)
         {            
             yourComb = tmpComb;
             OutputText(yourComb);
@@ -106,6 +105,11 @@ public class CypherScript : QTEObject
             }
             
         }
+    }
+
+    public void EndButton()
+    {
+        QTEEnd();
     }
 
     protected override void QTEEnd()

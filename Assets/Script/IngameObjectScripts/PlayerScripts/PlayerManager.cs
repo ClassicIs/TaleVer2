@@ -21,6 +21,7 @@ public class PlayerManager : MonoBehaviour
     
     // References to Collisions
     private CharacterOverlap charCollisionScript;
+    private Player Player;
     private BoxCollider2D theBoxCol;
     private CircleCollider2D theCircleTriggerCol;
     
@@ -31,12 +32,15 @@ public class PlayerManager : MonoBehaviour
     public event Action<int> OnInkLevelChange;
     public event Action<int, float, int> OnSettingValues;
 
+    public event Action OnHealthNull;
+
     // Death Actions
     public event Action OnInkDeath;
-    public event Action OnDeath;
 
     private IEnumerator Debuf;
     private IEnumerator LongActionDebuf;
+
+    public bool isAlive;
 
     public InventoryScript Inventory;
     [SerializeField]
@@ -53,7 +57,7 @@ public class PlayerManager : MonoBehaviour
 
     private void Start()
     {
-        SetValues(1, 50, 10001);
+        SetValues(4, 75, 10001);
     }
 
     private void AsignValues()
@@ -171,6 +175,7 @@ public class PlayerManager : MonoBehaviour
         {
             OnSettingValues(Health, InkLevel, CoinCount);
         }
+        isAlive = true;
     }
 
     public void SetValues(SavePoint PointToLoad)
@@ -178,6 +183,7 @@ public class PlayerManager : MonoBehaviour
         /*this.MaxHealth = MaxHealth;
         this.MaxInkLevel = MaxInkLevel;
         */
+        Player.ToStun(true);
         Vector2 PlayerPosition = new Vector2();
         
         PointToLoad.ReturnPoint(out Health, out InkLevel, out CoinCount, out PlayerPosition, out Inventory);
@@ -186,10 +192,11 @@ public class PlayerManager : MonoBehaviour
         {
             OnSettingValues(this.Health, this.InkLevel, this.CoinCount);
         }
-
+        isAlive = true;
+        Player.ToStun(false);
     }
 
-    
+
 
     // To Set Values
     public void AddHealth(int AddHealth)
@@ -202,10 +209,12 @@ public class PlayerManager : MonoBehaviour
         else if(HealthValue == StateOfValue.Less)
         {
             Debug.Log("Health is zero. Player died.");
-            if (OnDeath != null)
+            isAlive = false;
+            if(OnHealthNull != null)
             {
-                OnDeath();
+                OnHealthNull();
             }
+
         }
         else
         {

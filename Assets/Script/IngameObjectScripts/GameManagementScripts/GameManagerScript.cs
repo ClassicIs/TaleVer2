@@ -6,14 +6,24 @@ using System;
 
 public class GameManagerScript : MonoBehaviour
 {
-    private SaveManager SaveManagement;    
+    public SaveManager SaveManagement;
+
+    private GameObject player;
+    private PlayerOtherInput AllOtherInput;
     private PlayerManager PlayerManager;
+    private Player Player;
+    private CharacterOverlap thePlayerOver;
+
+    [SerializeField]
+    private GameObject[] allGameObj;
+
+    [SerializeField]
+    private MenuScript MenuScript;
+
     [SerializeField]
     private InventoryScript PlayerInventory;
     [SerializeField]
     private UIInventoryScript UIInventory;
-
-    private PlayerOtherInput AllOtherInput;
 
     InteractObject ObjToInteract = null;
     DangerObject ObjectDanger = null;
@@ -21,22 +31,9 @@ public class GameManagerScript : MonoBehaviour
     public static GameManagerScript gmInstance;    
 
     public List<SpawnObjects> destroyedObj;
-
-
-    [SerializeField] 
-    private GameObject[] allGameObj; 
-
-    [SerializeField]
-    private GameObject thePlayerObj;
-    
-    [SerializeField]
-    private MenuScript MenuScript;    
-
     private FadeInScript theFadeInScr;
 
     private Vector2 startPos;
-
-
     [SerializeField]
     [Range(0, 100)]
     private int inkLevelLoss;
@@ -50,8 +47,7 @@ public class GameManagerScript : MonoBehaviour
     private bool isItAfterFall;
 
     bool isReading;
-
-    private CharacterOverlap thePlayerOver;
+    bool inventoryOpen;
 
     public event Action<int> OnHealthChange;
 
@@ -79,6 +75,7 @@ public class GameManagerScript : MonoBehaviour
     private void Start()
     {        
         PlayerInventory = PlayerManager.Inventory;
+        inventoryOpen = false;
         UIInventory.SetInventory(PlayerManager.Inventory);
     }
 
@@ -86,11 +83,14 @@ public class GameManagerScript : MonoBehaviour
     {
         SaveManagement = GetComponent<SaveManager>();
         theFadeInScr = GameObject.FindGameObjectWithTag("Fade").GetComponent<FadeInScript>();
-        PlayerManager = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>();
-        
-        thePlayerOver = thePlayerObj.GetComponent<CharacterOverlap>();
+
+        player = GameObject.FindGameObjectWithTag("Player");
+        PlayerManager = player.GetComponent<PlayerManager>();
+        Player = player.GetComponent<Player>();
+        thePlayerOver = Player.GetComponent<CharacterOverlap>();
+        AllOtherInput = Player.GetComponent<PlayerOtherInput>();
+
         destroyedObj = new List<SpawnObjects>();
-        AllOtherInput = thePlayerObj.GetComponent<PlayerOtherInput>();
     }
 
     private void EnterAllActions()
@@ -118,7 +118,7 @@ public class GameManagerScript : MonoBehaviour
 
     private void Normalize()
     {        
-        startPos = thePlayerObj.transform.position;
+        startPos = player.transform.position;
         isItAfterFall = false;
         currDeath = DeathTypes.none;
 
@@ -146,49 +146,18 @@ public class GameManagerScript : MonoBehaviour
     {        
         if(Input.GetKeyDown(KeyCode.I))
         {
+            inventoryOpen = !inventoryOpen;
+            Debug.LogFormat("Inventory open is {0}", inventoryOpen);
+            Player.ToStun(inventoryOpen);
             UIInventory.ShowInventoryUI();
         }
         if (notEndOfLevel)
         {
             //MenuFunc();
         }        
-    }
-    
-    private void LockFunc()
-    {
-        thePlayerOver.Stunned();/*
-        theLockScript.OnFail += NotOpenTheLock;
-        theLockScript.OnSuccess += OpenTheLock;
-        theLockScript.Activate();*/
-    }
-    /*
-    private void OpenTheLock()
-    {
-        BoxScript theBoxScript = theLockObject.GetComponent<BoxScript>();
-        theBoxScript.OpenTheBox();
-        foreach (string theItem in theBoxScript.contentOfBox)
-        {            
-            theInventory.Add(theItem);
-        }
-
-        foreach (string theItemObj in theInventory)
-        {
-            Debug.Log(theItemObj);
-        }
-        thePlayerOver.Unstunned();
-    }
-    */
-
-
-
-    private void NotOpenTheLock()
-    {
-        thePlayerOver.Unstunned();
-        Debug.Log("Box not openned!");
-    }
+    } 
 
     // TODO Move to Restart Manager
-
     private void changeHealthWhenFalling()
     {
         currDeath = DeathTypes.afterFall;
@@ -307,7 +276,7 @@ public class GameManagerScript : MonoBehaviour
             ObjToInteract.InterAction();
             if(ObjToInteract.LongInteraction)
             {
-                thePlayerOver.Stunned();
+                Player.ToStun(true);
 
                 AllOtherInput.OnInteracting += ObjToInteract.FutherAction;
                 AllOtherInput.OnInteracting -= IfInteracted;
@@ -334,14 +303,14 @@ public class GameManagerScript : MonoBehaviour
     {
         if (ObjToInteract != null)
         {
-            Debug.Log("Null the Actions!");
+            //Debug.Log("Null the Actions!");
             AllOtherInput.OnInteracting -= ObjToInteract.FutherAction;
             ObjToInteract.OnEndOfInteraction -= InteractionEnded;
             AllOtherInput.OnInteracting += IfInteracted;
             ObjToInteract = null;
         }
 
-        thePlayerOver.Unstunned();
+        Player.ToStun(false);
         Debug.Log("Interation has ended!");
     }
 

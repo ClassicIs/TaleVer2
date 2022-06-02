@@ -85,7 +85,7 @@ public class CharacterOverlap : MonoBehaviour
     InteractObject NearObject;
 
     public bool isStunned;
-
+    bool wasNearDeath = false;
     private void Awake()
     {
         CorToFindInterObject = FindInterObject();
@@ -201,12 +201,17 @@ public class CharacterOverlap : MonoBehaviour
                 thePlayer.velocity = new Vector2(0, 0);
                 thePlayerController.ToStun(true);
                 timeToDeath -= 0.5f * Time.deltaTime;
+                wasNearDeath = true;
             }                      
         }
         else
         {
-            thePlayerController.ToStun(false);
-            timeToDeath = strTimeToDeath;            
+            if (wasNearDeath)
+            {
+                thePlayerController.ToStun(false);
+                timeToDeath = strTimeToDeath;
+                wasNearDeath = false;
+            }
         }
 
         if (!isOnGround)
@@ -220,7 +225,6 @@ public class CharacterOverlap : MonoBehaviour
                 }
                 else
                 {
-                    Stunned();
                     if (OnFalling != null)
                     {
                         Debug.Log("OnFalling");
@@ -368,8 +372,6 @@ public class CharacterOverlap : MonoBehaviour
         }
     }
 
-
-
     // TODO To ResetManager
 
     public void InterDeath()
@@ -425,20 +427,7 @@ public class CharacterOverlap : MonoBehaviour
 
 
     // TODO To Player Manager
-    public void Stunned()
-    {
-        isStunned = true;
-        PlayerInput.enabled = false;
-        thePlayer.velocity = new Vector2(0, 0);
-        thePlayerController.ToStun(true);
-    }
-    public void Unstunned()
-    {
-        isStunned = false;
-        PlayerInput.enabled = true;
-
-        thePlayerController.ToStun(false);
-    }
+    
 
     private void OnDrawGizmos()
     {

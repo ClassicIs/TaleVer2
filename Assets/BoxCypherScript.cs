@@ -2,18 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BoxScript : QTEInWorldScript
+public class BoxCypherScript : InteractObject
 {
+    [SerializeField]
+    private int cypher;
+    CypherScript cypherObject;
     PlayerManager playerManager;
+    [SerializeField]
+    protected QTEHolder QTEHolder;
 
     [Header("Items of the Box")]
-    public ItemScript [] contentOfBox;
+    public ItemScript[] contentOfBox;
     [SerializeField]
     private Animator boxAnimator;
-    
+
     protected override void Start()
     {
-        base.Start();
+        cypherObject = (CypherScript)QTEHolder.ActivateQTE(QTEHolder.TypesOfQTE.Cypher);
         playerManager = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>();
         boxAnimator = GetComponent<Animator>();
         LongInteraction = true;
@@ -21,22 +26,23 @@ public class BoxScript : QTEInWorldScript
 
     public override void InterAction()
     {
-        if (contentOfBox.Length > 0)
-        {
-            base.InterAction();
-        }
-        else
-        {
-            Debug.Log("The box is EMPTY!");
-        }
+        cypherObject.Activate(cypher.ToString());
+        cypherObject.OnSuccess += SuccessfullyUsed;
+        cypherObject.OnSuccess += EndInteraction;
+
+        cypherObject.OnFail += UnSuccessfullyUsed;
+        cypherObject.OnFail += EndInteraction;
     }
+
 
     public override void EndInteraction()
     {
         base.EndInteraction();
+        cypherObject.OnSuccess -= SuccessfullyUsed;
+        cypherObject.OnFail -= UnSuccessfullyUsed;
     }
 
-    public override void SuccessfullyUsed()
+    public virtual void SuccessfullyUsed()
     {
         ItemScript[] leftovers = playerManager.Inventory.AddItems(contentOfBox);
         contentOfBox = leftovers;
@@ -56,9 +62,10 @@ public class BoxScript : QTEInWorldScript
         }
     }
 
-    public override void UnSuccessfullyUsed()
+    public virtual void UnSuccessfullyUsed()
     {
         Debug.Log("Box was not openned");
+
     }
 
     public override void FutherAction()

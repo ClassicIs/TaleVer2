@@ -9,6 +9,7 @@ public class InventoryScript
     private int maxSize;
 
     public event Action OnInventoryUpdate;
+    public event Action<string, string> OnNewItemAdd;
 
     public InventoryScript (int sizeOfInventory)
     {        
@@ -32,6 +33,7 @@ public class InventoryScript
         if (Items.Count < maxSize)
         {            
             Items.Add(Item);
+
             if (OnInventoryUpdate != null)
             {
                 OnInventoryUpdate();
@@ -57,7 +59,11 @@ public class InventoryScript
         {
             foreach (ItemScript theItem in Items)
             {
-                this.Items.Add(theItem);                
+                this.Items.Add(theItem);
+                if(OnNewItemAdd != null)
+                {
+                    OnNewItemAdd(theItem.itemName, ColorByType(theItem.typeOfTheItem));
+                }
             }
             Debug.Log("All items were placed in Inventory");
         }
@@ -80,6 +86,32 @@ public class InventoryScript
         }
 
         return tmpItems.ToArray();
+    }
+
+    private string ColorByType(ItemScript.ItemTypes typeOfItem)
+    {
+        string color;
+        string healthColor = "#F31F35"; // Red
+        string inkColor = "#F31F35"; // Blue
+        string mixedColor = "#21CEF3"; // Green
+        string strengthColor = "#213FF3"; // Dark Blue
+        string questColor = "#F3C821"; // Yellow
+
+        switch (typeOfItem)
+        {
+            case ItemScript.ItemTypes.HealthPotion:
+                return healthColor;
+            case ItemScript.ItemTypes.InkPotion:
+                return inkColor;
+            case ItemScript.ItemTypes.MixedPotion:
+                return mixedColor;
+            case ItemScript.ItemTypes.StrengthBuffPotion:
+                return strengthColor;
+            case ItemScript.ItemTypes.QuestItem:
+                return questColor;
+            default:
+                return "#FFFFFF";
+        }
     }
 
     public InventoryScript ReturnInventory()
@@ -138,7 +170,7 @@ public class InventoryScript
         return false;
     }
 
-    private bool FindItem(string itemName, out int indexOfTheItem)
+    public bool FindItem(string itemName, out int indexOfTheItem)
     {
         for (int i = 0; i < Items.Count; i++)
         {
@@ -149,6 +181,19 @@ public class InventoryScript
             }
         }
         indexOfTheItem = 404;
+        return false;
+    }
+
+    public bool FindItem(string itemName, bool use)
+    {
+        for (int i = 0; i < Items.Count; i++)
+        {
+            if (Items[i].itemName == itemName)
+            {
+                RemoveItemAt(i);
+                return true;
+            }
+        }        
         return false;
     }
 

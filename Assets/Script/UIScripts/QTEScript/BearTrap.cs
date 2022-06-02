@@ -3,62 +3,30 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class BearTrap : DangerObject
+public class BearTrap : QTEInWorldScript
 {
-    bool PlayerStay;
-
     [SerializeField]
-    isQtePassed qte;
+    int damageAmount;
 
-    protected override void Freedom()
+    PlayerManager PlayerManager;
+
+
+    protected override void Start()
     {
-        base.Freedom();
+        base.Start();
+        PlayerManager = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>();
     }
-    /*
 
-// Start is called before the first frame update
-void Start()
-{
-PlayerManagerScript = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>();
-MakeStun = true;
+    public override void SuccessfullyUsed()
+    {
+        Debug.Log("Player is free!");
+    }
 
-}   
+    public override void UnSuccessfullyUsed()
+    {
+        PlayerManager.AddHealth(-damageAmount);
 
-public override void MakeDamage()
-{
-Debug.Log("You are in trap, silly boy!");
-GetComponent<Animator>().SetBool("isPlayerCaught", true);
-Subscribe();
-qte.Activate();                    
-}
-
-
-void GoodOutcome()
-{
-Debug.Log("You are out of Trap healthy.");
-Untrapped();
-Unsubscribe();
-}
-
-void BadOutcome()
-{
-Debug.Log("You are out of Trap NOT healthy.");
-Untrapped();
-PlayerManagerScript.AddHealth(-HealthDamage);
-Unsubscribe();
-}
-
-void Subscribe()
-{
-qte.OnSuccess += GoodOutcome;
-qte.OnFail += BadOutcome;
-}
-
-void Unsubscribe()
-{
-qte.OnSuccess -= GoodOutcome;
-qte.OnFail -= BadOutcome;
-}*/
+    }
 }
 
 

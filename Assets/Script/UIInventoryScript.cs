@@ -23,7 +23,7 @@ public class UIInventoryScript : MonoBehaviour
 
     RectTransform positionOfInventory;
     float speedOfInventory;
-    [SerializeField] PlayerManager PlayerManager;
+    PlayerManager PlayerManager;
 
     private bool uiInventoryIsShown;
     private IEnumerator toShowInventoryShell;
@@ -32,11 +32,12 @@ public class UIInventoryScript : MonoBehaviour
     InventoryScript Inventory;
     IEnumerator ToDropItem;
 
-
     private void Awake()
     {
         speedOfInventory = 0.2f;
         positionOfInventory = GetComponent<RectTransform>();
+        PlayerObject = GameObject.FindGameObjectWithTag("Player");
+        PlayerManager = PlayerObject.GetComponent<PlayerManager>();
         uiInventoryIsShown = false;
         InventorySlots = new List<GameObject>();
         
@@ -179,27 +180,19 @@ public class UIInventoryScript : MonoBehaviour
     IEnumerator toShowInventory(bool showOrNot)
     {
         Vector3 desiredPosition;
-        bool isOnTheX;
-        bool isOnTheY;
-
         float tail = 0.1f;
 
         if (showOrNot)
         {
-            desiredPosition = new Vector3(-460, 0, 0);
-            isOnTheX = Mathf.Approximately(Mathf.Floor(positionOfInventory.anchoredPosition.x), Mathf.Floor(desiredPosition.x));
-            isOnTheY = (positionOfInventory.anchoredPosition.y <= desiredPosition.y + tail);            
+            desiredPosition = new Vector3(-460, 0, 0);              
         }
         else
         {
             ActivateInventory(false);
             desiredPosition = new Vector3(450, 0, 0);
-
-            isOnTheX = Mathf.Approximately(Mathf.Floor(positionOfInventory.anchoredPosition.x), Mathf.Floor(desiredPosition.x));
-            isOnTheY = (positionOfInventory.anchoredPosition.y >= desiredPosition.y - tail);
         }
         
-        while ((positionOfInventory.anchoredPosition.x - desiredPosition.x) > 0.2f)
+        while (Mathf.Abs((positionOfInventory.anchoredPosition.x - desiredPosition.x)) > tail)
         {
             positionOfInventory.anchoredPosition = Vector3.Lerp(positionOfInventory.anchoredPosition, desiredPosition, speedOfInventory);
             
@@ -285,44 +278,4 @@ public class UIInventoryScript : MonoBehaviour
             Debug.Log("Was not able to throw the object.");
         }
     }
-
-    /*
-    public bool DropItem(ItemScript.ItemTypes itemToGive, Vector3 playerPosition)
-    {
-        int indexOfItem;
-        if(FindItem(itemToGive, out indexOfItem))
-        {
-            Vector3 randomAddition;
-            Vector3 finalItemPosition;
-            RaycastHit2D collidersOfItem;
-
-            int numberOfTries = 20;
-            int currNumOfTries = 0;
-            do
-            {
-                if (currNumOfTries < numberOfTries)
-                {
-                    currNumOfTries++;
-                }
-                else
-                {
-                    Debug.LogError("There's no space around Player!");
-                    return false;
-                }
-                
-                randomAddition = new Vector3(Random.Range(2, 4), Random.Range(1, 4), 0f);
-                finalItemPosition = playerPosition + randomAddition;
-                collidersOfItem = Physics2D.BoxCast(playerPosition, new Vector2(2, 2), 0f, Vector2.zero, LayerNotToDrop);
-            }
-            while (!collidersOfItem);
-
-            GameObject droppedItem = Instantiate(Items[indexOfItem].itemObject, finalItemPosition, Quaternion.identity);
-            return true;            
-        }
-        else
-        {
-            return false;
-        }
-    }*/
-
 }

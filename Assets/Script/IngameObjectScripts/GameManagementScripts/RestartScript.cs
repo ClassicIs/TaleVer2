@@ -4,26 +4,33 @@ using UnityEngine;
 
 public class RestartScript : MonoBehaviour
 {
-    private GameObject thePlayer;
+    private GameObject player;
     [SerializeField]
     private GameObject thisMenu;
     [SerializeField]
     private Transform startPosition;
-    [SerializeField]
-    private GameObject theGameManager;
+  
 
     private IEnumerator ToMoveCharacter;
 
-    private GameManagerScript theGMScript;
+    private GameManagerScript GameManagerScript;
     
-    private Player thePlayerScript;       
+    private CharacterOverlap CharacterOverlap;
+    private PlayerManager PlayerManager;
+    private Player Player;
 
     // Start is called before the first frame update
     void Start()
     {
-        thePlayer = GameObject.FindGameObjectWithTag("Player");
-        thePlayerScript = thePlayer.GetComponent<Player>();
-        theGMScript = GetComponent<GameManagerScript>();
+        player = GameObject.FindGameObjectWithTag("Player");
+        CharacterOverlap = player.GetComponent<CharacterOverlap>();
+        PlayerManager = player.GetComponent<PlayerManager>();
+        Player = player.GetComponent<Player>();
+
+        GameManagerScript = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManagerScript>();
+
+        //CharacterOverlap.OnFalling += IfFallen;
+        //PlayerManager.OnInkDeath += IfInkMax;
     }
 
     public void RestartTheGame()
@@ -35,13 +42,16 @@ public class RestartScript : MonoBehaviour
 
     private IEnumerator WaitTilDist(Vector3 strPos)
     {
-        bool isItThere = Vector2.Distance(thePlayer.transform.position, strPos) <= 0.1f;
-        while (!isItThere)
+        bool isItThere;
+        do
         {
-            isItThere = Vector2.Distance(thePlayer.transform.position, strPos) <= 0.1f;
-            thePlayer.transform.position = Vector2.Lerp(thePlayer.transform.position, strPos, Time.deltaTime);            
+            isItThere = Vector2.Distance(player.transform.position, strPos) <= 0.1f;
+            player.transform.position = Vector2.Lerp(player.transform.position, strPos, Time.deltaTime);
             yield return null;
         }
-        //theGMScript.RestartGame();        
+        while (!isItThere);
     }
+
+
+    
 }
