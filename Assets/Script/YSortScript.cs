@@ -19,7 +19,7 @@ public class YSortScript : MonoBehaviour
         if(transform.CompareTag("Player") || transform.CompareTag("Enemy"))
         {
             sortOnlyOnce = false;
-            offset = 0.7f;
+            offset = 1f;
         }
         else
         {

@@ -30,7 +30,7 @@ public class ExplodeObject : MonoBehaviour
     {
         //if (collision.CompareTag("Player"))
         //{
-            if (collision.CompareTag("Weapon"))
+            /*if (collision.CompareTag("Weapon"))
             {
                 health--;
 
@@ -39,7 +39,7 @@ public class ExplodeObject : MonoBehaviour
                     ExplodeThisObject();
                 }
             }
-
+            */
             if (collision.CompareTag("DashHitBox"))
             {
                 health = 0;
