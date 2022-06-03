@@ -8,12 +8,15 @@ public class BearTrap : AutoQTEScript
     [SerializeField]
     int damageAmount;
 
+    private Animator Animator;
+
     PlayerManager PlayerManager;
 
     protected override void Start()
     {
         base.Start();
         PlayerManager = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>();
+        Animator = GetComponent<Animator>();
     }
 
     public override void SuccessfullyUsed()
@@ -24,6 +27,7 @@ public class BearTrap : AutoQTEScript
 
     public override void UnSuccessfullyUsed()
     {
+        Animator.SetBool("isPlayerCaught", true);
         PlayerManager.AddHealth(-damageAmount);
         alreadyUsed = true;
     }
