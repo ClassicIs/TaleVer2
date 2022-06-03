@@ -26,6 +26,7 @@ TagManager:
   - AllCanvas
   - Weapon
   - SaveManager
+  - Enemy
   layers:
   - Default
   - TransparentFX

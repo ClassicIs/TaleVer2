@@ -15,8 +15,8 @@ public class PathFinding : MonoBehaviour
     void Start()
     {
         grid = GetComponent<Grid>();
-        FindPath(startPosition.position, endPosition.position);
-        StartCoroutine(FindCoroutine());
+        //FindPath(startPosition.position, endPosition.position);
+        //StartCoroutine(FindCoroutine());
     }
     
     IEnumerator FindCoroutine()
@@ -36,18 +36,18 @@ public class PathFinding : MonoBehaviour
         }
     }
 
-    /*private void Update()
+    private void Update()
     {
-        List<Vector3> points = FindPath(startPosition.position, endPosition.position);
+        Vector3[] points = FindPath(startPosition.position, endPosition.position);
         if (points != null)
         {
-            for (int i = 0; i < points.Count; i++)
+            /*for (int i = 0; i < points.Length; i++)
             {
                 Debug.LogFormat("Point {0} is {1}", i, points[i]);
-            }
+            }*/
             DrawLineByPoint(points);
         }
-    }*/
+    }
 
     private void DrawLineByPoint(Vector3[] points)
     {

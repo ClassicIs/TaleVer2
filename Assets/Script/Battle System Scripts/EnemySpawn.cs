@@ -1,14 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class EnemySpawn : MonoBehaviour
 {
     [SerializeField]
-    private int health = 100;       // надо поменять
+    private int health;       // надо поменять
+    public event Action OnDeath;
 
     private void Awake()
     {
+        health = 0;
         gameObject.SetActive(false);
     }
 
@@ -16,6 +19,8 @@ public class EnemySpawn : MonoBehaviour
     {
         gameObject.SetActive(true);
     }
+
+
 
     public bool IsAlive()
     {

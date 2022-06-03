@@ -20,7 +20,6 @@ public class CircleMotionScript : MonoBehaviour
     void Awake()
     {
         strPos = transform.position;
-        DontDestroyOnLoad(gameObject);
         toMakeCircleMotion = GetComponent<Transform>();
     }
 
