@@ -248,6 +248,16 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 0.187
       objectReference: {fileID: 0}
+    - target: {fileID: 8269090955645779606, guid: 573649ef12451cf4d83096353cfc6f4b,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.99996686
+      objectReference: {fileID: 0}
+    - target: {fileID: 8269090955645779606, guid: 573649ef12451cf4d83096353cfc6f4b,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.008142265
+      objectReference: {fileID: 0}
     - target: {fileID: 8937928392760051719, guid: 573649ef12451cf4d83096353cfc6f4b,
         type: 3}
       propertyPath: m_Color.b
@@ -276,12 +286,12 @@ PrefabInstance:
     - target: {fileID: 8937928392760051719, guid: 573649ef12451cf4d83096353cfc6f4b,
         type: 3}
       propertyPath: m_PointLightInnerRadius
-      value: 0.21
+      value: 0.1522987
       objectReference: {fileID: 0}
     - target: {fileID: 8937928392760051719, guid: 573649ef12451cf4d83096353cfc6f4b,
         type: 3}
       propertyPath: m_PointLightOuterRadius
-      value: 0.52
+      value: 0.32934037
       objectReference: {fileID: 0}
     - target: {fileID: 9033760424217823216, guid: 573649ef12451cf4d83096353cfc6f4b,
         type: 3}

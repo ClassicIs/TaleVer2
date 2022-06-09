@@ -96,7 +96,7 @@ MonoBehaviour:
   m_Color: {r: 0.69803923, g: 0.27450982, b: 0, a: 1}
   m_Intensity: 1.45
   m_LightVolumeOpacity: 0
-  m_ApplyToSortingLayers: 00000000f7db443fcf6854179d64d999
+  m_ApplyToSortingLayers: 00000000f7db443fcf685417177a130c9d64d9998f0e82fc
   m_LightCookieSprite: {fileID: 0}
   m_UseNormalMap: 0
   m_LightOrder: 0
@@ -168,7 +168,7 @@ MonoBehaviour:
   m_Color: {r: 0.69803923, g: 0.27450982, b: 0, a: 1}
   m_Intensity: 1
   m_LightVolumeOpacity: 0
-  m_ApplyToSortingLayers: 00000000f7db443fcf6854179d64d999
+  m_ApplyToSortingLayers: 00000000f7db443fcf685417177a130c9d64d9998f0e82fc
   m_LightCookieSprite: {fileID: 0}
   m_UseNormalMap: 0
   m_LightOrder: 0
