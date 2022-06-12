@@ -2,20 +2,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class ScriptForLetter : MonoBehaviour
 {    
     Animator theLetterAnim;
-    Text SignOfLetter;
-    Text BodyOfLetter;
-    Text EndOfLetter;
+    [SerializeField]
+    TextMeshProUGUI SignOfLetter;
+    [SerializeField]
+    TextMeshProUGUI BodyOfLetter;
+    [SerializeField]
+    TextMeshProUGUI EndOfLetter;
+    [SerializeField]
+    Image bgPanel;
+    [SerializeField]
+    Image bgLetter;
+    [SerializeField]
+    float speedToShow;
 
     private void Start()
     {
         theLetterAnim = GetComponent<Animator>();
-        SignOfLetter = GetComponentsInChildren<Text>()[0];
-        BodyOfLetter = GetComponentsInChildren<Text>()[1];
-        EndOfLetter = GetComponentsInChildren<Text>()[2];
     }
 
     public void SetLetter(string sign = "John Doe", string body = "Hye, My Name is John Doe!", string end = "Your Faithfuly,\nJohn Doe")
@@ -23,7 +30,7 @@ public class ScriptForLetter : MonoBehaviour
         SignOfLetter.text = sign;
         BodyOfLetter.text = body;
         EndOfLetter.text = end;
-        ShowLetter();
+        ShowLetter(true);
     }
 
     public void EmptyLetter()
@@ -33,14 +40,76 @@ public class ScriptForLetter : MonoBehaviour
         EndOfLetter.text = "";
     }
 
-    public void ShowLetter()
+    public void ShowLetter(bool show)
     {
-        theLetterAnim.SetBool("LetterOpen", true);
+        float desiredOpacityText = 0f;
+        float desiredOpacityPanel = 0f;
+        if (show)
+        {
+            desiredOpacityText = 1f;
+            desiredOpacityPanel = 0.45f;
+        }
+
+        StartCoroutine(toShow(desiredOpacityText, SignOfLetter));
+        StartCoroutine(toShow(desiredOpacityText, BodyOfLetter));
+        StartCoroutine(toShow(desiredOpacityText, EndOfLetter));
+        StartCoroutine(toShow(desiredOpacityPanel, bgPanel));
+        StartCoroutine(toShow(desiredOpacityText, bgLetter));
+        //theLetterAnim.SetBool("LetterOpen", true);
     }
     
-    public void CloseLetter()
-    {        
-        theLetterAnim.SetBool("LetterOpen", false);
-        //EmptyLetter();
+    IEnumerator toShow(float desireOpacity, TextMeshProUGUI text)
+    {
+        float startOpacity = text.color.a;
+        Color tmpCol;
+
+        while (Mathf.Abs(startOpacity - desireOpacity) > 0.1f)
+        {
+            if(startOpacity > desireOpacity)
+            {
+                startOpacity -= speedToShow;
+            }
+            else if(startOpacity < desireOpacity)
+            {
+                startOpacity += speedToShow;
+            }
+            
+            tmpCol = text.color;
+            tmpCol.a = startOpacity;
+            text.color = tmpCol;
+            yield return null;
+        }
+
+        tmpCol = text.color;
+        tmpCol.a = desireOpacity;
+        text.color = tmpCol;
     }
+
+    IEnumerator toShow(float desireOpacity, Image text)
+    {
+        float startOpacity = text.color.a;
+        Color tmpCol;
+        
+        while (Mathf.Abs(startOpacity - desireOpacity) > 0.1f)
+        {
+            if (startOpacity > desireOpacity)
+            {
+                startOpacity -= speedToShow;
+            }
+            else if (startOpacity < desireOpacity)
+            {
+                startOpacity += speedToShow;
+            }
+
+            tmpCol = text.color;
+            tmpCol.a = startOpacity;
+            text.color = tmpCol;
+            yield return null;
+        }
+
+        tmpCol = text.color;
+        tmpCol.a = desireOpacity;
+        text.color = tmpCol;
+    }
+
 }

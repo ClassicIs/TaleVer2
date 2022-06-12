@@ -14,6 +14,7 @@ public class BoxScript : QTEInWorldScript
     protected override void Start()
     {
         base.Start();
+        
         playerManager = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>();
         boxAnimator = GetComponent<Animator>();
         LongInteraction = true;

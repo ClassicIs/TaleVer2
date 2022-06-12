@@ -40,5 +40,10 @@ public abstract class QTEObject : MonoBehaviour
 
     public abstract void Activate(HardVariety Hardness);
 
+    public virtual void Activate(string cypher)
+    {
+        //
+    }
+
     protected abstract void QTEEnd();
 }

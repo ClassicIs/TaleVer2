@@ -9,7 +9,7 @@ public class InkDrop : DangerObject
     void Start()
     {
         LongAction = true;
-        StartDamage = new Damage(0, 10, 0.3f, 0f, false);
+        StartDamage = new Damage(0, 2, 0.3f, 0f, false);
         EndDamage = new Damage(0, 0, 0, 0, false);
     }
 }

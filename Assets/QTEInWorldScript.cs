@@ -15,6 +15,7 @@ public abstract class QTEInWorldScript : InteractObject
 
     protected override void Start()
     {
+        QTEHolder = GameObject.FindGameObjectWithTag("QTEHolder").GetComponent<QTEHolder>();
         currentQTE = QTEHolder.ActivateQTE(typeOfQTE);
     }
 
@@ -24,13 +25,18 @@ public abstract class QTEInWorldScript : InteractObject
 
     public override void InterAction()
     {
-        currentQTE.Activate(hardness);
+        ActivateQTE();
         currentQTE.OnSuccess += SuccessfullyUsed;
         currentQTE.OnSuccess += EndInteraction;
 
         currentQTE.OnFail += UnSuccessfullyUsed;
         currentQTE.OnFail += EndInteraction;
 
+    }
+
+    protected virtual void ActivateQTE()
+    {
+        currentQTE.Activate(hardness);
     }
 
     public override void EndInteraction()

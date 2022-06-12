@@ -28,7 +28,7 @@ public class CypherScript : QTEObject
     }
 
     // Start is called before the first frame update
-    public void Activate(string cypherComb)
+    public override void Activate(string cypherComb)
     {
         if(cypherComb == "")
         {

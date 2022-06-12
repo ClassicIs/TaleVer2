@@ -124,7 +124,7 @@ public class Enemy : AliveBeeing
                 if (!isPatroling)
                 {
                     isPatroling = true;
-                    //StartCoroutine(Patrol)
+
                 }
                 
                 break;
@@ -152,7 +152,29 @@ public class Enemy : AliveBeeing
                 break;
         }
     }
-    
+
+    public void ChangeState(PlayerStates state)
+    {
+        if (state != currState)
+        {
+            Debug.LogFormat("Changing to state {0}", state.ToString());
+            if (state == PlayerStates.attacking)
+            {
+                currState = PlayerStates.attacking;
+            }
+
+            if (state == PlayerStates.moving)
+            {
+                currState = PlayerStates.moving;
+            }
+
+            if (state == PlayerStates.stalking)
+            {
+                currState = PlayerStates.stalking;
+            }
+        }
+    }
+
     IEnumerator StalkingCoroutine()
     {
         Vector2 enemyPosition = transform.position;
@@ -185,40 +207,7 @@ public class Enemy : AliveBeeing
         isStalking = false;
         ChangeState(PlayerStates.moving);
     }
-
-    public void ChangeState(PlayerStates state)
-    {
-        if(state != currState)
-        {
-            Debug.LogFormat("Changing to state {0}", state.ToString());
-            if(state == PlayerStates.attacking)
-            {
-                currState = PlayerStates.attacking;
-            }
-
-            if (state == PlayerStates.moving)
-            {
-                currState = PlayerStates.moving;
-            }
-
-            if (state == PlayerStates.stalking)
-            {
-                currState = PlayerStates.stalking;
-            }
-        }
-    }
-   
-    private Vector2 [] PointsToVector(Transform[] points)
-    {        
-        Vector2[] vector = new Vector2[points.Length];
-        for (int i = 0; i < points.Length; i++)
-        {
-            Vector3 tmpTransform = points[i].position;
-            vector[i] = new Vector2(tmpTransform.x, tmpTransform.y);            
-        }
-        return vector;
-    }
-
+    
     private Vector2[] Patrol(Vector3[] positions)
     {
         Vector2 [] newPos = new Vector2[positions.Length];

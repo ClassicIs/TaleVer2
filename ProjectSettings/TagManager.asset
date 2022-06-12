@@ -27,6 +27,7 @@ TagManager:
   - Weapon
   - SaveManager
   - Enemy
+  - QTEHolder
   layers:
   - Default
   - TransparentFX

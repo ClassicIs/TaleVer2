@@ -28,7 +28,7 @@ public class LetterScript : InteractObject
 
     public override void FutherAction()
     {
-        TheLetterScript.CloseLetter();
+        TheLetterScript.ShowLetter(false);
         EndInteraction();
     }
 

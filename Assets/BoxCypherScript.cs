@@ -18,6 +18,7 @@ public class BoxCypherScript : InteractObject
 
     protected override void Start()
     {
+        QTEHolder = GameObject.FindGameObjectWithTag("QTEHolder").GetComponent<QTEHolder>();
         cypherObject = (CypherScript)QTEHolder.ActivateQTE(QTEHolder.TypesOfQTE.Cypher);
         playerManager = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>();
         boxAnimator = GetComponent<Animator>();
