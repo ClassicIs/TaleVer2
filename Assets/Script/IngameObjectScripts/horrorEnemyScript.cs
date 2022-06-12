@@ -10,7 +10,7 @@ public class horrorEnemyScript : Enemy
     // Start is called before the first frame update
     void Start()
     {
-        speedOfMon = 0.2f;
+        enemySpeed = 0.2f;
         attackStrength = 1;
         theAnimOfEnemy = GetComponent<Animator>();
 

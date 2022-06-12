@@ -21,13 +21,18 @@ public abstract class DangerObject : MonoBehaviour
         }
     }
 }
-
+[Serializable]
 public class Damage
 {
+    [SerializeField]
     int HealthDamage;
+    [SerializeField]
     int InkGain;
+    [SerializeField]
     float SlowModifier;
+    [SerializeField]
     float TimeForDebuf;
+    [SerializeField]
     bool MakeStun;
     
 

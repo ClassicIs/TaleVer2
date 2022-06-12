@@ -120,10 +120,13 @@ public class Player : AliveBeeing
                 Move(horMovement, vertMovement);
                 if ((Mathf.Abs(theVect.x) > 0f) || (Mathf.Abs(theVect.y) > 0f))
                 {
-                    if (!theAudioManager.isPlaying("WalkTile 1"))
+                    if (theAudioManager != null)
                     {
-                        theAudioManager.Play("WalkTile 1");
-                    }                    
+                        if (!theAudioManager.isPlaying("WalkTile 1"))
+                        {
+                            theAudioManager.Play("WalkTile 1");
+                        }
+                    }
                     thePlayerAnim.SetBool("isMoving", true);
                     thePlayerAnim.SetFloat("HorizontalMovement", theVect.x);
                     thePlayerAnim.SetFloat("VerticalMovement", theVect.y);

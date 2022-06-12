@@ -1,34 +1,31 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
+
 
 public class Grid : MonoBehaviour
 {
     [SerializeField]
     LayerMask whatIsObsticle;
-
     Vector2 gridSize;
     int width, height;
     int cellSize;
     public Cell[,] grid;
-    // Start is called before the first frame update
-    void Awake()
-    {
-        CreateGrid(10, 10, 2);
-        NeighbourCells(grid[5, 5]);
-    }
 
-    public void CreateGrid(int _width, int _height, int _cellSize)
+    [SerializeField]
+    GameObject theObject;
+
+    public void CreateGrid(int _size, int _cellSize, Vector3 position)
     {
-        width = _width;
-        height = _height;
+        width = _size;
+        height = _size;
         cellSize = _cellSize;
-
+        
         gridSize = new Vector2(width * cellSize, height * cellSize);
+
+        transform.position = position;
         Vector2 leftBottomPosition = new Vector2(transform.position.x, transform.position.y) - (Vector2.right * gridSize.x / 2) - (Vector2.up * gridSize.y / 2);
-        //GameObject Object = new GameObject();
-        //GameObject NewObject1 = Instantiate(Object, new Vector3(leftBottomPosition.x, leftBottomPosition.y, 0), Quaternion.identity);
-        //NewObject1.name = "leftBottomPosition";
         
         grid = new Cell[this.width, this.height];
         for (int x = 0; x < width; x++)
@@ -39,34 +36,42 @@ public class Grid : MonoBehaviour
                 RaycastHit2D checkForObsticles = Physics2D.BoxCast(worldPosition, new Vector2(cellSize, cellSize), 0f, Vector2.zero, 1f, whatIsObsticle);
                 bool isObsticleThere = checkForObsticles;
                 grid[x, y] = new Cell(!isObsticleThere, worldPosition, x, y);
-                //GameObject NewObject = Instantiate(Object, new Vector3(worldPosition.x, worldPosition.y, 0), Quaternion.identity);
-                //NewObject.name = "[" + x + " " + y + "]";
+                
                 if (isObsticleThere)
                 {
-                    DrawRectangle(worldPosition, cellSize, Color.black);
+                    /*TextMeshPro theText = Instantiate(text, worldPosition, Quaternion.identity);
+                    theText.text = x.ToString() + " " + y.ToString();
+                    theText.color = Color.black;*/
+                    GameObject obj = Instantiate(theObject, worldPosition, Quaternion.identity);
+                    obj.name = x.ToString() + " " + y.ToString();
+                    DrawRectangle(worldPosition, cellSize, Color.black, 4f);
                 }
                 else
                 {
-                    DrawRectangle(worldPosition, cellSize, Color.red);
+                    /*TextMeshPro theText = Instantiate(text, worldPosition, Quaternion.identity);
+                    theText.text = x.ToString() + " " + y.ToString();
+                    theText.color = Color.red;*/
+                    GameObject obj = Instantiate(theObject, worldPosition, Quaternion.identity);
+                    obj.name = x.ToString() + " " + y.ToString();
+                    DrawRectangle(worldPosition, cellSize, Color.red, 4f);
 
                 }
             }
         }
     }
     
-    private void DrawRectangle(Vector2 centerOfRectangle, int size, Color color)
+    public void DrawRectangle(Vector2 centerOfRectangle, int size, Color color, float time = 100)
     {
-        //Debug.LogFormat("Drawing rectangle on Position {0}\nWith Size: {1}", centerOfRectangle, size);
         Vector2 pointA = centerOfRectangle - Vector2.up * size / 2 - Vector2.right * size / 2;
         Vector2 pointB = centerOfRectangle - Vector2.down * size / 2 - Vector2.right * size / 2;
 
         Vector2 pointC = centerOfRectangle - Vector2.up * size / 2 - Vector2.left * size / 2;
         Vector2 pointD = centerOfRectangle - Vector2.down * size / 2 - Vector2.left * size / 2;
-
-        Debug.DrawLine(pointA, pointB, color, 100f);
-        Debug.DrawLine(pointB, pointD, color, 100f);
-        Debug.DrawLine(pointD, pointC, color, 100f);
-        Debug.DrawLine(pointC, pointA, color, 100f);
+        
+        Debug.DrawLine(pointA, pointB, color, time);
+        Debug.DrawLine(pointB, pointD, color, time);
+        Debug.DrawLine(pointD, pointC, color, time);
+        Debug.DrawLine(pointC, pointA, color, time);
         
     }
 
@@ -85,23 +90,20 @@ public class Grid : MonoBehaviour
         return 14 * xDistance + (yDistance - xDistance) * 10;
     }
 
-    public Cell CellFromWorldPos(Vector3 position)
+    public Cell CellFromWorldPos(Vector3 worldPosition)
     {
-        //Debug.LogFormat("Grid size is\n X: {0} \nY: {1}", gridSize.x, gridSize.y);
-        float percentX = (position.x + gridSize.x / 2) / gridSize.x;
-        float percentY = (position.y  + gridSize.y / 2) / gridSize.y;
-        //Debug.LogFormat("percentX is {0} \npercentY: {1}", percentX, percentY);
-        percentX = Mathf.Clamp01(percentX);
-        percentY = Mathf.Clamp01(percentY);
-        
-        int xVal = Mathf.RoundToInt(width * percentX);
-        int yVal = Mathf.RoundToInt(height * percentY);
-        
-        //Debug.LogFormat("X value is {0}\nY value is {1}", xVal, yVal);
-
-        Cell theCell = grid[yVal, xVal];
-        //DrawRectangle(theCell.cellGlobalPosition, cellSize, col);
-        return theCell;               
+        Vector2 worldPosition2 = new Vector2(worldPosition.x, worldPosition.y);
+        for (int i = 0; i < grid.GetLength(0); i++)
+        {
+            for (int j = 0; j < grid.GetLength(1); j++)
+            {
+                if(Vector2.Distance(grid[i, j].cellGlobalPosition, worldPosition2) < cellSize/1.5f)
+                {
+                    return grid[i, j];
+                }
+            }
+        }
+        return null;
     }
 
     public List <Cell> NeighbourCells(Cell cell)

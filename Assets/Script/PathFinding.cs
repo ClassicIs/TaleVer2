@@ -38,22 +38,19 @@ public class PathFinding : MonoBehaviour
 
     private void Update()
     {
+        /*
         Vector3[] points = FindPath(startPosition.position, endPosition.position);
         if (points != null)
         {
-            /*for (int i = 0; i < points.Length; i++)
-            {
-                Debug.LogFormat("Point {0} is {1}", i, points[i]);
-            }*/
             DrawLineByPoint(points);
-        }
+        }*/
     }
 
-    private void DrawLineByPoint(Vector3[] points)
+    private void DrawLineByPoint(Vector3[] points, float wait = 1f)
     {
         for(int i = 0; i < points.Length - 1; i++)
         {
-            Debug.DrawLine(points[i], points[i + 1], Color.green, 1f);
+            Debug.DrawLine(points[i], points[i + 1], Color.green, wait);
         }
     }
     /*
@@ -121,8 +118,13 @@ public class PathFinding : MonoBehaviour
 
     public Vector3[] FindPath(Vector3 startPos, Vector3 targetPos)
     {
+        grid.CreateGrid(20, 2, startPos);
+        
         Cell startCell = grid.CellFromWorldPos(startPos);
         Cell targetCell = grid.CellFromWorldPos(targetPos);
+
+        grid.DrawRectangle(startCell.cellGlobalPosition, 2, Color.green);
+        grid.DrawRectangle(targetCell.cellGlobalPosition, 2, Color.cyan);
 
         List<Cell> openSet = new List<Cell>();
         HashSet<Cell> closedSet = new HashSet<Cell>();
@@ -185,8 +187,9 @@ public class PathFinding : MonoBehaviour
             curCell = curCell.pastCell;
         }
         path.Reverse();
-
-        return path.ToArray();
+        Vector3[] newPath = path.ToArray();
+        DrawLineByPoint(newPath, 100f);
+        return newPath;
     }
 
 

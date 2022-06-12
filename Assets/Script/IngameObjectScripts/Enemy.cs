@@ -6,20 +6,25 @@ public class Enemy : AliveBeeing
 {
     [SerializeField]
     LayerMask playerLayer;
-    
+    [SerializeField]
+    Damage enemyDamage;
+
+    private float radiusOfSight;
+    private float toNextAttackTime;
+
     [SerializeField]
     PathFinding PathFinding;
     [SerializeField]
     protected int attackStrength;
     protected bool seesPlayerOrNot;
     [SerializeField]
-    protected float speedOfMon;
+    protected float enemySpeed;
     bool isStalking = false;
     private float waitTime;
     private float startWaitTime;
 
-    GameObject PlayerTarget;
-    private const int MAX_DISTANCE = 20;
+    private const float MAX_DISTANCE = 40;
+    private const float MIN_DISTANCE = 1;
     private IEnumerator FollowCoroutine;
     
     [SerializeField]
@@ -28,16 +33,87 @@ public class Enemy : AliveBeeing
     bool isAttacking = false;
     bool isMoving;
 
-    Transform Player;
+    Vector2 enemyDirection;
 
+    [SerializeField]
+    Transform target;
+    
     private void Start()
     {
-        PathFinding = GetComponent<PathFinding>();
-        Player = GameObject.FindGameObjectWithTag("Player").GetComponent<Transform>();
+        enemyDirection = new Vector2(0, -1);
         startWaitTime = 3f;
         waitTime = startWaitTime;
-        currState = PlayerStates.moving;
+        ChangeState(PlayerStates.moving);
         isMoving = true;
+        enemySpeed = 3f;        
+    }
+
+    IEnumerator ToFollowPlayer()
+    {
+        IEnumerator thisCoroutine = null;
+        bool firstTime = true;
+        while(true)
+        {
+            Debug.LogFormat("Starting stalking! Distance is {0}", Vector2.Distance(target.position, transform.position));
+            if(Vector2.Distance(target.position, transform.position) > MAX_DISTANCE)
+            {
+                Debug.Log("Player too far!");
+                ChangeState(PlayerStates.moving);
+                break;
+            }
+            else if(Vector2.Distance(target.position, transform.position) < MIN_DISTANCE)
+            {
+                Debug.Log("Player too close!");
+                ChangeState(PlayerStates.attacking);
+                break;
+            }
+
+            Vector3[] points = PathFinding.FindPath(transform.position, target.position);
+            if(!firstTime)
+            {
+                StopCoroutine(thisCoroutine);
+            }
+            else
+            {
+                firstTime = false;
+            }
+            
+            thisCoroutine = GoByPoints(points);
+            StartCoroutine(thisCoroutine);
+
+            yield return new WaitForSeconds(1f);
+        }
+    }
+
+    IEnumerator GoByPoints(Vector3 [] points)
+    {
+        float distance;
+        float minDistance = 0.2f;
+        int i = 0;
+
+        foreach(Vector2 point in points)
+        {
+            do
+            {
+                distance = Vector2.Distance(transform.position, point);
+                transform.position = Vector2.MoveTowards(transform.position, point, enemySpeed * Time.deltaTime);
+                yield return null;
+            }
+            while (distance > minDistance);
+            transform.position = transform.position;
+            i++;
+        }
+        Debug.Log("End of coroutine");
+    }
+
+    Vector2[] Vector3ToVector2(Vector3[] points)
+    {
+        Vector2 [] points2 = new Vector2[points.Length];
+        for(int i = 0; i < points.Length; i++)
+        {
+            points2[i] = new Vector2(points[i].x, points[i].y);
+        }
+        return points2;
     }
 
     private void Update()
@@ -48,7 +124,7 @@ public class Enemy : AliveBeeing
                 if (!isPatroling)
                 {
                     isPatroling = true;
-                    Patrol(pointsToMove);
+                    //StartCoroutine(Patrol)
                 }
                 
                 break;
@@ -56,14 +132,14 @@ public class Enemy : AliveBeeing
                 if(!isStalking)
                 {
                     isStalking = true;
-                    ToStalk();
+                    StartCoroutine(ToFollowPlayer());
                 }
                 break;
             case PlayerStates.attacking:
-                if (isAttacking)
+                if (!isAttacking)
                 {
                     isAttacking = true;
-                    StartCoroutine(Attack());
+                    StartCoroutine(AttackCoroutine());
                 }
                 break;
             case PlayerStates.stunned:
@@ -72,22 +148,16 @@ public class Enemy : AliveBeeing
             case PlayerStates.isDead:
                 Debug.LogFormat("Enemy {0} is dead!", transform.name);
                 break;
-            default:
-                //Patrol();
+            default:                
                 break;
         }
     }
-
-    void ToStalk()
-    {
-        StartCoroutine(StalkingCoroutine());
-    }
-
+    
     IEnumerator StalkingCoroutine()
     {
         Vector2 enemyPosition = transform.position;
-        Vector2 targetPosition = Player.transform.position;
-        IEnumerator thisCoroutine;
+        Vector2 targetPosition = target.transform.position;
+
         while (true)
         {
             float distanceToTarget = Vector2.Distance(enemyPosition, targetPosition);
@@ -95,7 +165,7 @@ public class Enemy : AliveBeeing
             {
                 if (distanceToTarget < 3f)
                 {
-                    Debug.Log("Player too far.");
+                    Debug.Log("Player too close.");
                     isStalking = false;
 
                     ChangeState(PlayerStates.attacking);
@@ -104,22 +174,16 @@ public class Enemy : AliveBeeing
                 else
                 {
                     MoveTowardsPlayer(Patrol(PathFinding.FindPath(enemyPosition, targetPosition)));
-                    //thisCoroutine = null;
-                    //thisCoroutine = PatrolPositions(Patrol(PathFinding.FindPath(enemyPosition, targetPosition)));
-                    //StartCoroutine(thisCoroutine);
                 }
             }
             else
-            {
-                Debug.Log("Player too far. Stalking false.");
-                StopAllCoroutines();
-
-                isStalking = false;
-                ChangeState(PlayerStates.moving);
-                yield break;
+            {                   
+                break;
             }
             yield return new WaitForSeconds(3);
         }
+        isStalking = false;
+        ChangeState(PlayerStates.moving);
     }
 
     public void ChangeState(PlayerStates state)
@@ -155,16 +219,6 @@ public class Enemy : AliveBeeing
         return vector;
     }
 
-    private void Patrol(Transform[] points)
-    {
-        Patrol(PointsToVector(points));
-    }    
-
-    private void Patrol(Vector2[] positions)
-    {       
-        StartCoroutine(PatrolPositions(positions));
-    }
-
     private Vector2[] Patrol(Vector3[] positions)
     {
         Vector2 [] newPos = new Vector2[positions.Length];
@@ -185,7 +239,11 @@ public class Enemy : AliveBeeing
             float distFromPoint = Vector2.Distance(transform.position, pos);
 
             while (distFromPoint < 3)
-                transform.position = Vector2.MoveTowards(transform.position, pos, speedOfMon * Time.deltaTime);
+            {
+                transform.position = Vector2.MoveTowards(transform.position, pos, enemySpeed * Time.deltaTime);
+                Vector3 tmp = new Vector2(pos.x - transform.position.x, pos.y - transform.position.y);
+                enemyDirection = tmp.normalized;
+            }
         }
     }
 
@@ -199,7 +257,9 @@ public class Enemy : AliveBeeing
             
             if (distFromPoint > 0.3f)
             {
-                transform.position = Vector2.MoveTowards(transform.position, positions[i], speedOfMon * Time.deltaTime);
+                transform.position = Vector2.MoveTowards(transform.position, positions[i], enemySpeed * Time.deltaTime);
+                Vector3 tmp = new Vector2(positions[i].x - transform.position.x, positions[i].y - transform.position.y);
+                enemyDirection = tmp.normalized;
             }
             else
             {
@@ -221,68 +281,36 @@ public class Enemy : AliveBeeing
                 }
 
             }
-            if (Vector2.Distance(transform.position, Player.position) < 5f)
+            if (Vector2.Distance(transform.position, target.position) < 5f)
             {
-                Debug.Log("See player");
+                ChangeState(PlayerStates.stalking);
                 break;
             }
+            
+
             yield return null;
         }
-        ChangeState(PlayerStates.stalking);
         isPatroling = false;
-
     }
 
-    protected IEnumerator Attack()
+    protected IEnumerator AttackCoroutine()
     {
         while (true)
         {
-            Collider2D playerHit = Physics2D.OverlapCircle(transform.position, 10f, playerLayer);
+            Collider2D playerHit = Physics2D.OverlapCircle(transform.position, radiusOfSight, playerLayer);
             if (playerHit)
             {
                 Debug.Log("Player was hit");
-                playerHit.GetComponent<PlayerManager>().AddHealth(-attackStrength);
+                playerHit.GetComponent<PlayerManager>().TakeDamage(enemyDamage);
             }
-            if (!(Vector2.Distance(transform.position, Player.position) <= 3))
-            {
-                ChangeState(PlayerStates.moving);
+            if (!(Vector2.Distance(transform.position, target.position) <= 3))
+            {                
                 break;
             }
-            yield return new WaitForSeconds(2);
+            yield return new WaitForSeconds(toNextAttackTime);
         }
+
+        ChangeState(PlayerStates.stalking);
         isAttacking = false;
     }
-    /*
-    protected virtual void Follow(GameObject target)
-    {
-        FollowCoroutine = ToFollow(target.transform);
-        StartCoroutine(FollowCoroutine);
-    }
-
-    private IEnumerator ToFollow(Transform target)
-    {
-        bool playerFar = false;
-        float distFromPlayer;
-        do
-        {            
-            distFromPlayer = Vector3.Distance(transform.position, target.position);
-            if (distFromPlayer >= MAX_DISTANCE)
-            {
-                playerFar = true;
-                Debug.Log("Player too far!");
-                break;
-            }
-            transform.position = Vector2.Lerp(transform.position, target.position, speedOfMon * Time.deltaTime);
-            yield return null;
-        }
-        while (distFromPlayer > 3f);
-        if(playerFar)
-        {
-            Debug.LogFormat("Player is too far. {0}", (target.position));
-        }
-        else
-        {
-            Debug.Log("Player is here!");
-        }
-    }*/
 }

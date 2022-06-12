@@ -327,7 +327,7 @@ MonoBehaviour:
   - {x: -0.65162253, y: -1.6310418, z: 0}
   m_ShapePathHash: -849811083
   m_Mesh: {fileID: 0}
-  m_InstanceId: 88482
+  m_InstanceId: 30434
 --- !u!58 &5983033872811698021
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -338,7 +338,7 @@ CircleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: -0.53}
