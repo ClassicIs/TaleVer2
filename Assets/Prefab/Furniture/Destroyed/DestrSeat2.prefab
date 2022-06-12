@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2746633623442473611}
   - component: {fileID: 4516608723435429812}
   - component: {fileID: 7170102686113644038}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: DestrSeat2_3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -160,7 +160,7 @@ GameObject:
   - component: {fileID: 9182944997858518483}
   - component: {fileID: 2617390262667679454}
   - component: {fileID: 8155111110702564755}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: DestrSeat2_1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -307,7 +307,7 @@ GameObject:
   - component: {fileID: 7265253276807961592}
   - component: {fileID: 7090613010964046088}
   - component: {fileID: 4648244923723423634}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: DestrSeat2_2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -454,7 +454,7 @@ GameObject:
   - component: {fileID: 8029048494700104309}
   - component: {fileID: 3793839759835356280}
   - component: {fileID: 4256208921262034371}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: DestrSeat2_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
