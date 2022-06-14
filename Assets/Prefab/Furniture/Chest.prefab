@@ -1,5 +1,77 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &324685614
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 324685615}
+  - component: {fileID: 324685616}
+  m_Layer: 13
+  m_Name: Point Light 2D
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &324685615
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 324685614}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8877441893439568301}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &324685616
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 324685614}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 073797afb82c5a1438f328866b10b3f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_LightType: 3
+  m_BlendStyleIndex: 0
+  m_FalloffIntensity: 0.734
+  m_Color: {r: 1, g: 0.827451, b: 0.6666667, a: 1}
+  m_Intensity: 0.81
+  m_LightVolumeOpacity: 0
+  m_ApplyToSortingLayers: 00000000f7db443fcf685417177a130c8f0e82fcdfe87e8a9d64d999
+  m_LightCookieSprite: {fileID: 0}
+  m_UseNormalMap: 0
+  m_LightOrder: 0
+  m_AlphaBlendOnOverlap: 0
+  m_ShadowIntensity: 0
+  m_ShadowVolumeIntensity: 0
+  m_PointLightInnerAngle: 360
+  m_PointLightOuterAngle: 360
+  m_PointLightInnerRadius: 0.39
+  m_PointLightOuterRadius: 0.77
+  m_PointLightDistance: 3
+  m_PointLightQuality: 1
+  m_ShapeLightParametricSides: 5
+  m_ShapeLightParametricAngleOffset: 0
+  m_ShapeLightParametricRadius: 1
+  m_ShapeLightFalloffSize: 0.5
+  m_ShapeLightFalloffOffset: {x: 0, y: 0}
+  m_ShapePath:
+  - {x: -0.5, y: -0.5, z: 0}
+  - {x: 0.5, y: -0.5, z: 0}
+  - {x: 0.5, y: 0.5, z: 0}
+  - {x: -0.5, y: 0.5, z: 0}
 --- !u!1 &4079180131749656243
 GameObject:
   m_ObjectHideFlags: 0
@@ -14,6 +86,7 @@ GameObject:
   - component: {fileID: 4931571609257478136}
   - component: {fileID: 1624713953}
   - component: {fileID: 1624713948}
+  - component: {fileID: 519275939}
   m_Layer: 13
   m_Name: Chest
   m_TagString: Untagged
@@ -31,7 +104,8 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 324685615}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -138,7 +212,7 @@ MonoBehaviour:
   - {x: -0.54276633, y: -0.11504389, z: 0}
   m_ShapePathHash: 868578551
   m_Mesh: {fileID: 0}
-  m_InstanceId: 111894
+  m_InstanceId: -420098
 --- !u!58 &1624713953
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -167,11 +241,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dca0460747d2d084291826bd2ec3328c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isInteractable: 0
   LongInteraction: 0
   QTEHolder: {fileID: 0}
-  hardness: 0
+  hardness: 1
   typeOfQTE: 0
   contentOfBox:
   - {fileID: 11400000, guid: 8e74963435d826a4292d17d3a25390d7, type: 2}
   - {fileID: 11400000, guid: cfcd826db42f04b4d8cc89fe4d0a43be, type: 2}
+  - {fileID: 11400000, guid: cfcd826db42f04b4d8cc89fe4d0a43be, type: 2}
   boxAnimator: {fileID: 0}
+--- !u!95 &519275939
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4079180131749656243}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 50e4c4681cb8e41449fdd383aa45b9a7, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0

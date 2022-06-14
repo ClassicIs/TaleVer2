@@ -21,6 +21,7 @@ public class DLDoorsController : MonoBehaviour
 
     [SerializeField]
     private DLDoor[] doors;
+    
 
     [SerializeField]
     private BattleSystem battleSystem;
@@ -29,8 +30,10 @@ public class DLDoorsController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+      
         battleSystem.OnBattleStarted += BattleSystem_OnBattleStarted;
         battleSystem.OnBattleOver += BattleSystem_OnBattleOver;
+
     }
 
 

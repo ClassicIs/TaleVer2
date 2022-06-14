@@ -13,8 +13,8 @@ public class Grid : MonoBehaviour
     int cellSize;
     public Cell[,] grid;
 
-    [SerializeField]
-    GameObject theObject;
+    /*[SerializeField]
+    GameObject theObject;*/
 
     public void CreateGrid(int _size, int _cellSize, Vector3 position)
     {
@@ -41,9 +41,9 @@ public class Grid : MonoBehaviour
                 {
                     /*TextMeshPro theText = Instantiate(text, worldPosition, Quaternion.identity);
                     theText.text = x.ToString() + " " + y.ToString();
-                    theText.color = Color.black;*/
+                    theText.color = Color.black;
                     GameObject obj = Instantiate(theObject, worldPosition, Quaternion.identity);
-                    obj.name = x.ToString() + " " + y.ToString();
+                    obj.name = x.ToString() + " " + y.ToString();*/
                     DrawRectangle(worldPosition, cellSize, Color.black, 4f);
                 }
                 else
@@ -51,8 +51,8 @@ public class Grid : MonoBehaviour
                     /*TextMeshPro theText = Instantiate(text, worldPosition, Quaternion.identity);
                     theText.text = x.ToString() + " " + y.ToString();
                     theText.color = Color.red;*/
-                    GameObject obj = Instantiate(theObject, worldPosition, Quaternion.identity);
-                    obj.name = x.ToString() + " " + y.ToString();
+                    /*GameObject obj = Instantiate(theObject, worldPosition, Quaternion.identity);
+                    obj.name = x.ToString() + " " + y.ToString();*/
                     DrawRectangle(worldPosition, cellSize, Color.red, 4f);
 
                 }

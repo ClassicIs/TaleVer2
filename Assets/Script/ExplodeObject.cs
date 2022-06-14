@@ -52,7 +52,7 @@ public class ExplodeObject : MonoBehaviour
         //}
     }
 
-    private void ExplodeThisObject()
+    public void ExplodeThisObject()
     {
         GameObject destructable = (GameObject)Instantiate(destructablePrefab);
         destructable.transform.position = transform.position;

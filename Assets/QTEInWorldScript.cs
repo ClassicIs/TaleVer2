@@ -15,6 +15,8 @@ public abstract class QTEInWorldScript : InteractObject
 
     protected override void Start()
     {
+        isInteractable = true;
+        LongInteraction = true;        
         QTEHolder = GameObject.FindGameObjectWithTag("QTEHolder").GetComponent<QTEHolder>();
         currentQTE = QTEHolder.ActivateQTE(typeOfQTE);
     }

@@ -25,12 +25,13 @@ public class ScriptForLetter : MonoBehaviour
         theLetterAnim = GetComponent<Animator>();
     }
 
-    public void SetLetter(string sign = "John Doe", string body = "Hye, My Name is John Doe!", string end = "Your Faithfuly,\nJohn Doe")
+    public void SetLetter(string sign = "John Doe", string body = "Hye, My Name is John Doe!", string end = "Yours Faithfuly,\nJohn Doe")
     {
         SignOfLetter.text = sign;
         BodyOfLetter.text = body;
         EndOfLetter.text = end;
         ShowLetter(true);
+        
     }
 
     public void EmptyLetter()
@@ -110,6 +111,5 @@ public class ScriptForLetter : MonoBehaviour
         tmpCol = text.color;
         tmpCol.a = desireOpacity;
         text.color = tmpCol;
-    }
-
+    }    
 }

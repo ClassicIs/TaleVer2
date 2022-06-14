@@ -13,6 +13,7 @@ public class OneDialogue : InteractObject
 
     protected override void Start()
     {
+        base.Start();
         LongInteraction = true;
         DialogScript = GameObject.FindGameObjectWithTag("DialogHolder").GetComponent<DialogueScript>();
         DialogScript.OnDialogueEnd += EndInteraction;
@@ -27,6 +28,4 @@ public class OneDialogue : InteractObject
     {           
         DialogScript.NextLine();
     }
-
-
 }

@@ -7,11 +7,13 @@ public abstract class InteractObject : MonoBehaviour
 {
     private SpriteRenderer InterObjSpriteRend;
     protected IEnumerator ToChangeAlpha;
+    public bool isInteractable;
 
     public bool LongInteraction;
 
     protected virtual void Start()
     {
+        isInteractable = true;
         InterObjSpriteRend = GetComponent<SpriteRenderer>();
         ToChangeAlpha = ChangeAlpha();
     }

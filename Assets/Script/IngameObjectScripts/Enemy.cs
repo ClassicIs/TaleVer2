@@ -1,15 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class Enemy : AliveBeeing
 {
+    float health;
+    [SerializeField]
+    float maxHealth;
+    
     [SerializeField]
     LayerMask playerLayer;
     [SerializeField]
     Damage enemyDamage;
-
+    [SerializeField]
     private float radiusOfSight;
+    [SerializeField]
     private float toNextAttackTime;
 
     [SerializeField]
@@ -33,19 +39,63 @@ public class Enemy : AliveBeeing
     bool isAttacking = false;
     bool isMoving;
 
+    public Action OnDeath;
+
     Vector2 enemyDirection;
 
     [SerializeField]
     Transform target;
+
+    
     
     private void Start()
     {
+        health = maxHealth;
         enemyDirection = new Vector2(0, -1);
         startWaitTime = 3f;
         waitTime = startWaitTime;
         ChangeState(PlayerStates.moving);
         isMoving = true;
-        enemySpeed = 3f;        
+        target = GameObject.FindObjectOfType<Player>().transform;
+        PathFinding = GameObject.FindObjectOfType<PathFinding>();
+    }
+
+    public void TakeDamage(float damage)
+    {
+        Debug.LogErrorFormat("Damage taken {0}", damage);
+        health -= damage;
+        if(health <= 0)
+        {
+            Death();
+        }
+    }
+
+    private void Death()
+    {
+        //Animator dead
+        Debug.LogFormat("Enemy {0} is dead", gameObject.name);
+        if (OnDeath != null) {
+            OnDeath();        
+        }
+        //Destroy(gameObject);
+        gameObject.SetActive(false);
+    }
+
+    public bool IsAlive()
+    {
+        if(health > 0)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public void Spawn()
+    {
+        gameObject.SetActive(true);
     }
 
     IEnumerator ToFollowPlayer()
@@ -83,6 +133,7 @@ public class Enemy : AliveBeeing
 
             yield return new WaitForSeconds(1f);
         }
+        isStalking = false;
     }
 
     IEnumerator GoByPoints(Vector3 [] points)
@@ -122,11 +173,10 @@ public class Enemy : AliveBeeing
         {
             case PlayerStates.moving:
                 if (!isPatroling)
-                {
+                {                    
                     isPatroling = true;
-
+                    StartCoroutine(PatrolPositions(pointsToMove));
                 }
-                
                 break;
             case PlayerStates.stalking:
                 if(!isStalking)
@@ -155,23 +205,23 @@ public class Enemy : AliveBeeing
 
     public void ChangeState(PlayerStates state)
     {
-        if (state != currState)
+        Debug.LogFormat("Changing to state {0}", state.ToString());
+        if (state == PlayerStates.attacking)
         {
-            Debug.LogFormat("Changing to state {0}", state.ToString());
-            if (state == PlayerStates.attacking)
-            {
-                currState = PlayerStates.attacking;
-            }
+            currState = PlayerStates.attacking;
+        }
+        else if (state == PlayerStates.moving)
+        {
+            currState = PlayerStates.moving;
+        }
 
-            if (state == PlayerStates.moving)
-            {
-                currState = PlayerStates.moving;
-            }
-
-            if (state == PlayerStates.stalking)
-            {
-                currState = PlayerStates.stalking;
-            }
+        else if (state == PlayerStates.stalking)
+        {
+            currState = PlayerStates.stalking;
+        }
+        else
+        {
+            currState = state;
         }
     }
 
@@ -236,19 +286,17 @@ public class Enemy : AliveBeeing
         }
     }
 
-    IEnumerator PatrolPositions(Vector2[] positions)
+    IEnumerator PatrolPositions(Transform[] points)
     {
         int i = 0;
 
         while (true)
         {
-            float distFromPoint = Vector2.Distance(transform.position, positions[i]);
+            float distFromPoint = Vector2.Distance(transform.position, points[i].position);
             
             if (distFromPoint > 0.3f)
             {
-                transform.position = Vector2.MoveTowards(transform.position, positions[i], enemySpeed * Time.deltaTime);
-                Vector3 tmp = new Vector2(positions[i].x - transform.position.x, positions[i].y - transform.position.y);
-                enemyDirection = tmp.normalized;
+                MoveToThePoint(points[i].position);
             }
             else
             {
@@ -259,7 +307,7 @@ public class Enemy : AliveBeeing
                 else
                 {
                     waitTime = startWaitTime;
-                    if (i == (positions.Length - 1))
+                    if (i == (points.Length - 1))
                     {
                         i = 0;
                     }
@@ -275,11 +323,16 @@ public class Enemy : AliveBeeing
                 ChangeState(PlayerStates.stalking);
                 break;
             }
-            
-
             yield return null;
         }
         isPatroling = false;
+    }
+
+    private void MoveToThePoint(Vector2 pos)
+    {
+        transform.position = Vector2.MoveTowards(transform.position, pos, enemySpeed * Time.deltaTime);
+        Vector3 tmp = new Vector2(pos.x - transform.position.x, pos.y - transform.position.y);
+        enemyDirection = tmp.normalized;
     }
 
     protected IEnumerator AttackCoroutine()

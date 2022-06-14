@@ -12,10 +12,14 @@ public class LetterScript : InteractObject
     [TextArea]
     [SerializeField]
     private string theMassOfStrings;
-    
+
+    [SerializeField]
+    private string signature;
+
 
     protected override  void Start()
     {
+        base.Start();
         LongInteraction = true;
         TheLetterScript = GameObject.FindGameObjectWithTag("LetterUI").GetComponent<ScriptForLetter>();
         
@@ -23,7 +27,7 @@ public class LetterScript : InteractObject
    
     public override void InterAction()
     {           
-        TheLetterScript.SetLetter(sign, theMassOfStrings, "Your sincerely");
+        TheLetterScript.SetLetter(sign, theMassOfStrings, "Yours sincerely,\n" + signature);
     }   
 
     public override void FutherAction()

@@ -18,11 +18,11 @@ public class BoxCypherScript : InteractObject
 
     protected override void Start()
     {
+        base.Start();
         QTEHolder = GameObject.FindGameObjectWithTag("QTEHolder").GetComponent<QTEHolder>();
         cypherObject = (CypherScript)QTEHolder.ActivateQTE(QTEHolder.TypesOfQTE.Cypher);
         playerManager = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>();
         boxAnimator = GetComponent<Animator>();
-        LongInteraction = true;
     }
 
     public override void InterAction()
@@ -41,26 +41,21 @@ public class BoxCypherScript : InteractObject
         base.EndInteraction();
         cypherObject.OnSuccess -= SuccessfullyUsed;
         cypherObject.OnFail -= UnSuccessfullyUsed;
+        if(contentOfBox.Length == 0)
+        {
+            isInteractable = false;
+            if (boxAnimator != null)
+            {
+                boxAnimator.SetTrigger("BoxOpen");
+            }
+            this.enabled = false;
+        }
     }
 
     public virtual void SuccessfullyUsed()
     {
-        ItemScript[] leftovers = playerManager.Inventory.AddItems(contentOfBox);
-        contentOfBox = leftovers;
-        if (boxAnimator != null)
-        {
-            boxAnimator.SetBool("BoxOpen", true);
-        }
-
-        Debug.Log("The box was openned!");
-
-        if (contentOfBox.Length > 0)
-        {
-            if (boxAnimator != null)
-            {
-                boxAnimator.SetBool("BoxOpen", false);
-            }
-        }
+        contentOfBox = playerManager.Inventory.AddItems(contentOfBox);
+        //contentOfBox = leftovers;        
     }
 
     public virtual void UnSuccessfullyUsed()
@@ -71,5 +66,7 @@ public class BoxCypherScript : InteractObject
 
     public override void FutherAction()
     {
+        Debug.LogWarning("There's no futher Action.");
+
     }
 }

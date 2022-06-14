@@ -17,7 +17,7 @@ public class BoxScript : QTEInWorldScript
         
         playerManager = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>();
         boxAnimator = GetComponent<Animator>();
-        LongInteraction = true;
+        
     }
 
     public override void InterAction()
@@ -26,35 +26,28 @@ public class BoxScript : QTEInWorldScript
         {
             base.InterAction();
         }
-        else
-        {
-            Debug.Log("The box is EMPTY!");
-        }
     }
 
     public override void EndInteraction()
     {
         base.EndInteraction();
+        if (contentOfBox.Length <= 0)
+        {
+            if (boxAnimator != null)
+            {
+                boxAnimator.SetTrigger("BoxOpen");
+            }
+            isInteractable = false;
+            this.enabled = false;
+        }
     }
 
     public override void SuccessfullyUsed()
     {
         ItemScript[] leftovers = playerManager.Inventory.AddItems(contentOfBox);
-        contentOfBox = leftovers;
-        if (boxAnimator != null)
-        {
-            boxAnimator.SetBool("BoxOpen", true);
-        }
+        contentOfBox = leftovers;        
 
         Debug.Log("The box was openned!");
-
-        if (contentOfBox.Length > 0)
-        {
-            if (boxAnimator != null)
-            {
-                boxAnimator.SetBool("BoxOpen", false);
-            }
-        }
     }
 
     public override void UnSuccessfullyUsed()

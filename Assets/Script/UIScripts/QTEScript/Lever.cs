@@ -4,34 +4,32 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 
-public class Lever : InteractObject 
+public class Lever : QTEInWorldScript 
 {
-    public DoorScript Door;
     [SerializeField]
-    bool PlayerStay;
+    private DLDoor doorToOpen;
 
-    [SerializeField]
-    QTEHolder QTEHolder;
-    QTEObject CurrQTE;
-
+    /*
     protected override void Start()
     {
+        base.Start();
         PlayerStay = false;       
-    }
-
+    }*/
+    /*
     public override void InterAction()
     {        
         CurrQTE = QTEHolder.ActivateQTE(QTEHolder.TypesOfQTE.Simple);
         CurrQTE.Activate(QTEObject.HardVariety.easy);
         
-        Subscribe();
+        //Subscribe();
     }
-
+    
     public override void FutherAction()
     {
-        throw new System.NotImplementedException();
-    }
+        Debug.Log("No futher action");
+    }*/
 
+    /*
     void UsedLever()
     {
         EndInteraction();
@@ -72,5 +70,15 @@ public class Lever : InteractObject
         Door.Open();
         GetComponent<Animator>().SetBool("QTEisPassed", true);        
         GetComponent<Lever>().enabled = false;        
+    }
+    */
+    public override void SuccessfullyUsed()
+    {
+        doorToOpen.OpenDoor();
+    }
+
+    public override void UnSuccessfullyUsed()
+    {
+        Debug.Log("Unsuccessfully Used");
     }
 }

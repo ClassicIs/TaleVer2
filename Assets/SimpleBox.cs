@@ -10,6 +10,7 @@ public class SimpleBox : InteractObject
 
     protected override void Start()
     {
+        isInteractable = true;
         PlayerManager = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>();
         LongInteraction = false;
     }
@@ -21,6 +22,12 @@ public class SimpleBox : InteractObject
 
     public override void InterAction()
     {
-        PlayerManager.Inventory.AddItems(ItemToGive);
+        ItemToGive = PlayerManager.Inventory.AddItems(ItemToGive);
+        if(ItemToGive.Length <= 0)
+        {
+            isInteractable = false;
+            GetComponent<Animator>().SetTrigger("BoxOpen");
+            this.enabled = false;
+        }
     }
 }

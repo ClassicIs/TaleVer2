@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-[Serializable]
-public class Character
+//[Serializable]
+[CreateAssetMenu(fileName = "DialogueCharacter", menuName = "Dialogue/New Character")]
+public class Character : ScriptableObject
 {
     public string charName;
     public Color charColor;

@@ -107,7 +107,7 @@ public class BattleSystem : MonoBehaviour
     [System.Serializable]
     private class Wave
     {
-        [SerializeField] private EnemySpawn[] enemySpawnArray;
+        [SerializeField] private Enemy[] enemySpawnArray;
         [SerializeField] private float timer;
 
         public void Update()
@@ -124,7 +124,7 @@ public class BattleSystem : MonoBehaviour
 
         private void SpawnEnemies()
         {
-            foreach (EnemySpawn enemySpawn in enemySpawnArray)
+            foreach (Enemy enemySpawn in enemySpawnArray)
             {
                 enemySpawn.Spawn();
             }
@@ -135,7 +135,7 @@ public class BattleSystem : MonoBehaviour
             if (timer < 0)
             {
                 // волна заспавнилась
-                foreach (EnemySpawn enemySpawn in enemySpawnArray)
+                foreach (Enemy enemySpawn in enemySpawnArray)
                 {
                     if (enemySpawn.IsAlive())
                     {

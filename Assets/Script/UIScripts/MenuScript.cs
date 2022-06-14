@@ -11,27 +11,36 @@ public class MenuScript : MonoBehaviour, MenuObject
     GameObject Panel;
     [SerializeField]
     GameObject Menu;
+    bool inProcces;
+    [SerializeField]
+    Button[] Buttons;
 
     void Start()
     {
+        Buttons = GetComponentsInChildren<Button>();
         isMenuOn = false;
+        inProcces = false;
     }
     
     public void MenuOn()
     {
-        Image PanelRenderer = Panel.GetComponent<Image>();
-        isMenuOn = !isMenuOn;
-        if (isMenuOn)
+        if (!inProcces)
         {
-            
-            PanelRenderer.color = new Color(1, 1, 1, 0);
-            Panel.SetActive(isMenuOn);
-            StartCoroutine(TurnOn(PanelRenderer, isMenuOn, 0.75f));
-            Menu.SetActive(isMenuOn);
-        }
-        else
-        {            
-            StartCoroutine(TurnOn(PanelRenderer, isMenuOn, 0.75f));            
+            Image PanelRenderer = Panel.GetComponent<Image>();
+            isMenuOn = !isMenuOn;
+            if (isMenuOn)
+            {
+                Time.timeScale = 0f;
+                PanelRenderer.color = new Color(1, 1, 1, 0);
+                Panel.SetActive(isMenuOn);
+                StartCoroutine(TurnOn(PanelRenderer, isMenuOn, 0.75f));
+                Menu.SetActive(isMenuOn);
+            }
+            else
+            {
+                Time.timeScale = 1f;
+                StartCoroutine(TurnOn(PanelRenderer, isMenuOn, 0.75f));
+            }
         }
     }
 
@@ -41,12 +50,21 @@ public class MenuScript : MonoBehaviour, MenuObject
         Menu.SetActive(isMenuOn);
     }
 
+    private void TurnButtons(bool on)
+    {
+        foreach(Button button in Buttons)
+        {
+            button.interactable = on;
+        }
+    }
+
     IEnumerator TurnOn(Image TheRenderer, bool On, float maxValue)
     {
+        inProcces = true;
         int turn;
         float endPoint;
-
-        if(On)
+        
+        if (On)
         {
             Debug.Log("Turning menu On");
             endPoint = maxValue;
@@ -54,6 +72,7 @@ public class MenuScript : MonoBehaviour, MenuObject
         }
         else
         {
+            TurnButtons(false);
             Debug.Log("Turning menu Off");
             endPoint = 0;
             turn = -1;
@@ -80,5 +99,10 @@ public class MenuScript : MonoBehaviour, MenuObject
 
         TheRenderer.color = new Color(1, 1, 1, endPoint);
         SetActiveObjects();
+        if(On)
+        {
+            TurnButtons(true);
+        }
+        inProcces = false;
     }
 }

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System;
-
+using UnityEngine.SceneManagement;
 public class GameManagerScript : MonoBehaviour
 {
     public SaveManager SaveManagement;
@@ -14,10 +14,15 @@ public class GameManagerScript : MonoBehaviour
     private CharacterOverlap thePlayerOver;
 
     [SerializeField]
+    private FadeInScript FadeInScript;
+
+    [SerializeField]
     private GameObject[] allGameObj;
 
     [SerializeField]
     private MenuScript MenuScript;
+    [SerializeField]
+    private RestartMenuScript RestartMenuScript;
 
     [SerializeField]
     private InventoryScript PlayerInventory;
@@ -44,7 +49,6 @@ public class GameManagerScript : MonoBehaviour
 
     public event Action<int> OnHealthChange;
 
-
     private IEnumerator inkCoroutine;
 
     private enum DeathTypes
@@ -66,14 +70,28 @@ public class GameManagerScript : MonoBehaviour
     }
 
     private void Start()
-    {        
+    {
+        PlayerManager.OnHealthNull += IfDiedFromHealthLoss;
         PlayerInventory = PlayerManager.Inventory;
         inventoryOpen = false;
         UIInventory.SetInventory(PlayerManager.Inventory);
+        if(FadeInScript)
+        {
+            FadeInScript.toFadeOutCoroutine();
+        }
+        SaveManagement.AssignValues();
+        SaveManagement.LoadSave(true);
+
+    }
+
+    private void IfDiedFromHealthLoss()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public void AssigningValues()
     {
+        //FadeInScript = GameObject.FindGameObjectWithTag("FadeIn").GetComponent<FadeInScript>();
         player = GameObject.FindGameObjectWithTag("Player");
         PlayerManager = player.GetComponent<PlayerManager>();
         PlayerInventory = PlayerManager.Inventory;
@@ -111,6 +129,8 @@ public class GameManagerScript : MonoBehaviour
         thePlayerOver.OnFarInterObject += IfInteractedAway;
         thePlayerOver.OnPickableObject += IfPickableNear;
         thePlayerOver.OnEnteredQTE += IfEnteredQTE;
+
+        thePlayerOver.OnEndOfLevel += IfEndOfLevel;
     }
 
     private void Normalize()
@@ -237,15 +257,18 @@ public class GameManagerScript : MonoBehaviour
         ObjToInteract = thePlayerOver.theNearestObject();
         if (ObjToInteract != null)
         {
-            ObjToInteract.InterAction();
-            if(ObjToInteract.LongInteraction)
+            if (ObjToInteract.isInteractable)
             {
-                Player.ToStun(true);
+                ObjToInteract.InterAction();
+                if (ObjToInteract.LongInteraction)
+                {
+                    Player.ToStun(true);
 
-                AllOtherInput.OnInteracting += ObjToInteract.FutherAction;
-                AllOtherInput.OnInteracting -= IfInteracted;
-                
-                ObjToInteract.OnEndOfInteraction += InteractionEnded;
+                    AllOtherInput.OnInteracting += ObjToInteract.FutherAction;
+                    AllOtherInput.OnInteracting -= IfInteracted;
+
+                    ObjToInteract.OnEndOfInteraction += InteractionEnded;
+                }
             }
         }
         else
@@ -313,8 +336,7 @@ public class GameManagerScript : MonoBehaviour
         SaveManagement.MakeASave();
         
         StartCoroutine(theFadeInScr.toFadeInCoroutine(false));
-        //MenuOn(true, "To be continued...");
-
+        RestartMenuScript.MenuOn();        
     }
 
     // TODO Change

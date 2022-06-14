@@ -26,10 +26,18 @@ public class Player : AliveBeeing
 
     [SerializeField]
     private Vector2 lastMoveDir;
+    [SerializeField]
+    private float timeForAttack;
+    [SerializeField]
+    private float radiusOfAttack;
 
+
+    [SerializeField]
+    private LayerMask enemyLayer;
     [SerializeField]
     Vector2 movePosition;
     public bool isMoving;
+    private bool isAttacking;
 
     public float dodge;
     private float startDodgeTime;
@@ -39,11 +47,10 @@ public class Player : AliveBeeing
     public float speed;    
     private float normSpeed;
     public float slowModif;
+    [SerializeField]
+    private float playerStrength;
 
     public bool isSlowDown;
-
-
-    // Start is called before the first frame update
     void Start()
     {
         isGrounded = true;
@@ -137,12 +144,9 @@ public class Player : AliveBeeing
                 }                
                 break;
             case PlayerStates.dashing:
-                Debug.Log("Dashing AAAAAAAAAAAAAAAA!");
 
                 if (!isDashing)
                 {
-                    Debug.Log("Dashing!");
-
                     Dash();
                 }
                 break;
@@ -152,7 +156,10 @@ public class Player : AliveBeeing
                 //Debug.Log("Is Stunned");
                 break;
             case PlayerStates.attacking:
-                Debug.Log("Attacking");
+                if (!isAttacking)
+                {
+                    StartCoroutine(Attack());
+                }
                 break;
             case PlayerStates.isDead:
                 if (isAlive)
@@ -163,7 +170,37 @@ public class Player : AliveBeeing
         }
     }    
 
+    private IEnumerator Attack()
+    {
+        isAttacking = true;
+        bool firstTime = true;
+        Debug.Log("Start Attack");
 
+        thePlayerAnim.SetTrigger("Attack");
+        Collider2D[] enemies = Physics2D.OverlapCircleAll(new Vector2(transform.position.x + lastMoveDir.x, transform.position.y + lastMoveDir.y), radiusOfAttack, enemyLayer);
+        
+        foreach(Collider2D enemy in enemies)
+        {
+            if(enemy.GetComponent<Enemy>())
+            {
+                enemy.GetComponent<Enemy>().TakeDamage(playerStrength);
+            }
+            else if(enemy.GetComponent<ExplodeObject>())
+            {
+                Debug.LogFormat("Explode object {0} was hit.", enemy.name);
+                enemy.GetComponent<ExplodeObject>().ExplodeThisObject();
+            }
+        }
+        if (firstTime)
+        {
+            firstTime = false;
+            yield return new WaitForSeconds(timeForAttack);
+        }
+        currState = PlayerStates.moving;
+        Debug.Log("End Attack");
+
+        isAttacking = false;
+    }
     public void ChangeState(PlayerStates theState)
     {
         if (currState != theState)
@@ -173,7 +210,7 @@ public class Player : AliveBeeing
                 Debug.Log("Changing state to " + theState.ToString());
                 if (theState == PlayerStates.moving)
                 {
-                    if (isGrounded && currState != PlayerStates.dashing)
+                    if (isGrounded && currState != PlayerStates.dashing && currState != PlayerStates.attacking)
                     {
                         currState = theState;
                     }
@@ -184,11 +221,9 @@ public class Player : AliveBeeing
                 }
                 else if (theState == PlayerStates.attacking && currState != PlayerStates.dashing)
                 {
-                    if (currState != PlayerStates.dashing)
-                    {
-
-                        currState = theState;
-                    }
+                    currState = theState;
+                    /*if (currState != PlayerStates.dashing)
+                    {}*/
                 }
                 else if (currState != PlayerStates.isDead)
                 {
@@ -272,6 +307,10 @@ public class Player : AliveBeeing
         theFXScript.MakeTheGhosts(false);
         isDashing = false;
         Debug.Log("Dodge is made!");
-    }  
-
+    }
+    private void OnDrawGizmos()
+    {
+        Vector3 positionOfAttack = new Vector3(transform.position.x + lastMoveDir.x, transform.position.y + lastMoveDir.y, 0f);
+        Gizmos.DrawSphere(positionOfAttack, radiusOfAttack);
+    }
 }

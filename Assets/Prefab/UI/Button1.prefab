@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 2117369291902669047}
   - component: {fileID: 2117369291902669045}
   - component: {fileID: 2117369291902669046}
+  - component: {fileID: 6332840602446360862}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -66,12 +67,12 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: f4086e4c8f681204da14839341e6fa6c, type: 3}
     m_FontSize: 14
     m_FontStyle: 0
     m_BestFit: 1
     m_MinSize: 10
-    m_MaxSize: 176
+    m_MaxSize: 55
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
@@ -79,6 +80,21 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: 1
+--- !u!114 &6332840602446360862
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2117369291902669048}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 2.69, y: -2.69}
+  m_UseGraphicAlpha: 1
 --- !u!1 &2117369292937596019
 GameObject:
   m_ObjectHideFlags: 0
@@ -146,7 +162,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 5dc4640b68151a94a9872e57b1b1135e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 50cbee181f18e8b44945b18d2bbad6e0, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -177,9 +193,9 @@ MonoBehaviour:
     m_SelectOnRight: {fileID: 0}
   m_Transition: 1
   m_Colors:
-    m_NormalColor: {r: 0.797256, g: 0.1273585, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.6698113, g: 0.23696156, b: 0.23696156, a: 1}
-    m_PressedColor: {r: 0.6792453, g: 0.23389105, b: 0.23389105, a: 1}
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
     m_ColorMultiplier: 1

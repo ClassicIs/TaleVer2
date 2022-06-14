@@ -41,21 +41,21 @@ public class LockCanvasScript : QTEObject
         {
             case HardVariety.easy:
                 countToWin = 3;
-                tail = 3;
-                SpeedOfCircle = 0.5f;
+                tail = 5;
+                SpeedOfCircle = 2f;
                 countToFail = 5;
                 break;
             case HardVariety.normal:
                 countToWin = 4;
-                tail = 2;
-                SpeedOfCircle = 0.8f;
+                tail = 4;
+                SpeedOfCircle = 4f;
                 countToFail = 4;
                 break;
             case HardVariety.hard:
-                tail = 0;
+                tail = 3;
                 countToWin = 5;
-                SpeedOfCircle = 1.0f;
-                countToFail = 3;
+                SpeedOfCircle = 6f;
+                countToFail = 4;
                 break;
             default:
                 Debug.LogError("Something wrong with your hardness");

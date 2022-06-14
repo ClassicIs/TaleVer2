@@ -4,8 +4,21 @@ using UnityEngine;
 
 public class DLDoor : MonoBehaviour
 {
+    [SerializeField]
+    private bool isOpened = true;
 
-  
+    private void Start()
+    {
+        if(isOpened)
+        {
+            OpenDoor();
+        }
+        else
+        {
+            CloseDoor();
+        }
+
+    }
 
     public void OpenDoor()
     {

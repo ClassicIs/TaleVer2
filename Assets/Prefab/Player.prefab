@@ -681,19 +681,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f1a22631d69a0b4ebbb38ef7a87af1a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currState: 0
+  horMovement: 0
+  vertMovement: 0
+  isGrounded: 0
+  isAlive: 0
+  isDashing: 0
   theWallLayer:
     serializedVersion: 2
     m_Bits: 12288
-  tmpGameObj: {fileID: 0}
   theVectRaw: {x: 0, y: 0}
   lastMoveDir: {x: 0, y: 0}
+  timeForAttack: 0
+  radiusOfAttack: 0
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 8256
   movePosition: {x: 0, y: 0}
   isMoving: 0
   dodge: 0.2
   speedDodge: 500
   speed: 0
   slowModif: 0
+  playerStrength: 1
   isSlowDown: 0
 --- !u!114 &2770220322474851739
 MonoBehaviour:
@@ -720,7 +729,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2770220322474851733}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: baaf93be2429ce14cafc7339d9134183, type: 3}
   m_Name: 
@@ -739,7 +748,6 @@ MonoBehaviour:
   thePlayerController: {fileID: 2770220322474851734}
   playerLegPos: {fileID: 2770220321613325425}
   isOnGround: 0
-  isAlive: 0
   timeToCheck: 0
   theLastAlivePosition: {x: 0, y: 0}
   theLastCheckpoint: {x: 0, y: 0}
@@ -781,6 +789,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82079f539d4f9df49a3ada62e8a5f286, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  horMovement: 0
+  verMovement: 0
 --- !u!114 &4724069688601351872
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -818,7 +828,7 @@ MonoBehaviour:
   - {x: -0.30674887, y: -0.7373327, z: 0}
   m_ShapePathHash: -922569020
   m_Mesh: {fileID: 0}
-  m_InstanceId: -1304
+  m_InstanceId: -138670
 --- !u!114 &371369159
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -831,6 +841,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9e50d86ab95f0a468883dad85ccdf53, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isAlive: 0
   theItem: {fileID: 11400000, guid: 8e74963435d826a4292d17d3a25390d7, type: 2}
   theItems: []
 --- !u!1 &5124655095946204884

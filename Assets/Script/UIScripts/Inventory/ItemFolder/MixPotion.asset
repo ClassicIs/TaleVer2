@@ -16,7 +16,8 @@ MonoBehaviour:
   itemDescription: Can heal and drop your ink level.
   typeOfTheItem: 2
   itemLevel: 1
-  itemSprite: {fileID: 21300000, guid: 15f8a94f616b01e439f7a3b14c0f3ae7, type: 3}
+  itemSprite: {fileID: 7892471308704681400, guid: b4dd8eb6043d3ce4f814ce1ab45a1eee,
+    type: 3}
   itemObject: {fileID: 2606630754875196853, guid: 17991ed5f10c54d41a85648a51163c58,
     type: 3}
   itemCost: 100

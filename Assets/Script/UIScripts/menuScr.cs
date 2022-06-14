@@ -42,6 +42,4 @@ public class menuScr : MonoBehaviour
         mainMenu.SetActive(true);
         opMenu.SetActive(false);
     }
-    
-    
 }

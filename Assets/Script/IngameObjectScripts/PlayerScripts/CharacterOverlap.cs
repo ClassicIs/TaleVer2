@@ -20,6 +20,8 @@ public class CharacterOverlap : MonoBehaviour
     public event Action<PickableObject> OnPickableObject;
     public event Action<AutoQTEScript> OnEnteredQTE;
 
+    public event Action OnEndOfLevel;
+
     public enum PlayerDeath
     {
         allInDeath,
@@ -110,8 +112,10 @@ public class CharacterOverlap : MonoBehaviour
     }
 
     private void AssignValues()
-    {
+    {        
         AllObjectsAround = new List<Transform>();
+        Debug.Log("Assigning values!");
+        Debug.LogFormat("AllObjectsAround {0}", AllObjectsAround.Count);
         thePlayerAnim = GetComponent<Animator>();
         thePlayer = GetComponent<Rigidbody2D>();
         thePlayerFX = GetComponent<PlayerEffectsScript>();
@@ -237,6 +241,9 @@ public class CharacterOverlap : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+
+        
+
         if (thePlayerController.isAlive)
         {
             if(collision.CompareTag("Spikes"))
@@ -249,7 +256,13 @@ public class CharacterOverlap : MonoBehaviour
                 }
             }
 
-            
+            if(collision.CompareTag("EndOfLevel"))
+            {
+                if (OnEndOfLevel != null)
+                {                    
+                    OnEndOfLevel();
+                }
+            }
 
             // To collect all Interactive objects in one array
             if(collision != null)
@@ -369,7 +382,10 @@ public class CharacterOverlap : MonoBehaviour
     public InteractObject theNearestObject()
     {
         float distance = Mathf.Infinity;
+        /*if (AllObjectsAround.Count <= 0)
+            return null;*/
         Transform TheNearestObject = null;
+
         foreach (Transform obj in AllObjectsAround)
         {
             Vector2 VectorToTarget = transform.position - obj.position;

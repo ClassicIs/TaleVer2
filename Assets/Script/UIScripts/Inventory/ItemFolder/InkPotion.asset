@@ -16,7 +16,8 @@ MonoBehaviour:
   itemDescription: 'Blue glowing liquid. Who knows what they put it in. '
   typeOfTheItem: 1
   itemLevel: 1
-  itemSprite: {fileID: 21300000, guid: 9c217c04e8b657744ab1b1a55ad8556c, type: 3}
+  itemSprite: {fileID: -7938976788308688020, guid: cef6d6a9c26e4f74f90cfdf8bbb87b95,
+    type: 3}
   itemObject: {fileID: 2606630754875196853, guid: 45352bc992151284e81fb8479b367ce9,
     type: 3}
   itemCost: 100

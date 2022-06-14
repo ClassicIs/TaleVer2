@@ -56,7 +56,7 @@ public class PlayerManager : MonoBehaviour
 
     private void Start()
     {
-        SetValues(4, 85, 10001);
+        //SetValues(4, 85, 0);
     }
 
     private void AsignValues()
@@ -170,7 +170,7 @@ public class PlayerManager : MonoBehaviour
     {        
         while (true)
         {
-            //Debug.Log("Coroutine DAMAGE ");
+            Debug.Log("Coroutine DAMAGE ");
             DangerObject.PrintDamage();
             TakeDamage(DangerObject);
             yield return new WaitForSeconds(1);
@@ -215,7 +215,7 @@ public class PlayerManager : MonoBehaviour
         thePlayerScript.ToStun(true);
         Vector2 PlayerPosition = new Vector2();
         
-        PointToLoad.ReturnPoint(out Health, out InkLevel, out CoinCount, out PlayerPosition, out Inventory);
+        PointToLoad.ReturnPoint(out Health, out InkLevel, out CoinCount, out PlayerPosition, out Inventory, out MaxHealth, out MaxInkLevel);
         transform.position = PlayerPosition;
         if(OnSettingValues != null)
         {

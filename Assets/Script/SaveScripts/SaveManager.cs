@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class SaveManager : MonoBehaviour
 {
+    SavePoint startCheckPoint;
     SavePoint LastCheckPoint;
     GameManagerScript TheGameManagerScript;
 
@@ -13,25 +14,28 @@ public class SaveManager : MonoBehaviour
     private CharacterOverlap CharacterOverlap;
     private Player Player;
 
-
-    // Start is called before the first frame update
-    void Awake()
-    {
-        AssignValues();
-    }
-
-    void AssignValues()
+    public void AssignValues()
     {
         PlayerObject = GameObject.FindGameObjectWithTag("Player");
         PlayerManager = PlayerObject.GetComponent<PlayerManager>();
         CharacterOverlap = PlayerObject.GetComponent<CharacterOverlap>();
         Player = PlayerObject.GetComponent<Player>();
-
-
         TheGameManagerScript = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManagerScript>();
+        if(LastCheckPoint == null)
+        {
+            startCheckPoint = new SavePoint(4, 100, 0, new Vector2(PlayerObject.transform.position.x, PlayerObject.transform.position.y), PlayerManager.Inventory);
+            LastCheckPoint = startCheckPoint;
+            //LoadSave(true);
+        }
+        AssignActions();
     }
 
-    void Start()
+    /*public void SetLastCheckPoint()
+    {
+
+    }*/
+
+    void AssignActions()
     {
         CharacterOverlap.OnFalling += IfFallen;
         PlayerManager.OnInkDeath += IfInkMax;
@@ -111,6 +115,7 @@ public class SaveManager : MonoBehaviour
     {
         if (checkpoint)
         {
+            Debug.Log("Loading...");
             PlayerManager.SetValues(LastCheckPoint);
             LastCheckPoint.PrintCheckPoint();
         }
