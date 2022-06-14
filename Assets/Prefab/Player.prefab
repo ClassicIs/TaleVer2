@@ -554,7 +554,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -691,8 +691,8 @@ MonoBehaviour:
     m_Bits: 12288
   theVectRaw: {x: 0, y: 0}
   lastMoveDir: {x: 0, y: 0}
-  timeForAttack: 0
-  radiusOfAttack: 0
+  timeForAttack: 0.35
+  radiusOfAttack: 0.82
   enemyLayer:
     serializedVersion: 2
     m_Bits: 8256
@@ -729,7 +729,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2770220322474851733}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: baaf93be2429ce14cafc7339d9134183, type: 3}
   m_Name: 
@@ -828,7 +828,7 @@ MonoBehaviour:
   - {x: -0.30674887, y: -0.7373327, z: 0}
   m_ShapePathHash: -922569020
   m_Mesh: {fileID: 0}
-  m_InstanceId: -138670
+  m_InstanceId: -282932
 --- !u!114 &371369159
 MonoBehaviour:
   m_ObjectHideFlags: 0

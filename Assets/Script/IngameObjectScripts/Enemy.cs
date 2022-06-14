@@ -5,6 +5,7 @@ using System;
 
 public class Enemy : AliveBeeing
 {
+    [SerializeField]
     float health;
     [SerializeField]
     float maxHealth;
@@ -59,6 +60,7 @@ public class Enemy : AliveBeeing
         target = GameObject.FindObjectOfType<Player>().transform;
         PathFinding = GameObject.FindObjectOfType<PathFinding>();
     }
+
 
     public void TakeDamage(float damage)
     {
@@ -169,7 +171,12 @@ public class Enemy : AliveBeeing
 
     private void Update()
     {
-        switch(currState)
+        if (health <= 0)
+        {
+            Death();
+        }
+
+        switch (currState)
         {
             case PlayerStates.moving:
                 if (!isPatroling)
