@@ -107,7 +107,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_Sprite: {fileID: 3309878961885184124, guid: 6d747b71b3af4ab449edc8e182feb0cc,
     type: 3}
-  m_Color: {r: 1, g: 0.3254717, b: 0.3254717, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -129,7 +129,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9ec8dc46ef3cbf4b9566e124fa77eb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  health: 0
   maxHealth: 1
+  timeToAppear: 0.1
   playerLayer:
     serializedVersion: 2
     m_Bits: 1024
@@ -147,6 +149,7 @@ MonoBehaviour:
   pointsToMove:
   - {fileID: 1070812267247273194}
   target: {fileID: 0}
+  timeToRed: 0.25
 --- !u!61 &2183856053274950726
 BoxCollider2D:
   m_ObjectHideFlags: 0

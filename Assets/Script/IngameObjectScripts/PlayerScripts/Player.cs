@@ -23,15 +23,12 @@ public class Player : AliveBeeing
     //public Transform tmpGameObj;
     public Vector2 theVectRaw;
     private Vector2 theVect;
-
     [SerializeField]
     private Vector2 lastMoveDir;
     [SerializeField]
     private float timeForAttack;
     [SerializeField]
     private float radiusOfAttack;
-
-
     [SerializeField]
     private LayerMask enemyLayer;
     [SerializeField]
@@ -173,13 +170,16 @@ public class Player : AliveBeeing
     private IEnumerator Attack()
     {
         isAttacking = true;
-        bool firstTime = true;
-        Debug.Log("Start Attack");
+        thePlayer.velocity = Vector2.zero;
 
+        Debug.LogWarning("Start Attack");
         thePlayerAnim.SetTrigger("Attack");
         Collider2D[] enemies = Physics2D.OverlapCircleAll(new Vector2(transform.position.x + lastMoveDir.x, transform.position.y + lastMoveDir.y), radiusOfAttack, enemyLayer);
         
-        foreach(Collider2D enemy in enemies)
+
+        yield return new WaitForSeconds(timeForAttack/2);
+        Debug.LogWarning("Hitting target.");
+        foreach (Collider2D enemy in enemies)
         {
             if(enemy.GetComponent<Enemy>())
             {
@@ -191,13 +191,10 @@ public class Player : AliveBeeing
                 enemy.GetComponent<ExplodeObject>().ExplodeThisObject();
             }
         }
-        if (firstTime)
-        {
-            firstTime = false;
-            yield return new WaitForSeconds(timeForAttack);
-        }
+
+        yield return new WaitForSeconds(timeForAttack/2);        
         currState = PlayerStates.moving;
-        Debug.Log("End Attack");
+        Debug.LogWarning("End Attack");
 
         isAttacking = false;
     }
@@ -224,7 +221,7 @@ public class Player : AliveBeeing
                     currState = theState;
                     /*if (currState != PlayerStates.dashing)
                     {}*/
-                }
+    }
                 else if (currState != PlayerStates.isDead)
                 {
                     currState = PlayerStates.isDead;

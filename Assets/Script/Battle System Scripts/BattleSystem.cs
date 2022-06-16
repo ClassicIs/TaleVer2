@@ -126,7 +126,14 @@ public class BattleSystem : MonoBehaviour
         {
             foreach (Enemy enemySpawn in enemySpawnArray)
             {
-                enemySpawn.Spawn();
+                if (enemySpawn.isActiveAndEnabled)
+                {
+                    enemySpawn.Spawn();
+                }
+                else
+                {
+                    continue;
+                }
             }
         }
 

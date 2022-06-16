@@ -9,7 +9,8 @@ public class Enemy : AliveBeeing
     float health;
     [SerializeField]
     float maxHealth;
-    
+    [SerializeField]
+    float timeToAppear;
     [SerializeField]
     LayerMask playerLayer;
     [SerializeField]
@@ -38,17 +39,23 @@ public class Enemy : AliveBeeing
     private Transform[] pointsToMove;
     bool isPatroling = false;
     bool isAttacking = false;
-    bool isMoving;
-
+    //bool isMoving;
+    [SerializeField]
+    bool isActive = false;
     public Action OnDeath;
 
     Vector2 enemyDirection;
 
     [SerializeField]
+    float timeToRed;
+    bool isInRedProcces = false;
+
+    Animator enemyAnim;
+    SpriteRenderer enemyRenderer;
+
+    [SerializeField]
     Transform target;
 
-    
-    
     private void Start()
     {
         health = maxHealth;
@@ -56,31 +63,50 @@ public class Enemy : AliveBeeing
         startWaitTime = 3f;
         waitTime = startWaitTime;
         ChangeState(PlayerStates.moving);
-        isMoving = true;
+        //isMoving = true;
         target = GameObject.FindObjectOfType<Player>().transform;
         PathFinding = GameObject.FindObjectOfType<PathFinding>();
+        enemyAnim = GetComponent<Animator>();
+        enemyRenderer = GetComponent<SpriteRenderer>();
     }
-
 
     public void TakeDamage(float damage)
     {
-        Debug.LogErrorFormat("Damage taken {0}", damage);
+        Debug.LogFormat("Damage taken {0}", damage);
         health -= damage;
         if(health <= 0)
         {
             Death();
         }
+        else
+        {
+            if(!isInRedProcces)
+            {
+                StartCoroutine(Red());
+            }
+        }
+    }
+
+    private IEnumerator Red()
+    {
+        isInRedProcces = true;
+        Color needColor = Color.red;
+        Color curTMP = enemyRenderer.color;
+        enemyRenderer.color = needColor;
+        yield return new WaitForSeconds(timeToRed);
+        enemyRenderer.color = curTMP;
+        isInRedProcces = false;
     }
 
     private void Death()
     {
         //Animator dead
-        Debug.LogFormat("Enemy {0} is dead", gameObject.name);
+        //Debug.LogFormat("Enemy {0} is dead", gameObject.name);
         if (OnDeath != null) {
             OnDeath();        
         }
         //Destroy(gameObject);
-        gameObject.SetActive(false);
+        StartCoroutine(SpawnCoroutine(false));
     }
 
     public bool IsAlive()
@@ -94,16 +120,68 @@ public class Enemy : AliveBeeing
             return false;
         }
     }
+    
 
     public void Spawn()
     {
-        gameObject.SetActive(true);
+        StartCoroutine(SpawnCoroutine(true));
+    }
+
+    private IEnumerator SpawnCoroutine(bool spawn)
+    {
+        Debug.Log("Start of spawn");
+        Color startColor = enemyRenderer.color;
+        float startAlpha;
+        float endAlpha;
+        if(spawn)
+        {
+            gameObject.SetActive(true);
+            startAlpha = 0f;
+            endAlpha = 1f;
+        }
+        else
+        {
+
+            startAlpha = 1f;
+            endAlpha = 0f;
+        }
+
+        startColor.a = startAlpha;
+        enemyRenderer.color = startColor;
+        int i = 0;
+        while (Mathf.Abs(startAlpha - endAlpha) > 0.05f)
+        {
+            i++;
+            Debug.LogFormat("Spawning {0}... - {1}", i, Time.realtimeSinceStartup);
+            if (spawn)
+            {
+                startAlpha += timeToAppear;
+            }
+            else
+            {
+                startAlpha -= timeToAppear;
+            }
+            startColor.a = startAlpha;
+            enemyRenderer.color = startColor;
+
+            yield return null;
+        }
+
+        startColor.a = endAlpha;
+        enemyRenderer.color = startColor;
+        if (!spawn)
+        {
+            gameObject.SetActive(false);
+        }
+        isActive = spawn;
+        Debug.Log("End of spawn");
+
     }
 
     IEnumerator ToFollowPlayer()
     {
         IEnumerator thisCoroutine = null;
-        bool firstTime = true;
+        //bool firstTime = true;
         while(true)
         {
             Debug.LogFormat("Starting stalking! Distance is {0}", Vector2.Distance(target.position, transform.position));
@@ -121,19 +199,24 @@ public class Enemy : AliveBeeing
             }
 
             Vector3[] points = PathFinding.FindPath(transform.position, target.position);
-            if(!firstTime)
+            if(thisCoroutine != null)
             {
                 StopCoroutine(thisCoroutine);
             }
-            else
+            /*else
             {
                 firstTime = false;
+            }*/
+            if (points != null)
+            {
+                thisCoroutine = GoByPoints(points);
+                StartCoroutine(thisCoroutine);
+                yield return new WaitForSeconds(1f);
             }
-            
-            thisCoroutine = GoByPoints(points);
-            StartCoroutine(thisCoroutine);
-
-            yield return new WaitForSeconds(1f);
+            else
+            {
+                yield return null;
+            }
         }
         isStalking = false;
     }
@@ -149,7 +232,9 @@ public class Enemy : AliveBeeing
             do
             {
                 distance = Vector2.Distance(transform.position, point);
-                transform.position = Vector2.MoveTowards(transform.position, point, enemySpeed * Time.deltaTime);
+                MoveToThePoint(point);
+                /*transform.position = Vector2.MoveTowards(transform.position, point, enemySpeed * Time.deltaTime);*/
+
                 yield return null;
             }
             while (distance > minDistance);
@@ -171,42 +256,45 @@ public class Enemy : AliveBeeing
 
     private void Update()
     {
-        if (health <= 0)
+        if (isActive)
         {
-            Death();
-        }
+            /*if (health <= 0)
+            {
+                Death();
+            }*/
 
-        switch (currState)
-        {
-            case PlayerStates.moving:
-                if (!isPatroling)
-                {                    
-                    isPatroling = true;
-                    StartCoroutine(PatrolPositions(pointsToMove));
-                }
-                break;
-            case PlayerStates.stalking:
-                if(!isStalking)
-                {
-                    isStalking = true;
-                    StartCoroutine(ToFollowPlayer());
-                }
-                break;
-            case PlayerStates.attacking:
-                if (!isAttacking)
-                {
-                    isAttacking = true;
-                    StartCoroutine(AttackCoroutine());
-                }
-                break;
-            case PlayerStates.stunned:
-                Debug.LogFormat("Enemy {0} is stunned!", transform.name);
-                break;
-            case PlayerStates.isDead:
-                Debug.LogFormat("Enemy {0} is dead!", transform.name);
-                break;
-            default:                
-                break;
+            switch (currState)
+            {
+                case PlayerStates.moving:
+                    if (!isPatroling)
+                    {
+                        isPatroling = true;
+                        StartCoroutine(PatrolPositions(pointsToMove));
+                    }
+                    break;
+                case PlayerStates.stalking:
+                    if (!isStalking)
+                    {
+                        isStalking = true;
+                        StartCoroutine(ToFollowPlayer());
+                    }
+                    break;
+                case PlayerStates.attacking:
+                    if (!isAttacking)
+                    {
+                        isAttacking = true;
+                        StartCoroutine(AttackCoroutine());
+                    }
+                    break;
+                case PlayerStates.stunned:
+                    Debug.LogFormat("Enemy {0} is stunned!", transform.name);
+                    break;
+                case PlayerStates.isDead:
+                    Debug.LogFormat("Enemy {0} is dead!", transform.name);
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
@@ -307,24 +395,19 @@ public class Enemy : AliveBeeing
             }
             else
             {
-                if (waitTime > 0)
+                enemyAnim.SetBool("isWalking", false);
+                yield return new WaitForSeconds(waitTime);
+                
+                if (i == (points.Length - 1))
                 {
-                    waitTime -= Time.deltaTime;
+                    i = 0;
                 }
                 else
                 {
-                    waitTime = startWaitTime;
-                    if (i == (points.Length - 1))
-                    {
-                        i = 0;
-                    }
-                    else
-                    {
-                        i++;
-                    }
+                    i++;
                 }
-
             }
+            
             if (Vector2.Distance(transform.position, target.position) < 5f)
             {
                 ChangeState(PlayerStates.stalking);
@@ -340,23 +423,28 @@ public class Enemy : AliveBeeing
         transform.position = Vector2.MoveTowards(transform.position, pos, enemySpeed * Time.deltaTime);
         Vector3 tmp = new Vector2(pos.x - transform.position.x, pos.y - transform.position.y);
         enemyDirection = tmp.normalized;
+        enemyAnim.SetBool("isWalking", true);
+        enemyAnim.SetFloat("Horizontal", enemyDirection.x);
+        enemyAnim.SetFloat("Vertical", enemyDirection.y);
     }
 
     protected IEnumerator AttackCoroutine()
     {
         while (true)
         {
+            enemyAnim.SetTrigger("Attack");
+            yield return new WaitForSeconds(toNextAttackTime / 2);
             Collider2D playerHit = Physics2D.OverlapCircle(transform.position, radiusOfSight, playerLayer);
             if (playerHit)
             {
                 Debug.Log("Player was hit");
                 playerHit.GetComponent<PlayerManager>().TakeDamage(enemyDamage);
             }
+            yield return new WaitForSeconds(toNextAttackTime / 2);
             if (!(Vector2.Distance(transform.position, target.position) <= 3))
             {                
                 break;
-            }
-            yield return new WaitForSeconds(toNextAttackTime);
+            }            
         }
 
         ChangeState(PlayerStates.stalking);
