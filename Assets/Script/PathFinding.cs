@@ -123,8 +123,8 @@ public class PathFinding : MonoBehaviour
         Cell startCell = grid.CellFromWorldPos(startPos);
         Cell targetCell = grid.CellFromWorldPos(targetPos);
 
-        grid.DrawRectangle(startCell.cellGlobalPosition, 2, Color.green);
-        grid.DrawRectangle(targetCell.cellGlobalPosition, 2, Color.cyan);
+        //grid.DrawRectangle(startCell.cellGlobalPosition, 2, Color.green, 10);
+        //grid.DrawRectangle(targetCell.cellGlobalPosition, 2, Color.cyan, 10);
 
         List<Cell> openSet = new List<Cell>();
         HashSet<Cell> closedSet = new HashSet<Cell>();
@@ -188,7 +188,7 @@ public class PathFinding : MonoBehaviour
         }
         path.Reverse();
         Vector3[] newPath = path.ToArray();
-        DrawLineByPoint(newPath, 100f);
+        //DrawLineByPoint(newPath, 100f);
         return newPath;
     }
 

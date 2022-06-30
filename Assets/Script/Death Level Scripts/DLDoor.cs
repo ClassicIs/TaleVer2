@@ -6,10 +6,11 @@ public class DLDoor : MonoBehaviour
 {
     [SerializeField]
     private bool isOpened = true;
-
+    private Collider2D[] Colliders;
     private void Start()
     {
-        if(isOpened)
+        Colliders = GetComponents<Collider2D>();
+        if (isOpened)
         {
             OpenDoor();
         }
@@ -22,11 +23,21 @@ public class DLDoor : MonoBehaviour
 
     public void OpenDoor()
     {
+       
         gameObject.GetComponent<Animator>().SetBool("IsOpened", true);
+    }
+
+    private void ColliderOn(bool on)
+    {
+        foreach (Collider2D col in Colliders)
+        {
+            col.enabled = on;
+        }
     }
 
     public void CloseDoor()
     {
+        
         gameObject.GetComponent<Animator>().SetBool("IsOpened", false);
     }
 }

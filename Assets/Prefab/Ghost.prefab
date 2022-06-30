@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5418404642924007305}
   - component: {fileID: 5418404642924007304}
   - component: {fileID: 8177085643371937753}
+  - component: {fileID: -7532232151762354518}
   m_Layer: 0
   m_Name: Ghost
   m_TagString: Untagged
@@ -69,9 +70,9 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 391407823
-  m_SortingLayer: 2
-  m_SortingOrder: -1
+  m_SortingLayerID: -1971394337
+  m_SortingLayer: 5
+  m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 1f2eac58898520a4f97167d5c30ff428, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -91,7 +92,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5418404642924007307}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: dcde3c94a41241944b5f914dbd18e0e0, type: 2}
   m_CullingMode: 0
@@ -102,3 +103,15 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &-7532232151762354518
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5418404642924007307}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce5fa52e3aaf0674a9c4bc111de0497a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

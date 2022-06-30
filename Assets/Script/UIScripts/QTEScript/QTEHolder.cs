@@ -45,7 +45,7 @@ public class QTEHolder : MonoBehaviour
 
     void Start()
     {
-        QTEObject ThisCypher = ActivateQTE(TypesOfQTE.Slider);
-        ThisCypher.Activate(QTEObject.HardVariety.easy);
+        /*QTEObject ThisCypher = ActivateQTE(TypesOfQTE.Simple);
+        ThisCypher.Activate(QTEObject.HardVariety.easy);*/
     }
 }

@@ -11,12 +11,22 @@ public class menuScr : MonoBehaviour
     private GameObject opMenu;
 
     bool coroutineEnd = false;
-    [SerializeField]
-    FadeInScript theFadeInScr;    
+    FadeInScript theFadeInScr;
+
+    private void Awake()
+    {
+        theFadeInScr = GameObject.FindGameObjectWithTag("FadeIn").GetComponent<FadeInScript>();
+    }
+
+
+    private void Start()
+    {
+        theFadeInScr.Fade(false);
+    }
 
     public void ContinueB()
     {
-        StartCoroutine(theFadeInScr.toFadeInCoroutine(true));
+        theFadeInScr.Fade(true);
         theFadeInScr.CoroutineEnd += StartCurrScene;
     }    
 

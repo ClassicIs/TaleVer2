@@ -44,7 +44,7 @@ public class Grid : MonoBehaviour
                     theText.color = Color.black;
                     GameObject obj = Instantiate(theObject, worldPosition, Quaternion.identity);
                     obj.name = x.ToString() + " " + y.ToString();*/
-                    DrawRectangle(worldPosition, cellSize, Color.black, 4f);
+                    //DrawRectangle(worldPosition, cellSize, Color.black, 4f);
                 }
                 else
                 {
@@ -53,7 +53,7 @@ public class Grid : MonoBehaviour
                     theText.color = Color.red;*/
                     /*GameObject obj = Instantiate(theObject, worldPosition, Quaternion.identity);
                     obj.name = x.ToString() + " " + y.ToString();*/
-                    DrawRectangle(worldPosition, cellSize, Color.red, 4f);
+                    //DrawRectangle(worldPosition, cellSize, Color.red, 4f);
 
                 }
             }

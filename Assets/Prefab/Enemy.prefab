@@ -141,15 +141,16 @@ MonoBehaviour:
     SlowModifier: 0
     TimeForDebuf: 0
     MakeStun: 0
-  radiusOfSight: 2
+  radiusOfSight: 0.8
   toNextAttackTime: 2
   PathFinding: {fileID: 0}
   attackStrength: 0
   enemySpeed: 1
   pointsToMove:
   - {fileID: 1070812267247273194}
-  target: {fileID: 0}
+  isActive: 0
   timeToRed: 0.25
+  target: {fileID: 0}
 --- !u!61 &2183856053274950726
 BoxCollider2D:
   m_ObjectHideFlags: 0

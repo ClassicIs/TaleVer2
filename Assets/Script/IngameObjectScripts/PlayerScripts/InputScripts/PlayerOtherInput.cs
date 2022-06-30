@@ -22,7 +22,7 @@ public class PlayerOtherInput : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.F))
         {
-            Debug.Log("F is Pressed!");
+            //Debug.Log("F is Pressed!");
             if (OnInteracting != null)
             {
                 OnInteracting();

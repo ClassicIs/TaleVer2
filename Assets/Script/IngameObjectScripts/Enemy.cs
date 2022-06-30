@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class Enemy : AliveBeeing
+public class Enemy : AliveBeeing, IDameagable
 {
     [SerializeField]
     float health;
@@ -32,7 +32,7 @@ public class Enemy : AliveBeeing
     private float startWaitTime;
 
     private const float MAX_DISTANCE = 40;
-    private const float MIN_DISTANCE = 1;
+    //private const float MIN_DISTANCE = 1;
     private IEnumerator FollowCoroutine;
     
     [SerializeField]
@@ -70,7 +70,7 @@ public class Enemy : AliveBeeing
         enemyRenderer = GetComponent<SpriteRenderer>();
     }
 
-    public void TakeDamage(float damage)
+    public void TakeDamage(int damage)
     {
         Debug.LogFormat("Damage taken {0}", damage);
         health -= damage;
@@ -141,7 +141,6 @@ public class Enemy : AliveBeeing
         }
         else
         {
-
             startAlpha = 1f;
             endAlpha = 0f;
         }
@@ -152,16 +151,21 @@ public class Enemy : AliveBeeing
         while (Mathf.Abs(startAlpha - endAlpha) > 0.05f)
         {
             i++;
-            Debug.LogFormat("Spawning {0}... - {1}", i, Time.realtimeSinceStartup);
+            
             if (spawn)
             {
+                Debug.LogFormat("Start alpha {0} is {1}", i, startAlpha);
                 startAlpha += timeToAppear;
+                /*if(startAlpha >= 0.6)
+                {
+                    Time.timeScale = 0f;
+                }*/
             }
             else
             {
                 startAlpha -= timeToAppear;
             }
-            startColor.a = startAlpha;
+            startColor.a = endAlpha;
             enemyRenderer.color = startColor;
 
             yield return null;
@@ -181,32 +185,33 @@ public class Enemy : AliveBeeing
     IEnumerator ToFollowPlayer()
     {
         IEnumerator thisCoroutine = null;
-        //bool firstTime = true;
         while(true)
         {
-            Debug.LogFormat("Starting stalking! Distance is {0}", Vector2.Distance(target.position, transform.position));
-            if(Vector2.Distance(target.position, transform.position) > MAX_DISTANCE)
+
+            if (Vector2.Distance(target.position, transform.position) > MAX_DISTANCE)
             {
                 Debug.Log("Player too far!");
                 ChangeState(PlayerStates.moving);
                 break;
             }
-            else if(Vector2.Distance(target.position, transform.position) < MIN_DISTANCE)
+
+            float bounds = GetComponent<BoxCollider2D>().bounds.size.x;
+            Debug.LogFormat("Bounds are {0}", bounds);
+            if (Vector2.Distance(target.position, transform.position) < bounds + radiusOfSight)
             {
                 Debug.Log("Player too close!");
                 ChangeState(PlayerStates.attacking);
                 break;
             }
 
+            //Debug.LogFormat("Starting stalking! Distance is {0}", Vector2.Distance(target.position, transform.position));
+
             Vector3[] points = PathFinding.FindPath(transform.position, target.position);
             if(thisCoroutine != null)
             {
                 StopCoroutine(thisCoroutine);
             }
-            /*else
-            {
-                firstTime = false;
-            }*/
+
             if (points != null)
             {
                 thisCoroutine = GoByPoints(points);
@@ -330,9 +335,9 @@ public class Enemy : AliveBeeing
             float distanceToTarget = Vector2.Distance(enemyPosition, targetPosition);
             if (distanceToTarget < MAX_DISTANCE)
             {
-                if (distanceToTarget < 3f)
+                if (distanceToTarget <= 3f)
                 {
-                    Debug.Log("Player too close.");
+                    Debug.Log("Player is close.");
                     isStalking = false;
 
                     ChangeState(PlayerStates.attacking);
@@ -422,11 +427,19 @@ public class Enemy : AliveBeeing
     {
         transform.position = Vector2.MoveTowards(transform.position, pos, enemySpeed * Time.deltaTime);
         Vector3 tmp = new Vector2(pos.x - transform.position.x, pos.y - transform.position.y);
-        enemyDirection = tmp.normalized;
-        enemyAnim.SetBool("isWalking", true);
+
+        SetDirection(tmp.x, tmp.y);
+        enemyAnim.SetBool("isWalking", true);        
+    }
+
+    private void SetDirection(float horDir, float verDir)
+    {
+        enemyDirection = new Vector2(horDir, verDir).normalized;
         enemyAnim.SetFloat("Horizontal", enemyDirection.x);
         enemyAnim.SetFloat("Vertical", enemyDirection.y);
     }
+
+    bool drawGizmos = false;
 
     protected IEnumerator AttackCoroutine()
     {
@@ -434,7 +447,12 @@ public class Enemy : AliveBeeing
         {
             enemyAnim.SetTrigger("Attack");
             yield return new WaitForSeconds(toNextAttackTime / 2);
-            Collider2D playerHit = Physics2D.OverlapCircle(transform.position, radiusOfSight, playerLayer);
+            Vector3 tmpVector = (target.position - transform.position);
+            SetDirection(tmpVector.x, tmpVector.y);
+            //Debug.LogFormat("Enemy directions is {0}", enemyDirection);
+            drawGizmos = true;
+            Collider2D playerHit = Physics2D.OverlapCircle(transform.position + new Vector3(enemyDirection.x, enemyDirection.y, 0), radiusOfSight, playerLayer);
+            
             if (playerHit)
             {
                 Debug.Log("Player was hit");
@@ -444,10 +462,20 @@ public class Enemy : AliveBeeing
             if (!(Vector2.Distance(transform.position, target.position) <= 3))
             {                
                 break;
-            }            
+            }
+            drawGizmos = false;
         }
 
         ChangeState(PlayerStates.stalking);
         isAttacking = false;
+    }
+
+    private void OnDrawGizmos()
+    {
+        if(drawGizmos)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(transform.position + new Vector3(enemyDirection.x, enemyDirection.y, 0), radiusOfSight);
+        }
     }
 }

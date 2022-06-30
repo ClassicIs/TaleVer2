@@ -3,55 +3,54 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ExplodeObject : MonoBehaviour
+public class ExplodeObject : MonoBehaviour, IDameagable
 {
-
     [SerializeField]
     int health = 3;
 
+
     [SerializeField]
     UnityEngine.Object destructablePrefab;
-    
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        //if (collision.CompareTag("Player"))
-        //{
-            /*if (collision.CompareTag("Weapon"))
-            {
-                health--;
+        if (collision.CompareTag("DashHitBox"))
+        {
+            health = 0;
+            ExplodeThisObject();
 
-                if (health <= 0)
-                {
-                    ExplodeThisObject();
-                }
-            }
-            */
-            if (collision.CompareTag("DashHitBox"))
-            {
-                health = 0;
-
-                if (health <= 0)
-                {
-                    ExplodeThisObject();
-                }
-            }
-        //}
+        }    
     }
 
+    public void TakeDamage(int damage)
+    {
+        health -= damage;
+        if(health <= 0)
+        {
+            ExplodeThisObject();
+        }
+        else
+        {
+            if (!alreadyRed)
+            {
+                redCoroutine = RedAfterDamage(GetComponent<SpriteRenderer>(), Color.red, 2);
+                StartCoroutine(redCoroutine);
+                alreadyRed = true;
+            }
+        }
+    }
+    private IEnumerator redCoroutine;
+    bool alreadyRed = false;
+    private IEnumerator RedAfterDamage(SpriteRenderer spriteRenderer, Color colorToLerp, float timeToWait)
+    {
+        Color tmpColor = spriteRenderer.color;
+        spriteRenderer.color = colorToLerp;
+        yield return new WaitForSeconds(timeToWait);
+        Debug.Log("End of red process");
+        spriteRenderer.color = tmpColor;
+        alreadyRed = false;
+    }
+    
     public void ExplodeThisObject()
     {
         GameObject destructable = (GameObject)Instantiate(destructablePrefab);

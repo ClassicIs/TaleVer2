@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+using System.Text.RegularExpressions;
+
 public class CypherScript : QTEObject
 {
     [SerializeField]
@@ -16,7 +18,11 @@ public class CypherScript : QTEObject
     Transform QTEButtonHolder;
 
     string cypherComb;
+    string emptyString;
     string yourComb;
+    int curIndex;
+    int curStringIndex;
+
     [SerializeField]
     TextMeshProUGUI theOutText;
     bool buttonsActive;
@@ -35,11 +41,20 @@ public class CypherScript : QTEObject
             Debug.LogWarning("You need to write a Cypher first!");
             return;
         }
-
+        curIndex = 0;
         this.cypherComb = cypherComb;
         QTEHolder.SetActive(true);
         ButtonInstantiate();
-        OutputText("");
+
+        emptyString = "";
+        for (int i = 0; i < cypherComb.Length; i++)
+        {
+            emptyString += "_";
+        }
+
+        yourComb = emptyString;
+
+        OutputText(yourComb);
         buttonsActive = true;
     }
 
@@ -65,21 +80,42 @@ public class CypherScript : QTEObject
 
     void OnButtonClick(int numOfButton)
     {
-        string tmpComb = yourComb + numOfButton;
-        if (tmpComb.Length <= cypherComb.Length)
-        {            
-            yourComb = tmpComb;
-            OutputText(yourComb);
+        if (curIndex >= cypherComb.Length)
+        {
+            return;
         }
-        else
+
+        string tmpComb = "";
+
+        for(int i = 0; i < yourComb.Length; i++)
+        {
+            if (i == curStringIndex)
+            {
+                tmpComb += "<u>" + numOfButton + "</u>";
+                curStringIndex = tmpComb.Length;
+            }
+            else
+            {
+                tmpComb += yourComb[i];
+            }
+            //Debug.LogFormat("{0} iteration. Current tmpComb is {1}", i, tmpComb);
+        }
+
+        yourComb = tmpComb;
+        OutputText(yourComb);
+        curIndex ++;
+        if(curIndex >= cypherComb.Length)
         {
             ButtonOn(false);
         }
+        
     }
     
     public void ButtonReset()
     {
-        yourComb = "";
+        curIndex = 0;
+        curStringIndex = 0;
+        yourComb = emptyString;
         OutputText(yourComb);
         ButtonOn(true);
     }
@@ -91,19 +127,83 @@ public class CypherScript : QTEObject
 
     public void CheckForComb()
     {
-        if(yourComb.Length == cypherComb.Length)
+        if(curIndex < cypherComb.Length)
         {
-            if(yourComb == cypherComb)
-            {
-                Success();
-                QTEEnd();
-            }
-            else
-            {
-                ButtonReset();
-            }
-            
+            return;
         }
+
+        string tmpString = GetNumbersOfString(yourComb);
+        
+        if(tmpString == cypherComb)
+        {
+            Success();
+            QTEEnd();
+        }
+        else
+        {
+            ButtonReset();
+        }        
+    }
+
+    private string GetNumbersOfString(string origString)
+    {
+        string onlyNumbers = "";
+
+        for (int i = 0; i < origString.Length; i++)
+        {
+            string tmp2 = "" + origString[i];
+            if (isNumeric(tmp2))
+            {
+                onlyNumbers += origString[i];
+            }
+        }
+
+        return onlyNumbers;
+    }
+
+    public void DeleteLastNum()
+    {
+        if(curIndex <= 0)
+        {
+            return;
+        }
+
+        string allNumbers = GetNumbersOfString(yourComb);
+        string newNumbers = "";
+        for(int i = 0; i < allNumbers.Length - 1; i++)
+        {
+            newNumbers += allNumbers[i];
+        }
+        curIndex -= 1;
+        string tmpString = "<u>" + newNumbers + "</u>";
+
+        curStringIndex = tmpString.Length;
+        string addString = "";
+
+        if(curIndex >= emptyString.Length)
+        { 
+            return;
+        }
+        int difference = emptyString.Length - curIndex;
+        
+        //Debug.LogFormat("Empty string length if {0}\nCurrent index is {1}\nDifference is {2}", emptyString.Length, curIndex, difference);
+
+        if (difference != 0)
+        {
+            for (int i = 0; i < difference; i++)
+            {
+                addString += "_";
+            }
+        }
+
+        yourComb = tmpString + addString;
+        OutputText(yourComb);
+    }
+
+    private bool isNumeric(string strToCheck)
+    {
+        Regex rg = new Regex(@"^[0-9]*$");
+        return rg.IsMatch(strToCheck);
     }
 
     public void EndButton()
@@ -118,6 +218,10 @@ public class CypherScript : QTEObject
         {
             Destroy(theButton[i]);
         }
+
+        curIndex = 0;
+        curStringIndex = 0;
+        emptyString = null;
 
         cypherComb = null;
         yourComb = null;

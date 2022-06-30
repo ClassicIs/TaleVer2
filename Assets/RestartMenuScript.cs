@@ -14,11 +14,20 @@ public class RestartMenuScript : MonoBehaviour, MenuObject
 
     public void MenuOn()
     {
-        if (!isActive)
-        {
-            isActive = true;            
-            Time.timeScale = 0f;            
-            gameObject.SetActive(isActive);
+        isActive = !isActive;
+
+        Debug.LogFormat("Menu is active: {0}.", isActive);
+
+        gameObject.SetActive(isActive);
+        
+        if (isActive)
+        {         
+            Time.timeScale = 0f;
         }
+        else
+        {
+            Time.timeScale = 1f;
+        }
+        
     }
 }

@@ -4,15 +4,19 @@ using UnityEngine;
 
 public class PanelScript : QTEInWorldScript
 {
-    [SerializeField]
-    DLDoor doorToOpen;
-    //CypherScript cypherClass;
+
     [SerializeField]
     int panelCypher;
 
+    [SerializeField]
+    DLDoor[] doorsToOpen;
+
     public override void SuccessfullyUsed()
     {
-        doorToOpen.OpenDoor();
+        foreach (DLDoor door in doorsToOpen)
+        {
+            door.OpenDoor();
+        }
     }
 
     public override void UnSuccessfullyUsed()

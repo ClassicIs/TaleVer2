@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1035329605965171298}
   - component: {fileID: 1035329605965171296}
   - component: {fileID: 4298184178831791513}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Blot v1
   m_TagString: Scary
   m_Icon: {fileID: 0}
@@ -117,6 +117,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e3aa49aec1d5e148a768cff61b3e725, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  StartDamage:
+    HealthDamage: 0
+    InkGain: 2
+    SlowModifier: 0.3
+    TimeForDebuf: 0
+    MakeStun: 0
+  EndDamage:
+    HealthDamage: 0
+    InkGain: 0
+    SlowModifier: 0
+    TimeForDebuf: 0
+    MakeStun: 0
   LongAction: 0
 --- !u!61 &4298184178831791513
 BoxCollider2D:

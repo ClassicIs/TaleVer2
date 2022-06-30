@@ -2,29 +2,39 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System;
 
 public class SaveManager : MonoBehaviour
 {
-    SavePoint startCheckPoint;
-    SavePoint LastCheckPoint;
+    //SavePoint startCheckPoint;
+    SavePoint lastCheckPoint;
+    SavePoint limboCheckPoint;
     GameManagerScript TheGameManagerScript;
 
     private GameObject PlayerObject;
     private PlayerManager PlayerManager;
     private CharacterOverlap CharacterOverlap;
     private Player Player;
+    private Animator PlayerAnimator;
+
+    FadeInScript fade;
 
     public void AssignValues()
     {
+        isAlive = true;
+        Debug.LogFormat("Assigning values.");
         PlayerObject = GameObject.FindGameObjectWithTag("Player");
         PlayerManager = PlayerObject.GetComponent<PlayerManager>();
         CharacterOverlap = PlayerObject.GetComponent<CharacterOverlap>();
         Player = PlayerObject.GetComponent<Player>();
-        TheGameManagerScript = GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManagerScript>();
-        if(LastCheckPoint == null)
+        TheGameManagerScript = GameObject.FindObjectOfType<GameManagerScript>();
+        PlayerAnimator = Player.GetComponent<Animator>();
+        fade = GameObject.FindObjectOfType<FadeInScript>();
+
+        if (lastCheckPoint == null)
         {
-            startCheckPoint = new SavePoint(4, 100, 0, new Vector2(PlayerObject.transform.position.x, PlayerObject.transform.position.y), PlayerManager.Inventory);
-            LastCheckPoint = startCheckPoint;
+            lastCheckPoint = new SavePoint(4, 100, 0, new Vector2(PlayerObject.transform.position.x, PlayerObject.transform.position.y), PlayerManager.Inventory);
+            //LastCheckPoint = startCheckPoint;
             //LoadSave(true);
         }
         AssignActions();
@@ -40,12 +50,12 @@ public class SaveManager : MonoBehaviour
         CharacterOverlap.OnFalling += IfFallen;
         PlayerManager.OnInkDeath += IfInkMax;
         PlayerManager.OnHealthNull += IfHealthNull;
-        
+
     }
 
     private void IfHealthNull()
     {
-        LoadSave(true);
+        LoadSave();
     }
 
     private void IfFallen()
@@ -53,25 +63,62 @@ public class SaveManager : MonoBehaviour
 
         if (PlayerManager.isAlive)
         {
-            LoadSave(true);
+            LoadSave();
+        }
+    }
+    bool isAlive;
+    Action tmpAction;
+    Action tmpAction2;
+    private void IfInkMax()
+    {
+        //Debug.LogError("Ink death process");
+        if (isAlive)
+        {
+            isAlive = false;
+            Player.ToStun(true);
+            PlayerAnimator.SetBool("IsDeadInk", true);
+            tmpAction = null;
+            tmpAction += delegate {
+                fade.Fade(true);
+                tmpAction2 += delegate
+                {
+                    PlayerAnimator.SetBool("IsDeadInk", false);
+                    SceneManager.LoadScene("Death Level");
+                };
+                StartCoroutine(WaitTill(3f, tmpAction2));
+            };
+            StartCoroutine(WaitTill(4f, tmpAction));
         }
     }
 
-    private void IfInkMax()
+
+    private IEnumerator WaitTill(float seconds, Action somethingToDo)
     {
-        Player.ToStun(true);
-        SceneManager.LoadScene(2);
-        AssignValues();
-        TheGameManagerScript.AssigningValues();
+        //Debug.LogError("Started waiting!");
+        yield return new WaitForSeconds(seconds);
+        somethingToDo?.Invoke();
+        
     }
 
     public void IfEndDeath()
     {
         Player.ToStun(true);
-        SceneManager.LoadScene(1);
-        AssignValues();
+        tmpAction = null;
+        tmpAction += delegate { SceneManager.LoadScene(SceneManager.GetActiveScene().name); };
+        StartCoroutine(WaitTill(3, tmpAction));
+            
     }
 
+    public void BackToMainLevel()
+    {
+        Player.ToStun(true);
+        fade.Fade(true);
+
+        tmpAction = null;
+        tmpAction += delegate { SceneManager.LoadScene(1); };
+        StartCoroutine(WaitTill(3, tmpAction));
+    }
+    /*
     private void Update()
     {
         if(Input.GetKeyDown(KeyCode.T))
@@ -84,6 +131,16 @@ public class SaveManager : MonoBehaviour
             LoadSave(true); 
         }
     }
+    */
+
+    private void MakeASave(int PlayerHealth, int InkLevel, int CointCount, InventoryScript PlayerInventory, bool limbo = false)
+    {
+        //Transform Player = GameObject.FindObjectWithTag()
+        if(limbo)            
+            limboCheckPoint = new SavePoint(PlayerHealth, InkLevel, CointCount, PlayerObject.transform.position, PlayerInventory);
+        else
+            lastCheckPoint = new SavePoint(PlayerHealth, InkLevel, CointCount, PlayerObject.transform.position, PlayerInventory);
+    }
 
     public void MakeASave()
     {
@@ -91,17 +148,16 @@ public class SaveManager : MonoBehaviour
         int PlayerHealth, InkLevel, CointCount;
         InventoryScript PlayerInventory;
 
-        //TODO: Implement inventory
         //TODO: Implement saving information list of collected items
 
         PlayerManager.GetAllValues(out PlayerHealth, out InkLevel, out CointCount, out PlayerInventory);
-        if (LastCheckPoint != null)
+        if (lastCheckPoint != null)
         {
-            LastCheckPoint.SetCheckPoint(PlayerHealth, InkLevel, CointCount, PlayerCurrentPosition, PlayerInventory);
+            lastCheckPoint.SetCheckPoint(PlayerHealth, InkLevel, CointCount, PlayerCurrentPosition, PlayerInventory);
         }
         else
         {
-            LastCheckPoint = new SavePoint(PlayerHealth, InkLevel, CointCount, PlayerCurrentPosition, PlayerInventory);
+            lastCheckPoint = new SavePoint(PlayerHealth, InkLevel, CointCount, PlayerCurrentPosition, PlayerInventory);
         }
         
     }
@@ -111,18 +167,17 @@ public class SaveManager : MonoBehaviour
         //TODO
     }
 
-    public void LoadSave(bool checkpoint)
+    public void LoadSave()
     {
-        if (checkpoint)
+        if (SceneManager.GetActiveScene().name == "Death Level")
         {
-            Debug.Log("Loading...");
-            PlayerManager.SetValues(LastCheckPoint);
-            LastCheckPoint.PrintCheckPoint();
+            MakeASave(4, 100, 0, new InventoryScript(10), true);
+            PlayerManager.SetValues(limboCheckPoint);
+            limboCheckPoint.PrintCheckPoint();
+            return;
         }
-        else
-        {
-            PlayerManager.SetValues(LastCheckPoint);
-            LastCheckPoint.PrintCheckPoint();
-        }        
+
+        PlayerManager.SetValues(lastCheckPoint);
+        lastCheckPoint.PrintCheckPoint();
     }
 }

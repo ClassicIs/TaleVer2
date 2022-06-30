@@ -20,6 +20,7 @@ public abstract class AutoQTEScript : MonoBehaviour
     protected virtual void Start()
     {
         alreadyUsed = false;
+        QTEHolder = GameObject.FindGameObjectWithTag("QTEHolder").GetComponent<QTEHolder>();
         currentQTE = QTEHolder.ActivateQTE(typeOfQTE);
     }
 

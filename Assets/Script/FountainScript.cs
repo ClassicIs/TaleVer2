@@ -9,6 +9,7 @@ public class FountainScript : InteractObject
 
     protected override void Start()
     {
+        base.Start();
         LongInteraction = false;
         PlayerManagement = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerManager>();
     }

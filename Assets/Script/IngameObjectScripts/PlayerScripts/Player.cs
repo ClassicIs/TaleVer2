@@ -45,7 +45,8 @@ public class Player : AliveBeeing
     private float normSpeed;
     public float slowModif;
     [SerializeField]
-    private float playerStrength;
+    private int playerStrength;
+    PlayerManager PlayerManager;
 
     public bool isSlowDown;
     void Start()
@@ -63,6 +64,7 @@ public class Player : AliveBeeing
         theVectRaw = new Vector2(0, 0);
         theAudioManager = FindObjectOfType<AudioManagerScript>();
         theFXScript = GetComponent<PlayerEffectsScript>();
+        PlayerManager = GetComponent<PlayerManager>();
         
         //Speed variables        
         normSpeed = 1.5f;        
@@ -87,7 +89,7 @@ public class Player : AliveBeeing
     public void SlowEffectOn(bool on, float SlowModifier = 0.4f)
     {
         isSlowDown = on;
-        Debug.LogFormat("Slow effect is {0}", isSlowDown);
+        //Debug.LogFormat("Slow effect is {0}", isSlowDown);
         if (on)
         {            
             slowModif = SlowModifier;
@@ -181,17 +183,11 @@ public class Player : AliveBeeing
         Debug.LogWarning("Hitting target.");
         foreach (Collider2D enemy in enemies)
         {
-            if(enemy.GetComponent<Enemy>())
+            if(enemy.GetComponent<IDameagable>() != null)
             {
-                enemy.GetComponent<Enemy>().TakeDamage(playerStrength);
-            }
-            else if(enemy.GetComponent<ExplodeObject>())
-            {
-                Debug.LogFormat("Explode object {0} was hit.", enemy.name);
-                enemy.GetComponent<ExplodeObject>().ExplodeThisObject();
+                enemy.GetComponent<IDameagable>().TakeDamage(playerStrength);
             }
         }
-
         yield return new WaitForSeconds(timeForAttack/2);        
         currState = PlayerStates.moving;
         Debug.LogWarning("End Attack");
@@ -204,7 +200,7 @@ public class Player : AliveBeeing
         {
             if (currState != PlayerStates.stunned && isGrounded && isAlive)
             {
-                Debug.Log("Changing state to " + theState.ToString());
+                //Debug.Log("Changing state to " + theState.ToString());
                 if (theState == PlayerStates.moving)
                 {
                     if (isGrounded && currState != PlayerStates.dashing && currState != PlayerStates.attacking)
@@ -212,8 +208,9 @@ public class Player : AliveBeeing
                         currState = theState;
                     }
                 }
-                else if (theState == PlayerStates.dashing)
+                else if (theState == PlayerStates.dashing && !isSlowDown)
                 {
+                    Debug.Log("State changed to dashing");
                     currState = theState;
                 }
                 else if (theState == PlayerStates.attacking && currState != PlayerStates.dashing)
@@ -222,14 +219,22 @@ public class Player : AliveBeeing
                     /*if (currState != PlayerStates.dashing)
                     {}*/
     }
-                else if (currState != PlayerStates.isDead)
+                else if (theState == PlayerStates.isDead)
                 {
-                    currState = PlayerStates.isDead;
-                    Debug.Log("Player is dead!");
+                    if (currState != PlayerStates.isDead)
+                    {
+                        currState = PlayerStates.isDead;
+                        Debug.Log("Player is dead!");
+                    }
 
                 }
             }
         }
+    }
+
+    public PlayerStates CurrentState()
+    {
+        return currState;
     }
 
     public void ToStun(bool stun)
@@ -251,19 +256,14 @@ public class Player : AliveBeeing
                 currState = PlayerStates.moving;
             }
         }
-    }
+    }  
 
     private void Dash()
     {
-        Debug.Log("Dodge has started!");
-        isDashing = true;
         movePosition = new Vector2(transform.position.x, transform.position.y) + lastMoveDir * speedDodge;
-       
-        theFXScript.MakeTheGhosts(true);            
-        thePlayer.velocity = Vector2.zero;
-        thePlayerAnim.SetTrigger("Dodge");
-
         Vector3 lastMovePosition = movePosition;
+
+        //RaycastHit2D theCheckForObjs = Physics2D.BoxCast(transform.position, GetComponent<BoxCollider2D>().bounds.size, 0f, lastMoveDir, (lastMoveDir * speedDodge).magnitude, theWallLayer);
 
         RaycastHit2D theCheckForObjs = Physics2D.Raycast(transform.position, lastMoveDir, (lastMoveDir * speedDodge).magnitude, theWallLayer);
         //Instantiate(tmpGameObj, theCheckForObjs.point, Quaternion.identity);
@@ -272,6 +272,26 @@ public class Player : AliveBeeing
         {
             lastMovePosition = theCheckForObjs.point;
         }
+        if(Vector3.Distance(lastMovePosition, transform.position) < 0.5f)
+        {
+            Debug.Log("Player too close");
+            isDashing = false;
+            currState = PlayerStates.moving;
+            return;
+        }
+
+        Debug.Log("Dodge has started!");
+        
+        if (OnDashStart != null)
+        {
+            OnDashStart();
+        }
+        
+        isDashing = true;
+        theFXScript.MakeGhost(lastMovePosition);
+        thePlayer.velocity = Vector2.zero;
+        thePlayerAnim.SetTrigger("Dodge");
+
         thePlayer.MovePosition(lastMovePosition);
 
         if (theAudioManager != null)
@@ -300,14 +320,23 @@ public class Player : AliveBeeing
             yield return null;
         }
         transform.position = needPos;
-        currState = PlayerStates.moving;
-        theFXScript.MakeTheGhosts(false);
-        isDashing = false;
+        
+        
+
+        PlayerManager.ClearCollisions();
         Debug.Log("Dodge is made!");
+        if (OnDashEnd != null)
+        {
+            OnDashEnd();
+        }
+
+        //theFXScript.MakeTheGhosts(false);
+        isDashing = false;
+        currState = PlayerStates.moving;
     }
     private void OnDrawGizmos()
     {
         Vector3 positionOfAttack = new Vector3(transform.position.x + lastMoveDir.x, transform.position.y + lastMoveDir.y, 0f);
-        Gizmos.DrawSphere(positionOfAttack, radiusOfAttack);
+        Gizmos.DrawWireSphere(positionOfAttack, radiusOfAttack);
     }
 }

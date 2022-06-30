@@ -20,6 +20,8 @@ public class CharacterOverlap : MonoBehaviour
     public event Action<PickableObject> OnPickableObject;
     public event Action<AutoQTEScript> OnEnteredQTE;
 
+    public event Action OnEndOfInkDeath;
+
     public event Action OnEndOfLevel;
 
     public enum PlayerDeath
@@ -39,9 +41,9 @@ public class CharacterOverlap : MonoBehaviour
     private IEnumerator timeToRes;
     private IEnumerator CorToFindInterObject;
 
-    [SerializeField]
-    private Player thePlayerController;
+    private Player Player;
     private PlayerEffectsScript thePlayerFX;
+    private PlayerManager PlayerManager;
     private Animator thePlayerAnim;
 
     [SerializeField]
@@ -83,20 +85,24 @@ public class CharacterOverlap : MonoBehaviour
     List <Transform> AllObjectsAround;
     InteractObject NearObject;
 
+    DangerObject lastDangerObjectToHit;
+
     public bool isStunned;
     bool wasNearDeath = false;
+    bool isDashing;
+    bool checkCollisions;
     private void Awake()
     {
+        AssignValues();
         CorToFindInterObject = FindInterObject();
     }
+
     private void Start()
     {
         isStunned = false;
+        isDashing = false;
+        checkCollisions = false;
 
-        AssignValues();
-        //timeToRes = ResetTheGame();
-
-        theLastCheckpoint = firstCheckPoint.position;
         theLastAlivePosition = transform.position;
         
         isOnGround = true;    
@@ -105,25 +111,28 @@ public class CharacterOverlap : MonoBehaviour
         InstadeathTime = timeToInstaTime;
 
         strTimeToDeath = .45f;
-        timeToDeath = strTimeToDeath;      
-        
-        StartCoroutine(FindSafePlace());
-        
+        timeToDeath = strTimeToDeath;
+
+        Player.OnDashStart += IfDashStart;
+        Player.OnDashEnd += IfDashEnd;
+
+        // Is it needed?
+        //StartCoroutine(FindSafePlace());
     }
 
     private void AssignValues()
     {        
         AllObjectsAround = new List<Transform>();
-        Debug.Log("Assigning values!");
-        Debug.LogFormat("AllObjectsAround {0}", AllObjectsAround.Count);
         thePlayerAnim = GetComponent<Animator>();
         thePlayer = GetComponent<Rigidbody2D>();
+        PlayerManager = GetComponent<PlayerManager>();
+        Player = GetComponent<Player>();
         thePlayerFX = GetComponent<PlayerEffectsScript>();
     }
 
     private void Update()
     {        
-        if (thePlayerController.isAlive)
+        if (Player.isAlive)
         {
             CheckForDeath();
         }
@@ -136,7 +145,6 @@ public class CharacterOverlap : MonoBehaviour
         {
             StopCoroutine(CorToFindInterObject);
         }*/
-        
     }
     
     IEnumerator FindInterObject()
@@ -159,7 +167,7 @@ public class CharacterOverlap : MonoBehaviour
     // To Find Last Save Space where Was Player
     IEnumerator FindSafePlace()
     {
-        while(thePlayerController.isAlive)
+        while(Player.isAlive)
         {
             bool isItSafe = false;
             foreach(Transform transf1 in checkForGround)
@@ -185,21 +193,21 @@ public class CharacterOverlap : MonoBehaviour
     // To stop Player from Falling
     private void CheckForDeath()
     {
-        RaycastHit2D goingIntoWall = Physics2D.Raycast(transform.position, thePlayerController.theVectRaw, radOfWallDetect, theWallLayer);
+        RaycastHit2D goingIntoWall = Physics2D.Raycast(transform.position, Player.theVectRaw, radOfWallDetect, theWallLayer);
         if(goingIntoWall.collider != null)
         {            
             //Debug.Log("Is hitting into a wall");
             lastHitObject = goingIntoWall.point;
         }
         
-        RaycastHit2D goingToDeath = Physics2D.Raycast(new Vector2(playerLegPos.position.x, playerLegPos.position.y), thePlayerController.theVectRaw, radOfDropDetect, theDeathLayer);
+        RaycastHit2D goingToDeath = Physics2D.Raycast(new Vector2(playerLegPos.position.x, playerLegPos.position.y), Player.theVectRaw, radOfDropDetect, theDeathLayer);
         if (goingToDeath.collider != null)
         {
             if(timeToDeath > 0f)
             {
                 //Debug.Log("Raycast is " + goingToDeath.collider.tag);
                 thePlayer.velocity = new Vector2(0, 0);
-                thePlayerController.ToStun(true);
+                Player.ToStun(true);
                 timeToDeath -= 0.5f * Time.deltaTime;
                 wasNearDeath = true;
             }                      
@@ -208,7 +216,7 @@ public class CharacterOverlap : MonoBehaviour
         {
             if (wasNearDeath)
             {
-                thePlayerController.ToStun(false);
+                Player.ToStun(false);
                 timeToDeath = strTimeToDeath;
                 wasNearDeath = false;
             }
@@ -217,7 +225,7 @@ public class CharacterOverlap : MonoBehaviour
         if (!isOnGround)
         {
             Debug.Log("Death is near!");
-            if (thePlayerController.isDashing)
+            if (Player.isDashing)
             {
                 if (InstadeathTime > 0f)
                 {
@@ -239,142 +247,190 @@ public class CharacterOverlap : MonoBehaviour
         }
     }
 
+    private void IfDashStart()
+    {
+        isDashing = true;
+    }
+
+    private void IfDashEnd()
+    {
+        //Debug.LogError("Character overlap Dash has ended");
+        
+        ToCheckCollisions();
+        
+    }
+
+    public void ToCheckCollisions()
+    {
+        StartCoroutine(WaitFor());
+    }
+
+    IEnumerator WaitFor()
+    {
+        checkCollisions = true;
+        firstTime = true;
+        //Debug.LogError("Checking collision 0");
+        yield return null;
+        checkCollisions = false;
+        isDashing = false;
+        //Debug.LogError("End of checking collision");
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
-
-        
-
-        if (thePlayerController.isAlive)
+        if (Player.isAlive && !isDashing)
         {
-            if(collision.CompareTag("Spikes"))
-            {
-                Debug.Log("Spikes!");
-                if (OnDangerCollision != null)
-                {
-                    Debug.Log("OnDangerCollision!");
-                    OnDangerCollision();
-                }
-            }
-
-            if(collision.CompareTag("EndOfLevel"))
-            {
-                if (OnEndOfLevel != null)
-                {                    
-                    OnEndOfLevel();
-                }
-            }
-
-            // To collect all Interactive objects in one array
-            if(collision != null)
-            {
-                if(collision.GetComponent<AutoQTEScript>())
-                {
-                    if (!collision.GetComponent<AutoQTEScript>().alreadyUsed)
-                    {
-                        if (OnEnteredQTE != null)
-                        {
-                            OnEnteredQTE(collision.GetComponent<AutoQTEScript>());
-                        }
-                    }
-                }
-
-                if(collision.GetComponent<InteractObject>())
-                {
-                    if(!AllObjectsAround.Contains(collision.GetComponent<Transform>()))
-                    {
-                        AllObjectsAround.Add(collision.GetComponent<Transform>());
-                        Debug.Log("New interactable object is " + collision.name);
-                    }                    
-                }
-                if (collision.GetComponent<PickableObject>())
-                {
-                    if (OnPickableObject != null)
-                    {
-                        OnPickableObject(collision.GetComponent<PickableObject>());
-                    }
-                }
-
-                if (collision.GetComponent<DangerObject>())
-                {
-                    if (OnDangerousObject != null)
-                    {
-                        OnDangerousObject(collision.GetComponent<DangerObject>());
-                    }
-                }
-            }
-            
-            if (collision.CompareTag("Checkpoint"))
-            {
-                if (OnSaving != null)
-                {
-                    OnSaving();
-                }
-                Debug.Log("Saved");
-                theLastCheckpoint = collision.gameObject.transform.position;
-                collision.gameObject.SetActive(false);
-            }
-
-            if (collision.CompareTag("Coin"))
-            {
-                if (OnTakingCoin != null)
-                {
-                    OnTakingCoin(1, collision.gameObject.transform.position);
-                }
-                Destroy(collision.gameObject);
-            }
-
-            if (collision.CompareTag("Floor"))
-            {
-                isOnGround = true;
-                thePlayerController.isGrounded = true;
-            }
-
+            CheckForAllCollisions(collision);
         }
     }
 
+    private void CheckForAllCollisions(Collider2D collision)
+    {
+        Debug.Log("Checking for all collisions");
+        if (collision.GetComponent<AutoQTEScript>())
+        {
+            if (!collision.GetComponent<AutoQTEScript>().alreadyUsed)
+            {
+                if (OnEnteredQTE != null)
+                {
+                    OnEnteredQTE(collision.GetComponent<AutoQTEScript>());
+                }
+            }
+        }
+
+        if (collision.GetComponent<InteractObject>())
+        {
+            // To collect all Interactive objects in one array
+            if (!AllObjectsAround.Contains(collision.GetComponent<Transform>()))
+            {
+                AllObjectsAround.Add(collision.GetComponent<Transform>());
+                Debug.Log("New interactable object is " + collision.name);
+            }
+        }
+        if (collision.GetComponent<PickableObject>())
+        {
+            if (OnPickableObject != null)
+            {
+                OnPickableObject(collision.GetComponent<PickableObject>());
+            }
+        }
+
+        if (collision.GetComponent<DangerObject>())
+        {
+            lastDangerObjectToHit = collision.GetComponent<DangerObject>();
+            if (OnDangerousObject != null)
+            {
+                OnDangerousObject(lastDangerObjectToHit);
+            }
+        }
+
+        if (collision.CompareTag("Checkpoint"))
+        {
+            if (OnSaving != null)
+            {
+                OnSaving();
+            }
+            Debug.Log("Saved");
+            theLastCheckpoint = collision.gameObject.transform.position;
+            collision.gameObject.SetActive(false);
+        }
+
+        if (collision.CompareTag("Floor"))
+        {
+            isOnGround = true;
+            Player.isGrounded = true;
+        }
+        
+        //Obsolete
+
+        if (collision.CompareTag("Coin"))
+        {
+            if (OnTakingCoin != null)
+            {
+                OnTakingCoin(1, collision.gameObject.transform.position);
+            }
+            Destroy(collision.gameObject);
+        }
+       
+        if (collision.CompareTag("Spikes"))
+        {
+            Debug.Log("Spikes!");
+            if (OnDangerCollision != null)
+            {
+                Debug.Log("OnDangerCollision!");
+                OnDangerCollision();
+            }
+        }
+
+        if (collision.CompareTag("EndOfLevel"))
+        {
+            if (OnEndOfLevel != null)
+            {
+                OnEndOfLevel();
+            }
+        }
+
+    }
+
+    
+    bool firstTime = false;
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (thePlayerController.isAlive)
+        if (Player.isAlive)
         {
             if (collision.CompareTag("Floor"))
             {
                 isOnGround = true;
-                thePlayerController.isGrounded = true;
+                Player.isGrounded = true;
             }
         }
+
+        if(checkCollisions && firstTime)
+        {
+            //Debug.LogError("Checking collision");
+            AllObjectsAround.Clear();
+            if (lastDangerObjectToHit != null)
+            {
+                if (OnDangerFar != null)
+                {
+                    OnDangerFar(lastDangerObjectToHit);
+                }
+                lastDangerObjectToHit = null;
+            }
+            CheckForAllCollisions(collision);
+            firstTime = false;
+        }
+        
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        // Empty list of Interact objects if exited
-        if (collision != null)
+        if (!isDashing)
         {
+            // Empty list of Interact objects if exited
             if (collision.GetComponent<InteractObject>())
             {
                 if (AllObjectsAround.Contains(collision.GetComponent<Transform>()))
                 {
-                    AllObjectsAround.Remove(collision.GetComponent<Transform>());                    
+                    AllObjectsAround.Remove(collision.GetComponent<Transform>());
                     Debug.Log("Removed interactable object is " + collision.name);
                 }
             }
 
             if (collision.GetComponent<DangerObject>())
             {
-                if(OnDangerFar != null)
+                if (OnDangerFar != null)
                 {
                     OnDangerFar(collision.GetComponent<DangerObject>());
                 }
             }
 
-            
-
             if (collision.CompareTag("Floor"))
             {
                 isOnGround = false;
-                thePlayerController.isGrounded = false;
+                Player.isGrounded = false;
             }
         }
-
 
     }
 
@@ -452,19 +508,26 @@ public class CharacterOverlap : MonoBehaviour
             isAliveOrNot(true);
             thePlayerAnim.SetBool("IsDeadInk", false);
         }
+        StartCoroutine(InkDeathComplete());
+    }
+
+    IEnumerator InkDeathComplete()
+    {
+        yield return new WaitForSeconds(1.3f);
+        OnEndOfInkDeath?.Invoke();
     }
 
     private void isAliveOrNot(bool isOrNot)
     {
         if (isOrNot)
         {
-            thePlayerController.isAlive = true;            
+            Player.isAlive = true;            
 
         }
         else
         {
             thePlayer.velocity = Vector2.zero;
-            thePlayerController.ChangeState(Player.PlayerStates.isDead);            
+            Player.ChangeState(Player.PlayerStates.isDead);            
         }
     }
 
@@ -479,6 +542,6 @@ public class CharacterOverlap : MonoBehaviour
             Gizmos.DrawWireSphere(obj.position, radOfGroundDetect);
         }
         Gizmos.color = new Color(1, 0, 0);
-        Gizmos.DrawLine(transform.position, transform.position + new Vector3(thePlayerController.theVectRaw.x, thePlayerController.theVectRaw.y, 0f) * radOfWallDetect);
+        Gizmos.DrawLine(transform.position, transform.position + new Vector3(Player.theVectRaw.x, Player.theVectRaw.y, 0f) * radOfWallDetect);
     }    
 }

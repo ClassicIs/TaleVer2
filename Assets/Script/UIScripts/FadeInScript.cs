@@ -9,20 +9,50 @@ public class FadeInScript : MonoBehaviour
     private Image theBlackBG;
     public event Action CoroutineEnd;
 
-    private void Start()
-    {
-        foreach(Transform child in transform)
-        {
-            child.gameObject.SetActive(true);
-        }
-        theBlackBG = GetComponentInChildren<Image>();
-    }
+    public static FadeInScript instance;
+
     private void Awake()
     {
+        if(instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            //Debug.Log()
+            Debug.Log("Destroying gameobject");
+            Destroy(gameObject);
+            return;
+        }
+
         DontDestroyOnLoad(gameObject);
     }
 
-    public IEnumerator toFadeInCoroutine(bool withFadeOut)
+    private void Start()
+    {
+        /*
+        foreach(Transform child in transform)
+        {
+            child.gameObject.SetActive(true);
+        }*/
+        theBlackBG = GetComponentInChildren<Image>();
+    }
+
+    public void Fade(bool fade)
+    {
+        if (fade)
+        {
+            //Debug.LogError("Starting fading in.");
+            StartCoroutine(toFadeInCoroutine(false));
+        }
+        else
+        {
+            //Debug.Log("Starting fading out.");
+            StartCoroutine(toFadeOutCoroutine());
+        }
+    }
+
+    IEnumerator toFadeInCoroutine(bool withFadeOut)
     {
         theBlackBG.enabled = true;
         float theOpacity = 0;
@@ -46,7 +76,7 @@ public class FadeInScript : MonoBehaviour
         }
     }
 
-    public IEnumerator toFadeOutCoroutine()
+    IEnumerator toFadeOutCoroutine()
     {
         float theOpacity = 1;
         while (theOpacity > 0.01f)

@@ -1,17 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class PlayerCharacterInput : MonoBehaviour
 {
     public float horMovement;
     public float verMovement;
-    Player thePlayer;
-    Player.PlayerStates theStatesToChoose;
-
+    Player Player;
+    public Action OnInventoryCall;
     private void Start()
     {
-        thePlayer = GetComponent<Player>();
+        Player = GetComponent<Player>();
     }
     // Update is called once per frame
     void Update()
@@ -22,21 +22,34 @@ public class PlayerCharacterInput : MonoBehaviour
     {
         horMovement = Input.GetAxisRaw("Horizontal");
         verMovement = Input.GetAxisRaw("Vertical");
-        thePlayer.horMovement = this.horMovement;
-        thePlayer.vertMovement = verMovement;
+        Player.horMovement = this.horMovement;
+        Player.vertMovement = verMovement;
 
-        //thePlayer.Move(horMovement, verMovement);
-        thePlayer.ChangeState(Player.PlayerStates.moving);
+        if (horMovement != 0 || verMovement != 0)
+        {
+            // For the case
+            if (Player.CurrentState() != Player.PlayerStates.stunned)
+            {
+                Player.ChangeState(Player.PlayerStates.moving);
+            }
+        }
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            thePlayer.ChangeState(Player.PlayerStates.dashing);
+            Player.ChangeState(Player.PlayerStates.dashing);
         }
 
         if (Input.GetKeyDown(KeyCode.G))
         {
-            thePlayer.ChangeState(Player.PlayerStates.attacking);
+            Player.ChangeState(Player.PlayerStates.attacking);
         }
-
+        
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            if (OnInventoryCall != null)
+            {
+                OnInventoryCall();
+            }           
+        }
     }
 }

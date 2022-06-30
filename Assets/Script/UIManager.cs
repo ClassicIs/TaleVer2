@@ -75,7 +75,9 @@ public class UIManager : MonoBehaviour
 
     private void ChangeInkLevelUI(int inkLevel)
     {
-        Debug.Log("Changing int level " + inkLevel);
+        if (inkLevel < 0)
+            return;
+        //Debug.Log("Changing ink level " + inkLevel);
         StartCoroutine(ChangeInkLevelUIInTime(InkLevelDisplay.value, inkLevel));
     }
 
@@ -85,11 +87,11 @@ public class UIManager : MonoBehaviour
         {
             currentInkLevel = Mathf.Lerp(currentInkLevel, neededInkLevel, InkChangeSpeed);
             InkLevelDisplay.value = currentInkLevel;
-            Debug.LogFormat("Current Ink Level {0}", currentInkLevel);
+            //Debug.LogFormat("Current Ink Level {0}", currentInkLevel);
             yield return null;
         }
         InkLevelDisplay.value = neededInkLevel;
-        Debug.Log("Changed ink level.");
+        //Debug.Log("Changed ink level.");
     }
 
     private void ChangeCoinCountUI(int coinCount)
