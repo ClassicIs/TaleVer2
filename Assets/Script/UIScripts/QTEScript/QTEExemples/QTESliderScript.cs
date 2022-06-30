@@ -25,6 +25,21 @@ public class QTESliderScript : QTEObject
     RectTransform startOfSlider;
     [SerializeField]
     RectTransform endOfSlider;
+    List <GameObject> parts;
+    GameObject playerArrow;
+    RectTransform arrowTransform;
+
+    private void Start()
+    {
+        parts = new List<GameObject>();
+        playerArrow = Instantiate(theSliderPart, new Vector3(0, 0, 0), Quaternion.identity, QTESliderHolder.GetComponent<RectTransform>());
+        playerArrow.GetComponent<Image>().color = new Color(0, 0, 1);
+        playerArrow.name = "playerArrow";
+
+        arrowTransform = playerArrow.GetComponent<RectTransform>();
+        arrowTransform.localScale = new Vector3(1f, 5f, 0f);
+        playerArrow.SetActive(false);
+    }
 
     public override void Activate(HardVariety Hardness)
     {
@@ -74,6 +89,7 @@ public class QTESliderScript : QTEObject
         int numberOfParts = 25;
         int maxSize = 3;
         int tail = 200;
+
         for (int i = 0; i <= numberOfParts; i++)
         {
             float x = startXPos + ((endXPos - startXPos) / numberOfParts) * i;
@@ -87,6 +103,7 @@ public class QTESliderScript : QTEObject
             
             thePart.GetComponent<Image>().color = new Color(close, 1 - close, Mathf.Clamp01(0.2f - close));
             thePart.GetComponent<RectTransform>().localScale += new Vector3(0f, maxSize * close, 0f);
+            parts.Add(thePart);
         }
         
         StartCoroutine(theNum(tail, randomNumber, needScore, speed, maxTries, startXPos, endXPos, yPos, range));
@@ -101,11 +118,8 @@ public class QTESliderScript : QTEObject
         int needScore = theNeedScore;
         int cost = 83;
 
-        GameObject part = Instantiate(theSliderPart, new Vector3(startPos, yPos, 0), Quaternion.identity, QTESliderHolder.GetComponent<RectTransform>());
-        part.GetComponent<Image>().color = new Color(0, 0, 1);
-        part.name = "playerArrow";
-        RectTransform arrowTransform = part.GetComponent<RectTransform>();
-        arrowTransform.localScale = new Vector3(1f, 5f, 0f);       
+        playerArrow.SetActive(true);
+        arrowTransform.position = new Vector3(startPos, yPos, 0f);
 
         while (true)
         {
@@ -153,6 +167,12 @@ public class QTESliderScript : QTEObject
 
     protected override void QTEEnd()
     {
+        foreach(GameObject part in parts)
+        {
+            Destroy(part);
+        }
+        parts.Clear();
+        
         QTESliderHolder.SetActive(false);
     }
 

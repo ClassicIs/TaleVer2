@@ -33,7 +33,7 @@ public class ExplodeObject : MonoBehaviour, IDameagable
         {
             if (!alreadyRed)
             {
-                redCoroutine = RedAfterDamage(GetComponent<SpriteRenderer>(), Color.red, 2);
+                redCoroutine = RedAfterDamage(GetComponent<SpriteRenderer>(), Color.red, 0.4f);
                 StartCoroutine(redCoroutine);
                 alreadyRed = true;
             }
